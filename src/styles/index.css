@@ -1,0 +1,43 @@
+@import './tailwind.css';
+@import './components/index.css';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+    height: 12px;
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-clip: content-box;
+    background-color: #9B9B9B;
+    border: 4px solid transparent;
+    height: 56px;
+    width: 56px;
+}
+
+::-webkit-scrollbar-track {
+    background-clip: content-box;
+    border: 4px solid transparent;
+    border-radius: 6px;
+}
+
+.shadow-light {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    -ms-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    -o-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    @apply mx-auto max-w-[90%] md:max-w-[680px];
+}
