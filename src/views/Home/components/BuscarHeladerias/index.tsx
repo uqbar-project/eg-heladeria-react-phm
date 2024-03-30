@@ -23,20 +23,20 @@ const BuscarHeladerias = ({ onSearch }: Props) => {
   }
 
   return (
-    <section className="flex flex-row items-center gap-2">
+    <section className='flex flex-row items-center gap-2'>
       <TextInput
-        id="input-buscar"
-        className="w-full"
-        type="search"
-        name="input-buscar"
-        placeholder="Buscar heladerías..."
-        autoComplete="off"
+        id='input-buscar'
+        className='w-full'
+        type='search'
+        name='input-buscar'
+        placeholder='Buscar heladerías...'
+        autoComplete='off'
         onChange={(e) => setBusqueda(e.target.value)}
         onKeyUp={handleKeyUp}
       />
       <Button
-        className="border-none "
-        label={<Icon className="w-5" name={'Search'} />}
+        className='border-none '
+        label={<Icon className='w-5' name={'Search'} />}
         onClick={handleSearch}
         disabled={busqueda === busquedaPrevia}
       />

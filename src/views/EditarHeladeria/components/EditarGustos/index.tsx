@@ -34,7 +34,7 @@ const EditarGustos = ({ heladeria, setHeladeria, loading }: Props) => {
       headerName: 'Accion',
       className: 'text-center',
       render: (gusto) => (
-        <Icon name="Trash" onClick={() => eliminarGusto(gusto.nombre)} className="flex w-full justify-center" />
+        <Icon name='Trash' onClick={() => eliminarGusto(gusto.nombre)} className='flex w-full justify-center' />
       ),
     },
   ]
@@ -46,7 +46,7 @@ const EditarGustos = ({ heladeria, setHeladeria, loading }: Props) => {
   }))
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className='flex flex-col gap-2'>
       <Label>Gustos</Label>
       <Table data={gustosTabla} columns={gustosColumns} loading={loading} />
     </div>

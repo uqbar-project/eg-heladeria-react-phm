@@ -38,7 +38,7 @@ const EditarDuenio = ({ heladeria, setHeladeria }: Props) => {
   const dueñoOptions = duenios.map((duenio) => ({ value: duenio.id, label: duenio.nombreCompleto }))
 
   return (
-    <Select id="dueño" label="Dueño" onChange={actualizarDuenio} value={heladeria.duenio.id} options={dueñoOptions} />
+    <Select id='dueño' label='Dueño' onChange={actualizarDuenio} value={heladeria.duenio.id} options={dueñoOptions} />
   )
 }
 

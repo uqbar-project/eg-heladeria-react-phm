@@ -30,9 +30,9 @@ const Home = () => {
   }
 
   return (
-    <section className="flex items-center justify-center mt-6 container text-[14px]">
+    <section className='flex items-center justify-center mt-6 container text-[14px]'>
       <Card>
-        <div className="flex flex-col pt-4 gap-4">
+        <div className='flex flex-col pt-4 gap-4'>
           <BuscarHeladerias onSearch={onSearch} />
           <TablaHeladerias heladerias={heladerias} loading={loading} />
         </div>

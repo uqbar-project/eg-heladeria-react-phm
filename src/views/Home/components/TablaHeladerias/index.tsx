@@ -21,7 +21,7 @@ const TablaHeladerias = ({ heladerias, loading = false }: Props) => {
     {
       key: 'editar',
       headerName: 'Editar',
-      render: (heladeria) => <Icon name={'Edit'} className="w-[24px]" onClick={() => editarHeladeria(heladeria)} />,
+      render: (heladeria) => <Icon name={'Edit'} className='w-[24px]' onClick={() => editarHeladeria(heladeria)} />,
     },
   ]
 

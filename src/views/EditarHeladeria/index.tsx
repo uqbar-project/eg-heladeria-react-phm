@@ -38,19 +38,19 @@ const EditarHeladeria = () => {
   const tipoHeladeriaOptions = tiposHeladeria.map((tipo) => ({ value: tipo, label: tipo }))
 
   return (
-    <section className="flex items-center justify-center mt-6 container text-[14px]">
+    <section className='flex items-center justify-center mt-6 container text-[14px]'>
       <Card showBack>
-        <form className="mt-4">
-          <div className="flex flex-col gap-y-4">
+        <form className='mt-4'>
+          <div className='flex flex-col gap-y-4'>
             <TextInput
-              id="nombreHeladeria"
-              autoComplete="off"
-              label="Nombre"
+              id='nombreHeladeria'
+              autoComplete='off'
+              label='Nombre'
               value={heladeria.nombre}
               onChange={(e) => setHeladeria({ ...heladeria, nombre: e.target.value })}
             />
             <RadioGroup
-              label="Tipo de heladeria"
+              label='Tipo de heladeria'
               value={heladeria.tipoHeladeria}
               options={tipoHeladeriaOptions}
               onChange={(e) => setHeladeria({ ...heladeria, tipoHeladeria: e.target.value as TipoHeladeria })}

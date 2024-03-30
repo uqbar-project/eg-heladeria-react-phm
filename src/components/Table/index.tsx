@@ -24,8 +24,8 @@ type Props<T extends Row> = {
 
 const Table = <T extends Row>({ data, columns, loading = false }: Props<T>) => {
   return (
-    <section className="table-container w-full border-gray-200 border border-spacing-x-4 border-spacing-y-4">
-      <table className="w-full">
+    <section className='table-container w-full border-gray-200 border border-spacing-x-4 border-spacing-y-4'>
+      <table className='w-full'>
         <thead>
           <tr>
             {columns.map((column) => (
@@ -38,7 +38,7 @@ const Table = <T extends Row>({ data, columns, loading = false }: Props<T>) => {
         <tbody>
           {data.length === 0 && !loading && (
             <tr>
-              <td colSpan={columns.length} className="p-3 text-center">
+              <td colSpan={columns.length} className='p-3 text-center'>
                 No hay datos
               </td>
             </tr>

@@ -34,17 +34,17 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
       Object.entries(heladeriaOriginal.gustos).some(([gusto, dificultad]) => heladeria.gustos[gusto] != dificultad))
 
   return (
-    <section className="w-full flex gap-4 justify-center mt-8">
+    <section className='w-full flex gap-4 justify-center mt-8'>
       <Button
-        type="button"
-        className="bg-secondary-default enabled:hover:bg-secondary-light text-white"
-        label="Cancelar"
+        type='button'
+        className='bg-secondary-default enabled:hover:bg-secondary-light text-white'
+        label='Cancelar'
         onClick={onCancel}
       />
       <Button
-        type="button"
-        label="Actualizar"
-        className="boton-actualizar bg-primary-default enabled:hover:bg-primary-light text-white"
+        type='button'
+        label='Actualizar'
+        className='boton-actualizar bg-primary-default enabled:hover:bg-primary-light text-white'
         onClick={actualizarHeladeria}
         disabled={!hayCambiosPendientes}
       />
