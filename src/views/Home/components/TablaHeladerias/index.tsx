@@ -1,5 +1,5 @@
-import Table from '@/components/Table'
-import { HeladeriaBase } from '@/model/heladeria'
+import Table, { Column } from '@/components/Table'
+import { Heladeria, HeladeriaBase } from '@/model/heladeria'
 import { useNavigate } from '@tanstack/react-router'
 import Icon from '@/components/Icon'
 import { tablaHeladeriasColumnsBase } from './config'
@@ -16,13 +16,12 @@ const TablaHeladerias = ({ heladerias, loading = false }: Props) => {
     navigate({ to: '/editar-heladeria/$id', params: { id: heladeria.id.toString() } })
   }
 
-  const columns = [
+  const columns: Column<HeladeriaBase>[] = [
     ...tablaHeladeriasColumnsBase,
     {
+      key: 'editar',
       headerName: 'Editar',
-      render: (heladeria: HeladeriaBase) => (
-        <Icon name={'Edit'} className="w-[24px]" onClick={() => editarHeladeria(heladeria)} />
-      ),
+      render: (heladeria) => <Icon name={'Edit'} className="w-[24px]" onClick={() => editarHeladeria(heladeria)} />,
     },
   ]
 

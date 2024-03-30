@@ -7,7 +7,8 @@ type Row = {
   id: string | number
 }
 
-type Column<T extends Row> = {
+export type Column<T extends Row> = {
+  key: string
   field?: keyof T
   headerName: string
   className?: string
@@ -45,11 +46,11 @@ const Table = <T extends Row>({ data, columns, loading = false }: Props<T>) => {
           {data.map((datum) => (
             <tr key={datum.id}>
               {columns.map((column) => {
-                const { field, className, render } = column
+                const { key, field, className, render } = column
                 const value = column.valueGetter ? column.valueGetter(datum) : field ? datum[field] : ''
 
                 return (
-                  <td key={field as string} className={twMerge('p-3', className)}>
+                  <td key={`${datum.id}_${key} `} className={twMerge('p-3', className)}>
                     {render ? render(datum) : <>{value}</>}
                   </td>
                 )
