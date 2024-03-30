@@ -1,7 +1,7 @@
 import { Column } from '@/components/Table'
-import { HeladeriaBase } from '@/model/heladeria'
+import { Heladeria } from '@/model/heladeria'
 
-export const tablaHeladeriasColumnsBase: Column<HeladeriaBase>[] = [
+export const tablaHeladeriasColumnsBase: Column<Heladeria>[] = [
   {
     key: 'nombre',
     headerName: 'Nombre',

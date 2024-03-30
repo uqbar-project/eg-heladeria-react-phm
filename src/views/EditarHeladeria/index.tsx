@@ -1,25 +1,31 @@
-import { Duenio } from '@/model/duenio'
-import { Heladeria } from '@/model/heladeria'
+import Card from '@/components/Card'
+import RadioGroup from '@/components/RadioGroup'
+import TextInput from '@/components/TextInput'
+import { Heladeria, TipoHeladeria, tiposHeladeria } from '@/model/heladeria'
 import heladeriaService from '@/service/heladeria-service'
 import { useParams } from '@tanstack/react-router'
 import { useCallback, useEffect, useState } from 'react'
+import EditarBotones from './components/EditarBotones'
+import EditarGustos from './components/EditarGustos'
+import EditarDuenio from './components/EditarDuenio'
 
 const EditarHeladeria = () => {
+  const [loading, setLoading] = useState(false)
   const [heladeria, setHeladeria] = useState<Heladeria | undefined>()
   const [heladeriaOriginal, setHeladeriaOriginal] = useState<Heladeria | undefined>()
-  const [duenios, setDuenios] = useState<Duenio[]>([])
-  const [nombreNuevoDuenio, setNombreNuevoDuenio] = useState('')
-  const [nuevoGusto, setNuevoGusto] = useState<{ nombre?: string; dificultad?: number }>({})
 
   const { id } = useParams({ from: '/editar-heladeria/$id' })
 
   const getHeladeria = useCallback(async () => {
     try {
+      setLoading(true)
       const heladeriaBackend = await heladeriaService.fetchById(+id)
       setHeladeria(heladeriaBackend)
-      setHeladeriaOriginal({ ...heladeriaBackend })
+      setHeladeriaOriginal(structuredClone(heladeriaBackend))
     } catch (error) {
       // toast.error(error)
+    } finally {
+      setLoading(false)
     }
   }, [id])
 
@@ -27,46 +33,40 @@ const EditarHeladeria = () => {
     getHeladeria()
   }, [getHeladeria])
 
-  useEffect(() => {
-    const getDuenios = async () => {
-      try {
-        const duenios = await heladeriaService.fetchDuenios()
-        setDuenios(duenios)
-      } catch (error) {
-        // toast.error(error)
-      }
-    }
-
-    getDuenios()
-  }, [])
-
   if (!heladeria) return null
 
-  const agregarDuenio = async () => {
-    try {
-      const nuevoDuenio = await heladeriaService.crearDuenio(nombreNuevoDuenio)
-      setDuenios([...duenios, nuevoDuenio])
-      setNombreNuevoDuenio('')
-      setHeladeria((currHeladeria) => (currHeladeria ? { ...currHeladeria, duenio: nuevoDuenio } : undefined))
-      // toast.push(`Duenio creado!`)
-    } catch (error) {
-      // toast.error(error)
-    }
-  }
+  const tipoHeladeriaOptions = tiposHeladeria.map((tipo) => ({ value: tipo, label: tipo }))
 
-  const eliminarGusto = async (gusto: string) => {
-    heladeria.gustos.delete(gusto)
-    setHeladeria({ ...heladeria })
-  }
-
-  const agregarGusto = async () => {
-    if (!nuevoGusto.nombre || !nuevoGusto.dificultad) return
-    heladeria.gustos.set(nuevoGusto.nombre, nuevoGusto.dificultad)
-    setHeladeria({ ...heladeria })
-    setNuevoGusto({})
-  }
-
-  return <main>{heladeria?.nombre}</main>
+  return (
+    <section className="flex items-center justify-center mt-6 container text-[14px]">
+      <Card showBack>
+        <form className="mt-4">
+          <div className="flex flex-col gap-y-4">
+            <TextInput
+              id="nombreHeladeria"
+              autoComplete="off"
+              label="Nombre"
+              value={heladeria.nombre}
+              onChange={(e) => setHeladeria({ ...heladeria, nombre: e.target.value })}
+            />
+            <RadioGroup
+              label="Tipo de heladeria"
+              value={heladeria.tipoHeladeria}
+              options={tipoHeladeriaOptions}
+              onChange={(e) => setHeladeria({ ...heladeria, tipoHeladeria: e.target.value as TipoHeladeria })}
+            />
+            <EditarDuenio heladeria={heladeria} setHeladeria={setHeladeria} />
+            <EditarGustos heladeria={heladeria} setHeladeria={setHeladeria} loading={loading} />
+          </div>
+          <EditarBotones
+            heladeria={heladeria}
+            heladeriaOriginal={heladeriaOriginal}
+            onAccept={() => setHeladeriaOriginal(structuredClone(heladeria))}
+          />
+        </form>
+      </Card>
+    </section>
+  )
 }
 
 export default EditarHeladeria

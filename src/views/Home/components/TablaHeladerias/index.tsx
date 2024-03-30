@@ -1,22 +1,22 @@
-import Table, { Column } from '@/components/Table'
-import { Heladeria, HeladeriaBase } from '@/model/heladeria'
-import { useNavigate } from '@tanstack/react-router'
 import Icon from '@/components/Icon'
+import Table, { Column } from '@/components/Table'
+import { Heladeria } from '@/model/heladeria'
+import { useNavigate } from '@tanstack/react-router'
 import { tablaHeladeriasColumnsBase } from './config'
 
 type Props = {
-  heladerias: HeladeriaBase[]
+  heladerias: Heladeria[]
   loading?: boolean
 }
 
 const TablaHeladerias = ({ heladerias, loading = false }: Props) => {
   const navigate = useNavigate({ from: '/home' })
 
-  const editarHeladeria = (heladeria: HeladeriaBase) => {
+  const editarHeladeria = (heladeria: Heladeria) => {
     navigate({ to: '/editar-heladeria/$id', params: { id: heladeria.id.toString() } })
   }
 
-  const columns: Column<HeladeriaBase>[] = [
+  const columns: Column<Heladeria>[] = [
     ...tablaHeladeriasColumnsBase,
     {
       key: 'editar',

@@ -13,6 +13,7 @@ export default {
     extend: {
       colors: {
         primary: COLORS.primary,
+        secondary: COLORS.secondary,
       },
     },
   },

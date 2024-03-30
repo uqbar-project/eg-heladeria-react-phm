@@ -8,7 +8,7 @@ type Props = {
 
 const Button = ({ label, className, ...props }: Props) => {
   return (
-    <button className={twMerge('button', 'enabled:hover:bg-gray-100', className)} {...props}>
+    <button className={twMerge('button', className)} {...props}>
       {typeof label === 'string' ? <span className="text-[1em]">{label}</span> : label}
     </button>
   )

@@ -1,4 +1,4 @@
-import { HeladeriaBase } from '@/model/heladeria'
+import { Heladeria } from '@/model/heladeria'
 import heladeriaService from '@/service/heladeria-service'
 import { useCallback, useEffect, useState } from 'react'
 import BuscarHeladerias from './components/BuscarHeladerias'
@@ -6,7 +6,7 @@ import TablaHeladerias from './components/TablaHeladerias'
 import Card from '@/components/Card'
 
 const Home = () => {
-  const [heladerias, setHeladerias] = useState<HeladeriaBase[]>([])
+  const [heladerias, setHeladerias] = useState<Heladeria[]>([])
   const [loading, setLoading] = useState(false)
 
   const getHeladerias = useCallback(async (nombreABuscar = '') => {

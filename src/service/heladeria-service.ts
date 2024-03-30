@@ -1,6 +1,6 @@
 import { Duenio } from '@/model/duenio'
-import { Heladeria, HeladeriaBase, HeladeriaJSON } from '@/model/heladeria'
 import { BACKEND_URL } from './constants'
+import { Heladeria } from '@/model/heladeria'
 
 async function httpRequest<T>(request: RequestInfo): Promise<T> {
   const response = await fetch(request)
@@ -23,16 +23,15 @@ async function customRequest<T>(route: string, body: Partial<T>, method = 'POST'
   )
 }
 
-async function buscarHeladerias(nombre: string = ''): Promise<HeladeriaBase[]> {
+async function buscarHeladerias(nombre: string = ''): Promise<Heladeria[]> {
   const params = new URLSearchParams({
     nombre,
   })
-  return httpRequest<HeladeriaBase[]>(`${BACKEND_URL}/heladerias/buscar?${params}`)
+  return httpRequest<Heladeria[]>(`${BACKEND_URL}/heladerias/buscar?${params}`)
 }
 
 async function fetchById(heladeriaId: number): Promise<Heladeria> {
-  const heladeriaJson = await httpRequest<HeladeriaJSON>(`${BACKEND_URL}/heladerias/id/${heladeriaId}`)
-  return { ...heladeriaJson, gustos: new Map(Object.entries(heladeriaJson.gustos)) }
+  return httpRequest<Heladeria>(`${BACKEND_URL}/heladerias/id/${heladeriaId}`)
 }
 
 async function fetchDuenios(): Promise<Duenio[]> {

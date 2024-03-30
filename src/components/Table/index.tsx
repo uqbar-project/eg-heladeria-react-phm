@@ -39,7 +39,7 @@ const Table = <T extends Row>({ data, columns, loading = false }: Props<T>) => {
           {data.length === 0 && !loading && (
             <tr>
               <td colSpan={columns.length} className="p-3 text-center">
-                No se encontraron registros
+                No hay datos
               </td>
             </tr>
           )}
