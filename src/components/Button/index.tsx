@@ -1,12 +1,15 @@
+import { ReactNode } from 'react'
 import './button.css'
+import { twMerge } from 'tailwind-merge'
 
-interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+type Props = {
+  label: ReactNode
+} & React.ButtonHTMLAttributes<HTMLButtonElement>
 
-const Button = (props: Props) => {
-  const { className, ...rest } = props
+const Button = ({ label, className, ...props }: Props) => {
   return (
-    <button className={`${className}`} {...rest}>
-      Test
+    <button className={twMerge('button', 'enabled:hover:bg-gray-100', className)} {...props}>
+      {typeof label === 'string' ? <span className="text-[1em]">{label}</span> : label}
     </button>
   )
 }

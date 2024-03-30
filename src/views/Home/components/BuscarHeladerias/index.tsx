@@ -1,3 +1,6 @@
+import Button from '@/components/Button'
+import Icon from '@/components/Icon'
+import TextInput from '@/components/TextInput'
 import { useState } from 'react'
 
 type Props = {
@@ -20,18 +23,23 @@ const BuscarHeladerias = ({ onSearch }: Props) => {
   }
 
   return (
-    <section>
-      <input
+    <section className="flex flex-row items-center gap-2">
+      <TextInput
+        id="input-buscar"
+        className="w-full"
         type="search"
         name="input-buscar"
-        placeholder="Buscar por nombre"
-        id="input-buscar"
+        placeholder="Buscar heladerías..."
+        autoComplete="off"
         onChange={(e) => setBusqueda(e.target.value)}
         onKeyUp={handleKeyUp}
       />
-      <button onClick={handleSearch} disabled={busqueda === busquedaPrevia}>
-        Buscar
-      </button>
+      <Button
+        className="border-none "
+        label={<Icon className="w-5" name={'Search'} />}
+        onClick={handleSearch}
+        disabled={busqueda === busquedaPrevia}
+      />
     </section>
   )
 }

@@ -1,7 +1,12 @@
 import Icecream from '@/assets/icons/icecream-logo-filled.svg?react'
+import Search from '@/assets/icons/search.svg?react'
+import Edit from '@/assets/icons/edit-icon.svg?react'
+import { twMerge } from 'tailwind-merge'
 
 const iconsMap = {
   Icecream,
+  Search,
+  Edit,
 } as const
 
 export type IconsMap = typeof iconsMap
@@ -20,7 +25,7 @@ const Icon = ({ name, onClick, className = 'h-4', svgProp }: IconProps) => {
   return (
     <IconToRender
       {...svgProp}
-      className={`${!!onClick && 'cursor-pointer'} transition-all ${className}`}
+      className={twMerge(`${!!onClick && 'cursor-pointer'} transition-all`, className)}
       onClick={onClick}
     />
   )

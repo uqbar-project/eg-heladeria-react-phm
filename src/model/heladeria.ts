@@ -17,4 +17,4 @@ export type Heladeria = HeladeriaBase & {
 
 export const tiposHeladeria = ['ECONOMICA', 'ARTESANAL', 'INDUSTRIAL'] as const
 
-type TipoHeladeria = (typeof tiposHeladeria)[number]
+export type TipoHeladeria = (typeof tiposHeladeria)[number]
