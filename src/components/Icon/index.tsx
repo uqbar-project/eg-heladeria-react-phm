@@ -33,7 +33,7 @@ const Icon = ({ name, onClick, className, svgProp }: IconProps) => {
   return (
     <IconToRender
       {...svgProp}
-      className={twMerge(`${!!onClick && 'cursor-pointer'} transition-all h-5`, className)}
+      className={twMerge(`${!!onClick && 'cursor-pointer'} transition-all h-5 fill-primary-default`, className)}
       onClick={onClick}
     />
   )

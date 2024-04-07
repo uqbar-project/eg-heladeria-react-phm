@@ -35,8 +35,8 @@ const BuscarHeladerias = ({ onSearch }: Props) => {
         onKeyUp={handleKeyUp}
       />
       <Button
-        className='border-none '
-        label={<Icon className='w-5' name={'Search'} />}
+        className='border-none'
+        label={<Icon className='w-5 fill-none' name={'Search'} />}
         onClick={handleSearch}
         disabled={busqueda === busquedaPrevia}
       />
