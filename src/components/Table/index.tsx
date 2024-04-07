@@ -20,11 +20,17 @@ type Props<T extends Row> = {
   data: T[]
   columns: Column<T>[]
   loading?: boolean
+  className?: string
 }
 
-const Table = <T extends Row>({ data, columns, loading = false }: Props<T>) => {
+const Table = <T extends Row>({ data, columns, className, loading = false }: Props<T>) => {
   return (
-    <section className='table-container w-full border-gray-200 border border-spacing-x-4 border-spacing-y-4'>
+    <section
+      className={twMerge(
+        'table-container w-full border-gray-200 border border-spacing-x-4 border-spacing-y-4',
+        className
+      )}
+    >
       <table className='w-full'>
         <thead>
           <tr>

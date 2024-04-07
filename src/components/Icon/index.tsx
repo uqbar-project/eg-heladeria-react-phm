@@ -3,6 +3,8 @@ import Search from '@/assets/icons/search.svg?react'
 import Edit from '@/assets/icons/edit-icon.svg?react'
 import ArrowBack from '@/assets/icons/arrow-back.svg?react'
 import Trash from '@/assets/icons/trash.svg?react'
+import PlusCircle from '@/assets/icons/plus-circle.svg?react'
+import Close from '@/assets/icons/close.svg?react'
 import { twMerge } from 'tailwind-merge'
 
 const iconsMap = {
@@ -11,6 +13,8 @@ const iconsMap = {
   Edit,
   ArrowBack,
   Trash,
+  PlusCircle,
+  Close,
 } as const
 
 export type IconsMap = typeof iconsMap
@@ -29,7 +33,7 @@ const Icon = ({ name, onClick, className, svgProp }: IconProps) => {
   return (
     <IconToRender
       {...svgProp}
-      className={twMerge(`${!!onClick && 'cursor-pointer'} transition-all h-4`, className)}
+      className={twMerge(`${!!onClick && 'cursor-pointer'} transition-all h-5`, className)}
       onClick={onClick}
     />
   )

@@ -1,6 +1,6 @@
 import Button from '@/components/Button'
 import Icon from '@/components/Icon'
-import TextInput from '@/components/TextInput'
+import Input from '@/components/Input'
 import { useState } from 'react'
 
 type Props = {
@@ -24,7 +24,7 @@ const BuscarHeladerias = ({ onSearch }: Props) => {
 
   return (
     <section className='flex flex-row items-center gap-2'>
-      <TextInput
+      <Input
         id='input-buscar'
         className='w-full'
         type='search'

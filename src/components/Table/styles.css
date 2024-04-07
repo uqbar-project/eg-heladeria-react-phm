@@ -20,6 +20,6 @@ td {
   padding: 12px;
 }
 
-thead {
+th {
   @apply bg-gray-200;
 }

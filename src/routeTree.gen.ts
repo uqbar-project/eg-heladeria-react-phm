@@ -48,6 +48,9 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([IndexLazyRoute, EditarHeladeriaIdRoute])
+export const routeTree = rootRoute.addChildren([
+  IndexLazyRoute,
+  EditarHeladeriaIdRoute,
+])
 
 /* prettier-ignore-end */

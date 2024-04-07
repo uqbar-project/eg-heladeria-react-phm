@@ -3,9 +3,10 @@ import Label from '../Label'
 
 type Props = {
   label?: string
+  type?: 'text' | 'number' | 'password' | 'search'
 } & React.InputHTMLAttributes<HTMLInputElement>
 
-const TextInput = ({ label, ...props }: Props) => {
+const Input = ({ label, ...props }: Props) => {
   const { id, type = 'text', className } = props
 
   return (
@@ -16,4 +17,4 @@ const TextInput = ({ label, ...props }: Props) => {
   )
 }
 
-export default TextInput
+export default Input

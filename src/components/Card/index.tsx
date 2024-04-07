@@ -19,7 +19,7 @@ const Card = ({ children, showBack = false, className }: Props) => {
         <div className='relative w-4 h-full'>
           <Icon name='Icecream' className='absolute h-[68px] -top-[52px]' />
         </div>
-        <h1 className='text-2xl font-bold'>Heladerias</h1>
+        <h1 className='text-2xl font-bold'>Heladerías</h1>
       </div>
       {children}
     </div>

@@ -1,6 +1,6 @@
 import Card from '@/components/Card'
 import RadioGroup from '@/components/RadioGroup'
-import TextInput from '@/components/TextInput'
+import Input from '@/components/Input'
 import { Heladeria, TipoHeladeria, tiposHeladeria } from '@/model/heladeria'
 import heladeriaService from '@/service/heladeria-service'
 import { useParams } from '@tanstack/react-router'
@@ -38,11 +38,11 @@ const EditarHeladeria = () => {
   const tipoHeladeriaOptions = tiposHeladeria.map((tipo) => ({ value: tipo, label: tipo }))
 
   return (
-    <section className='flex items-center justify-center mt-6 container text-[14px]'>
+    <section className='flex items-center justify-center mt-6 mb-6 container text-[14px]'>
       <Card showBack>
         <form className='mt-4'>
-          <div className='flex flex-col gap-y-4'>
-            <TextInput
+          <div className='flex flex-col gap-y-6'>
+            <Input
               id='nombreHeladeria'
               autoComplete='off'
               label='Nombre'
@@ -50,7 +50,7 @@ const EditarHeladeria = () => {
               onChange={(e) => setHeladeria({ ...heladeria, nombre: e.target.value })}
             />
             <RadioGroup
-              label='Tipo de heladeria'
+              label='Tipo de heladería'
               value={heladeria.tipoHeladeria}
               options={tipoHeladeriaOptions}
               onChange={(e) => setHeladeria({ ...heladeria, tipoHeladeria: e.target.value as TipoHeladeria })}

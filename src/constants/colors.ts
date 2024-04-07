@@ -1,12 +1,17 @@
 export const COLORS = {
   primary: {
-    light: '#FFA726',
-    default: '#FB8C00',
-    dark: '#EF6C00',
+    light: '#495057',
+    default: '#343a40',
+    dark: '#212529',
   },
   secondary: {
-    light: '#FFA726',
-    default: 'red',
-    dark: '#EF6C00',
+    light: '#f8f9fa',
+    default: '#e9ecef',
+    dark: '#dee2e6',
+  },
+  error: {
+    light: '#FFCDD2',
+    default: '#EF5350',
+    dark: '#D32F2F',
   },
 }
