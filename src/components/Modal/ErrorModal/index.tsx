@@ -19,8 +19,6 @@ type Props = {
 const ErrorModal = ({ error, title, onClose, onRetry }: Props) => {
   if (!error) return null
 
-  console.log(error)
-
   return (
     <Modal className='h-fit p-6' isOpened={!!error} close={onClose}>
       <ModalResponseContent
