@@ -1,5 +1,5 @@
 import { Column } from '@/components/Table'
-import { Gusto } from './types'
+import { Gusto } from '../../types'
 
 export const tablaGustosColumnsBase: Column<Gusto>[] = [
   {

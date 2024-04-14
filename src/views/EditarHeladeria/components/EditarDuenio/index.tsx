@@ -25,7 +25,6 @@ const EditarDuenio = ({ heladeria, setHeladeria }: Props) => {
     const duenio = duenios.find((duenio) => duenio.id === +e.target.value)
     if (duenio) {
       setHeladeria((currHeladeria) => {
-        if (!currHeladeria) return currHeladeria
         return { ...currHeladeria, duenio }
       })
     }

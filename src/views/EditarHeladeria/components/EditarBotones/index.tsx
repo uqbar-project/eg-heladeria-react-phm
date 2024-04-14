@@ -6,19 +6,20 @@ import heladeriaService from '@/service/heladeria-service'
 import { AppError } from '@/types'
 import { useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
+import { sonHeladeriasDistintas } from './utils'
 
 type Props = {
   heladeria: Heladeria
-  heladeriaOriginal?: Heladeria
+  heladeriaOriginal: Heladeria
   onAccept?: (heladeria: Heladeria) => void
 }
 
 const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
-  const router = useRouter()
+  const { navigate } = useRouter()
   const [error, setError] = useState<AppError>()
   const [isSuccess, setIsSuccess] = useState(false)
 
-  const onCancel = () => router.history.back()
+  const onCancel = () => navigate({ to: '/' })
 
   const onModalClose = () => {
     setError(undefined)
@@ -26,7 +27,6 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
   }
 
   async function actualizarHeladeria() {
-    if (!heladeria) return
     try {
       setIsSuccess(false)
       setError(undefined)
@@ -38,13 +38,10 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
     }
   }
 
-  const hayCambiosPendientes =
-    heladeria &&
-    (heladeriaOriginal?.nombre != heladeria.nombre ||
-      heladeriaOriginal?.tipoHeladeria != heladeria.tipoHeladeria ||
-      heladeriaOriginal?.duenio.id != heladeria.duenio.id ||
-      heladeriaOriginal.gustos.size !== heladeria.gustos.size ||
-      Object.entries(heladeriaOriginal.gustos).some(([gusto, dificultad]) => heladeria.gustos[gusto] != dificultad))
+  const hayCambiosPendientes = sonHeladeriasDistintas({
+    heladeriaOriginal: heladeriaOriginal,
+    heladeriaActualizada: heladeria,
+  })
 
   return (
     <section className='w-full flex gap-4 justify-center mt-8'>
@@ -57,7 +54,7 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
       <Button
         type='button'
         label='Actualizar'
-        className='boton-actualizar bg-primary-default enabled:hover:bg-primary-light text-white'
+        className=' bg-primary-default enabled:hover:bg-primary-light text-white'
         onClick={actualizarHeladeria}
         disabled={!hayCambiosPendientes || !heladeria.id}
       />
@@ -67,7 +64,7 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
         title='Heladería actualizada exitosamente'
         content={
           <>
-            <strong>{heladeria.nombre}</strong> ha sido actualizada.
+            <strong>{heladeriaOriginal.nombre}</strong> ha sido actualizada.
           </>
         }
         onClose={onModalClose}
