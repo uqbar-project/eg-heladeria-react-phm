@@ -10,7 +10,12 @@ declare module '@tanstack/react-router' {
 }
 
 const App = () => {
-  return <RouterProvider router={router} />
+  return (
+    <>
+      <div className='background'></div>
+      <RouterProvider router={router} />
+    </>
+  )
 }
 
 export default App

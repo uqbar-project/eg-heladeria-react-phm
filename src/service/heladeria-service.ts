@@ -1,6 +1,6 @@
 import { Duenio } from '@/model/duenio'
-import { BACKEND_URL } from './constants'
 import { Heladeria } from '@/model/heladeria'
+import { BACKEND_URL } from './constants'
 
 async function httpRequest<T>(request: RequestInfo): Promise<T> {
   const response = await fetch(request)

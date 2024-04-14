@@ -9,8 +9,8 @@ type Props = {
 } & React.HTMLAttributes<HTMLDivElement>
 
 const Card = ({ children, showBack = false, className }: Props) => {
-  const router = useRouter()
-  const onBack = () => router.history.back()
+  const { navigate } = useRouter()
+  const onBack = () => navigate({ to: '/' })
 
   return (
     <div className={twMerge('card shadow-light', className)}>

@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tanstack/react-router": "^1.16.0",
-    "@tanstack/router-devtools": "^1.16.0",
+    "@tanstack/react-router": "^1.27.0",
+    "@tanstack/router-devtools": "^1.27.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.2.2",

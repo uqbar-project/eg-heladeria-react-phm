@@ -19,11 +19,10 @@ export type Column<T extends Row> = {
 type Props<T extends Row> = {
   data: T[]
   columns: Column<T>[]
-  loading?: boolean
   className?: string
 }
 
-const Table = <T extends Row>({ data, columns, className, loading = false }: Props<T>) => {
+const Table = <T extends Row>({ data, columns, className }: Props<T>) => {
   return (
     <section
       className={twMerge(
@@ -42,7 +41,7 @@ const Table = <T extends Row>({ data, columns, className, loading = false }: Pro
           </tr>
         </thead>
         <tbody>
-          {data.length === 0 && !loading && (
+          {data.length === 0 && (
             <tr>
               <td colSpan={columns.length} className='p-3 text-center'>
                 No hay datos

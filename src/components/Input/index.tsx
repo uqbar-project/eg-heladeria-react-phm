@@ -1,8 +1,9 @@
 import { twMerge } from 'tailwind-merge'
 import Label from '../Label'
+import { ReactNode, isValidElement } from 'react'
 
 type Props = {
-  label?: string
+  label?: ReactNode
   type?: 'text' | 'number' | 'password' | 'search'
 } & React.InputHTMLAttributes<HTMLInputElement>
 
@@ -11,7 +12,7 @@ const Input = ({ label, ...props }: Props) => {
 
   return (
     <div className={twMerge('flex flex-col gap-2', className)}>
-      {label && <Label htmlFor={id}>{label}</Label>}
+      {!!label && (isValidElement(label) ? label : <Label htmlFor={id}>{label}</Label>)}
       <input {...props} className='border-gray-200 border rounded text-[1em] p-2 outline-none' type={type}></input>
     </div>
   )

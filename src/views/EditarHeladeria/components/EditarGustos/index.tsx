@@ -14,12 +14,11 @@ import { useState } from 'react'
 type Props = {
   heladeria: Heladeria
   setHeladeria: (heladeria: Heladeria) => void
-  loading?: boolean
 }
 
 const NUEVO_GUSTO_DEFAULT = { nombre: '', dificultad: undefined }
 
-const EditarGustos = ({ heladeria, setHeladeria, loading }: Props) => {
+const EditarGustos = ({ heladeria, setHeladeria }: Props) => {
   const { isOpened, open, close } = useModal()
   const [nuevoGusto, setNuevoGusto] = useState<{ nombre?: string; dificultad?: number }>(NUEVO_GUSTO_DEFAULT)
 
@@ -30,13 +29,8 @@ const EditarGustos = ({ heladeria, setHeladeria, loading }: Props) => {
 
   const agregarGusto = async () => {
     if (!nuevoGusto.nombre || nuevoGusto.dificultad == undefined) return
-    try {
-      if (heladeria.gustos[nuevoGusto.nombre]) throw new Error('El gusto ya existe')
-      setHeladeria({ ...heladeria, gustos: { ...heladeria.gustos, [nuevoGusto.nombre]: nuevoGusto.dificultad } })
-      onClose()
-    } catch (error) {
-      console.log(error)
-    }
+    setHeladeria({ ...heladeria, gustos: { ...heladeria.gustos, [nuevoGusto.nombre]: nuevoGusto.dificultad } })
+    onClose()
   }
 
   const eliminarGusto = async (gusto: string) => {
@@ -63,13 +57,29 @@ const EditarGustos = ({ heladeria, setHeladeria, loading }: Props) => {
     dificultad,
   }))
 
+  const camposIncompletos = !nuevoGusto.nombre || !nuevoGusto.dificultad
+
+  const dificultadInvalida = !!nuevoGusto.dificultad && (nuevoGusto.dificultad < 1 || nuevoGusto.dificultad > 10)
+
+  const gustoYaExiste = !!nuevoGusto.nombre && !!heladeria.gustos[nuevoGusto.nombre]
+
+  const botonAgregarDeshabilitado = camposIncompletos || dificultadInvalida || gustoYaExiste
+
+  const mensajeError = camposIncompletos
+    ? 'Hay campos incompletos'
+    : dificultadInvalida
+      ? 'La dificultad debe ser un número entre 1 y 10'
+      : gustoYaExiste
+        ? 'El gusto a agregar ya existe'
+        : ''
+
   return (
     <div className='flex flex-col gap-2'>
       <div className='flex justify-between items-center w-full'>
         <Label>Gustos</Label>
         <Icon name='PlusCircle' className='cursor-pointer' onClick={open} />
       </div>
-      <Table className='h-[220px]' data={gustosTabla} columns={gustosColumns} loading={loading} />
+      <Table className='h-[220px]' data={gustosTabla} columns={gustosColumns} />
       <Modal id='agregar-gustos' className='w-[300px] h-fit' isOpened={isOpened} close={onClose}>
         <div className='p-6 flex flex-col gap-4'>
           <ModalTitle title='Agregar Gusto' close={onClose} />
@@ -82,11 +92,19 @@ const EditarGustos = ({ heladeria, setHeladeria, loading }: Props) => {
             />
             <Input
               id='dificultadGusto'
+              title=''
               type='number'
               min={1}
               max={10}
               step={1}
-              label='Dificultad'
+              label={
+                <Label className='flex items-center gap-1' htmlFor='dificultadGusto'>
+                  Dificultad
+                  <div title='Un número entre 1 y 10'>
+                    <Icon name='InfoCircle' className='w-4 h-4' />
+                  </div>
+                </Label>
+              }
               value={nuevoGusto.dificultad || ''}
               onChange={(e) =>
                 setNuevoGusto((currentGusto) => {
@@ -106,11 +124,10 @@ const EditarGustos = ({ heladeria, setHeladeria, loading }: Props) => {
             <Button
               type='button'
               label='Agregar'
+              title={mensajeError}
               className='boton-actualizar bg-primary-default enabled:hover:bg-primary-light text-white'
               onClick={agregarGusto}
-              disabled={
-                !nuevoGusto.nombre || !nuevoGusto.dificultad || nuevoGusto.dificultad < 1 || nuevoGusto.dificultad > 10
-              }
+              disabled={botonAgregarDeshabilitado}
             />
           </section>
         </div>

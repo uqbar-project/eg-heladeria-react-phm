@@ -6,10 +6,9 @@ import { tablaHeladeriasColumnsBase } from './config'
 
 type Props = {
   heladerias: Heladeria[]
-  loading?: boolean
 }
 
-const TablaHeladerias = ({ heladerias, loading = false }: Props) => {
+const TablaHeladerias = ({ heladerias }: Props) => {
   const navigate = useNavigate({ from: '/home' })
 
   const editarHeladeria = (heladeria: Heladeria) => {
@@ -25,7 +24,7 @@ const TablaHeladerias = ({ heladerias, loading = false }: Props) => {
     },
   ]
 
-  return <Table data={heladerias} columns={columns} loading={loading} />
+  return <Table data={heladerias} columns={columns} />
 }
 
 export default TablaHeladerias

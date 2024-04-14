@@ -4,12 +4,13 @@ import Input from '@/components/Input'
 import { useState } from 'react'
 
 type Props = {
+  valorInicial?: string
   onSearch: (busqueda: string) => void
 }
 
-const BuscarHeladerias = ({ onSearch }: Props) => {
-  const [busqueda, setBusqueda] = useState<string>('')
-  const [busquedaPrevia, setBusquedaPrevia] = useState<string>('')
+const BuscarHeladerias = ({ valorInicial = '', onSearch }: Props) => {
+  const [busqueda, setBusqueda] = useState<string>(valorInicial)
+  const [busquedaPrevia, setBusquedaPrevia] = useState<string>(valorInicial)
 
   const handleSearch = async () => {
     onSearch(busqueda)
@@ -23,9 +24,10 @@ const BuscarHeladerias = ({ onSearch }: Props) => {
   }
 
   return (
-    <section className='flex flex-row items-center gap-2'>
+    <section className='flex flex-row items-center gap-4'>
       <Input
         id='input-buscar'
+        value={busqueda}
         className='w-full'
         type='search'
         name='input-buscar'
@@ -35,8 +37,9 @@ const BuscarHeladerias = ({ onSearch }: Props) => {
         onKeyUp={handleKeyUp}
       />
       <Button
-        className='border-none'
-        label={<Icon className='w-5 fill-none' name={'Search'} />}
+        className='border-none p-0'
+        title='Buscar heladerías'
+        label={<Icon className='stroke-primary-dark' name={'Search'} />}
         onClick={handleSearch}
         disabled={busqueda === busquedaPrevia}
       />

@@ -2,11 +2,11 @@ import Select from '@/components/Select'
 import { Duenio } from '@/model/duenio'
 import { Heladeria } from '@/model/heladeria'
 import heladeriaService from '@/service/heladeria-service'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 type Props = {
   heladeria: Heladeria
-  setHeladeria: React.Dispatch<React.SetStateAction<Heladeria | undefined>>
+  setHeladeria: React.Dispatch<React.SetStateAction<Heladeria>>
 }
 
 const EditarDuenio = ({ heladeria, setHeladeria }: Props) => {
@@ -14,12 +14,8 @@ const EditarDuenio = ({ heladeria, setHeladeria }: Props) => {
 
   useEffect(() => {
     const getDuenios = async () => {
-      try {
-        const duenios = await heladeriaService.fetchDuenios()
-        setDuenios(duenios)
-      } catch (error) {
-        // toast.error(error)
-      }
+      const duenios = await heladeriaService.fetchDuenios()
+      setDuenios(duenios)
     }
 
     getDuenios()

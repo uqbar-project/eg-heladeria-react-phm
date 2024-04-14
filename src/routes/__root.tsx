@@ -1,12 +1,17 @@
+import RouteErrorComponent from '@/components/RouteErrorComponent'
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/router-devtools'
 
-export const Route = createRootRoute({
-  component: () => (
+const RootComponent = () => {
+  return (
     <>
       <Outlet />
-      <div className='background'></div>
       <TanStackRouterDevtools />
     </>
-  ),
+  )
+}
+
+export const Route = createRootRoute({
+  component: RootComponent,
+  errorComponent: RouteErrorComponent,
 })
