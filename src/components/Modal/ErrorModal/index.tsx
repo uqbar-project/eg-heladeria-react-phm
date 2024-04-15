@@ -37,23 +37,9 @@ const ErrorModal = ({ error, title, onClose, onRetry }: Props) => {
           </div>
         }
         actions={[
-          onClose && (
-            <Button
-              className='bg-secondary-light enabled:hover:bg-secondary-default'
-              label='Cerrar'
-              key='close'
-              type='button'
-              onClick={onClose}
-            />
-          ),
+          onClose && <Button className='button-outlined' label='Cerrar' key='close' type='button' onClick={onClose} />,
           onRetry && (
-            <Button
-              className='bg-primary-default enabled:hover:bg-primary-light text-secondary-light'
-              label='Reintentar'
-              key='retry'
-              type='button'
-              onClick={onRetry}
-            />
+            <Button className='button-outlined' label='Reintentar' key='retry' type='button' onClick={onRetry} />
           ),
         ]}
       />

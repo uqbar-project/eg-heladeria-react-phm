@@ -7,7 +7,7 @@ type Props = {
 const Label = ({ children, ...props }: Props) => {
   const { className } = props
   return (
-    <label {...props} className={twMerge('text-[1em] text-primary-light', className)}>
+    <label {...props} className={twMerge('text-[1em] text-primary-800 font-semibold	', className)}>
       {children}
     </label>
   )

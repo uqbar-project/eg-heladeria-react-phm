@@ -64,17 +64,12 @@ const AgregarGustoModal = ({ isOpened, heladeria, setHeladeria, close }: Props) 
         </div>
 
         <section className='w-full flex gap-4 justify-center mt-4'>
-          <Button
-            type='button'
-            className='bg-secondary-light enabled:hover:bg-secondary-default'
-            label='Cancelar'
-            onClick={onClose}
-          />
+          <Button type='button' className='button-outlined' label='Cancelar' onClick={onClose} />
           <Button
             type='button'
             label='Agregar'
             title={error}
-            className='boton-actualizar bg-primary-default enabled:hover:bg-primary-light text-white'
+            className='button-primary'
             onClick={agregarGusto}
             disabled={!!error}
           />

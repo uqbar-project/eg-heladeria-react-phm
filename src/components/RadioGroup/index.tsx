@@ -14,7 +14,7 @@ type Props = {
 
 const RadioGroup = ({ value, options, onChange, label }: Props) => {
   return (
-    <div className='flex flex-col gap-2'>
+    <div className='flex flex-col gap-4'>
       {label && <Label>{label}</Label>}
       <div className='flex gap-4'>
         {options.map((option) => {
@@ -22,13 +22,13 @@ const RadioGroup = ({ value, options, onChange, label }: Props) => {
 
           return (
             <div key={optionValue} className='flex align-center justify-center gap-2'>
-              <Label htmlFor={optionValue} className='text-[12px] text-primary-light'>
+              <Label htmlFor={optionValue} className='text-[12px] text-primary-600 font-normal'>
                 {label}
               </Label>
               <input
                 type='radio'
                 id={optionValue}
-                className=' border-gray-200 border rounded text-[1em] p-2 outline-none'
+                className=' border-gray-200 border rounded text-[1em] p-2 outline-none accent-primary-800'
                 checked={optionValue === value}
                 value={optionValue}
                 onChange={onChange}

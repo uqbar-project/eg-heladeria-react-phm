@@ -4,8 +4,8 @@ const RenderErrorList = ({ errors }: Props) => {
   const errorMessages = Array.isArray(errors) ? errors : [errors]
 
   return (
-    <div className='flex flex-col gap-2 bg-gray-200 p-4 border-r-8'>
-      <ul className='px-6 m-0'>
+    <div className='flex flex-col gap-2 bg-gray-200 px-6 py-4 border-r-8'>
+      <ul>
         {errorMessages.map((err) => {
           return (
             <li key={err} className='text-[12px]'>

@@ -18,7 +18,7 @@ body {
     Ubuntu;
   font-size: 16px;
   line-height: 1.5;
-  @apply text-primary-default;
+  @apply text-primary-800;
 }
 
 ::-webkit-scrollbar {
@@ -52,13 +52,15 @@ select {
 
 button {
   cursor: pointer;
-  border: none;
   outline: none;
 }
 
 button:disabled {
   cursor: not-allowed;
-  filter: opacity(0.5);
+}
+
+input[type='radio'] {
+  @apply accent-primary-800;
 }
 
 @layer components {

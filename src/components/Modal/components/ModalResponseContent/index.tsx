@@ -13,9 +13,9 @@ type Props = {
 }
 
 const modalResponseContentIconMap: { [key in ModalResponseType]: { icon: keyof IconsMap; className: string } } = {
-  success: { icon: 'CheckOutlineThin', className: 'fill-[#4AA17A]' },
-  error: { icon: 'ErrorOutlineThin', className: 'fill-[#FA7F7B]' },
-  warning: { icon: 'WarningOutlineThin', className: 'fill-[#FA7F7B]' },
+  success: { icon: 'CheckOutlineThin', className: 'fill-success-default' },
+  error: { icon: 'ErrorOutlineThin', className: 'fill-error-default' },
+  warning: { icon: 'WarningOutlineThin', className: 'fill-error-default' },
 } as const
 
 const ModalResponseContent = ({ title, type = 'error', content, actions, onCloseClickOutside }: Props) => {

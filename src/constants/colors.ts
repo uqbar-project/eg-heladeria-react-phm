@@ -1,18 +1,21 @@
 export const COLORS = {
   primary: {
-    // light: '#495057',
-    light: '#646e77',
-    default: '#343a40',
-    dark: '#212529',
-  },
-  secondary: {
-    light: '#f8f9fa',
-    default: '#e9ecef',
-    dark: '#dee2e6',
+    50: '#f8fafc',
+    100: '#f1f5f9',
+    200: '#e2e8f0',
+    300: '#cbd5e1',
+    400: '#94a3b8',
+    500: '#64748b',
+    600: '#475569',
+    700: '#334155',
+    800: '#1e293b',
+    900: '#0f172a',
+    950: '#020617',
   },
   error: {
-    light: '#FFCDD2',
-    default: '#EF5350',
-    dark: '#D32F2F',
+    default: '#FA7F7B',
+  },
+  success: {
+    default: '#4AA17A',
   },
 }

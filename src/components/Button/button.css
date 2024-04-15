@@ -1,4 +1,20 @@
-.button {
-  @apply py-1 px-4 rounded border-gray-200 border rounded h-10;
+button.button {
+  @apply py-1 px-4 rounded h-10;
   transition: all 0.2s ease;
+}
+
+button.button-outlined {
+  @apply bg-white border-primary-800 border;
+}
+
+button.button-primary {
+  @apply bg-primary-800 text-white;
+}
+
+button.button-primary:disabled {
+  @apply bg-primary-200 text-white;
+}
+
+button.button-primary:enabled:hover {
+  @apply bg-primary-700;
 }

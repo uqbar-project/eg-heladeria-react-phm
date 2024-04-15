@@ -47,14 +47,14 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
     <section className='w-full flex gap-4 justify-center mt-8'>
       <Button
         type='button'
-        className='bg-secondary-light enabled:hover:bg-secondary-default'
+        className='button-outlined'
         label='Cancelar'
         onClick={onCancel}
       />
       <Button
         type='button'
         label='Actualizar'
-        className=' bg-primary-default enabled:hover:bg-primary-light text-white'
+        className='button-primary'
         onClick={actualizarHeladeria}
         disabled={!hayCambiosPendientes || !heladeria.id}
       />
@@ -64,7 +64,7 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
         title='Heladería actualizada exitosamente'
         content={
           <>
-            <strong>{heladeriaOriginal.nombre}</strong> ha sido actualizada.
+            Se han guardado los cambios en <strong>{heladeriaOriginal.nombre}</strong>
           </>
         }
         onClose={onModalClose}

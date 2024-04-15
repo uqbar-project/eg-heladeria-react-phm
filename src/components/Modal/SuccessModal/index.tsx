@@ -17,15 +17,7 @@ const SuccessModal = ({ isOpened = false, title, content, onClose }: Props) => {
         title={title}
         type='success'
         content={content ? <p className='text-[12px] text-center'>{content}</p> : null}
-        actions={[
-          <Button
-            className='bg-secondary-light enabled:hover:bg-secondary-default'
-            label='Cerrar'
-            key='close'
-            type='button'
-            onClick={onClose}
-          />,
-        ]}
+        actions={[<Button className='button-outlined' label='Cerrar' key='close' type='button' onClick={onClose} />]}
       />
     </Modal>
   )

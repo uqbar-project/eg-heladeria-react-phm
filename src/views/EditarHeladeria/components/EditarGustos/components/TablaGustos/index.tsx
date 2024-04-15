@@ -20,7 +20,7 @@ const TablaGustos = ({ heladeria, setHeladeria }: Props) => {
     ...tablaGustosColumnsBase,
     {
       key: 'actions',
-      headerName: 'Acción',
+      headerName: 'Eliminar',
       className: 'text-center',
       render: (gusto) => (
         <Icon name='Trash' onClick={() => eliminarGusto(gusto.nombre)} className='flex w-full justify-center' />
