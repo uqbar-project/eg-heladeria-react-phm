@@ -45,12 +45,7 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
 
   return (
     <section className='w-full flex gap-4 justify-center mt-8'>
-      <Button
-        type='button'
-        className='button-outlined'
-        label='Cancelar'
-        onClick={onCancel}
-      />
+      <Button type='button' className='button-outlined' label='Cancelar' onClick={onCancel} />
       <Button
         type='button'
         label='Actualizar'

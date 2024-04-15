@@ -13,7 +13,11 @@ const Input = ({ label, ...props }: Props) => {
   return (
     <div className={twMerge('flex flex-col gap-2', className)}>
       {!!label && (isValidElement(label) ? label : <Label htmlFor={id}>{label}</Label>)}
-      <input {...props} className='border-gray-200 border rounded text-[1em] text-primary-600 p-2 outline-none' type={type}></input>
+      <input
+        {...props}
+        className='border-gray-200 border rounded text-[1em] text-primary-600 p-2 outline-none'
+        type={type}
+      ></input>
     </div>
   )
 }
