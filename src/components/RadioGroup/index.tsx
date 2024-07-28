@@ -21,7 +21,7 @@ const RadioGroup = ({ value, options, onChange, label }: Props) => {
           const { value: optionValue, label } = option
 
           return (
-            <div key={optionValue} className='flex align-center justify-center gap-2'>
+            <div key={optionValue} className='flex align-center justify-center items-center gap-2'>
               <Label htmlFor={optionValue} className='text-[12px] text-primary-600 font-normal'>
                 {label}
               </Label>
