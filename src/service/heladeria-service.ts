@@ -31,7 +31,7 @@ async function buscarHeladerias(nombre: string = ''): Promise<Heladeria[]> {
 }
 
 async function fetchById(heladeriaId: number): Promise<Heladeria> {
-  return httpRequest<Heladeria>(`${BACKEND_URL}/heladerias/id/${heladeriaId}`)
+  return httpRequest<Heladeria>(`${BACKEND_URL}/heladerias/${heladeriaId}`)
 }
 
 async function fetchDuenios(): Promise<Duenio[]> {
