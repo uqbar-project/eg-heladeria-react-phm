@@ -2,6 +2,7 @@ import Button from '@/components/Button'
 import Card from '@/components/Card'
 import Icon from '@/components/Icon'
 import Input from '@/components/Input'
+import Label from '@/components/Label'
 import { TOKEN_KEY } from '@/service/constants'
 import { loginUser } from '@/service/usuario-service'
 import { useRouter } from '@tanstack/react-router'
@@ -11,12 +12,18 @@ export const Login = () => {
   const [usuario, setUsuario] = useState('')
   const [password, setPassword] = useState('')
   const { navigate } = useRouter()
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const login = async (event: InputEvent) => {
-    event.preventDefault()
-    const token = await loginUser(usuario, password)
-    localStorage.setItem(TOKEN_KEY, token)
-    navigate({ to: '/' })
+  const login = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    try {
+      event.preventDefault()
+      const token = await loginUser(usuario, password)
+      localStorage.setItem(TOKEN_KEY, token)
+      navigate({ to: '/' })
+    } catch (e: unknown) {
+      setErrorMessage((e as Error).message)
+      console.info(e)
+    }
   }
 
   return (
@@ -43,9 +50,10 @@ export const Login = () => {
             className='button-primary'
             title='Ingresar al sistema'
             label={<Icon className='fill-white' name={'User'} />}
-            onClick={(e) => login(e)}
+            onClick={(event) => login(event)}
           />
         </form>
+        {errorMessage && <div className="error">{errorMessage}</div>}
       </Card>
     </section>
   )
