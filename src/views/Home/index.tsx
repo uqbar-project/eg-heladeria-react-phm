@@ -14,7 +14,7 @@ const Home = () => {
     navigate({ search: busqueda ? { busqueda } : {} })
   }
 
-  const logoff = () => {
+  const logout = () => {
     localStorage.removeItem(TOKEN_KEY)
     navigate({ to: '/login' })
   }
@@ -22,7 +22,7 @@ const Home = () => {
   return (
     <>
       <div className='flex flex-col items-center w-full' title='Salir de la aplicación'>
-        <Icon name={'Power'} onClick={logoff} className='mt-5 flex w-full justify-right' />
+        <Icon name={'Power'} onClick={logout} className='mt-5 flex w-full justify-right' />
       </div>
       <section className='flex items-center justify-center mt-6 container text-[14px]'>
         <Card>

@@ -8,7 +8,7 @@ export async function httpRequest<T>(request: RequestInfo): Promise<T> {
   const finalResponse = response.headers.get("Content-Type") === 'application/json' ?  await response.json() : await response.text()
 
   if (!response.ok) {
-    throw finalResponse // ???
+    throw finalResponse
   }
 
   return finalResponse
@@ -23,3 +23,4 @@ export async function customRequest<T>(route: string, body: Partial<T>, method =
     })
   )
 }
+
