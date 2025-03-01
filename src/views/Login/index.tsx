@@ -4,13 +4,14 @@ import Icon from '@/components/Icon'
 import Input from '@/components/Input'
 import { TOKEN_KEY } from '@/service/constants'
 import { loginUser } from '@/service/usuario-service'
-import { useRouter } from '@tanstack/react-router'
+import { useRouter, useSearch } from '@tanstack/react-router'
 import { useState } from 'react'
 
 export const Login = () => {
   const [usuario, setUsuario] = useState('')
   const [password, setPassword] = useState('')
-  const { navigate } = useRouter()
+  const router = useRouter()
+  const search = useSearch({ from: '/login' })
   const [errorMessage, setErrorMessage] = useState('')
 
   const login = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -18,7 +19,7 @@ export const Login = () => {
       event.preventDefault()
       const token = await loginUser(usuario, password)
       localStorage.setItem(TOKEN_KEY, token)
-      navigate({ to: '/' })
+      router.history.push(search.redirect ?? '/')
     } catch (e: unknown) {
       setErrorMessage((e as Error).message)
       console.info(e)
