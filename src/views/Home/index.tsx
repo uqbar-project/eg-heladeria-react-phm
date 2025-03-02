@@ -16,7 +16,12 @@ const Home = () => {
 
   const logout = () => {
     localStorage.removeItem(TOKEN_KEY)
-    navigate({ to: '/login' })
+    navigate({ 
+      to: '/login',
+      search: {
+        redirect: '/',
+      },
+    })
   }
 
   return (

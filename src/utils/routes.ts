@@ -2,8 +2,6 @@ import { TOKEN_KEY } from "@/service/constants"
 import { redirect } from "@tanstack/react-router"
 
 export const onErrorRoute = (error: Error) => {
-  console.info('onErrorRoute', error)
-
   if (error.message === 'Sesión vencida') {
     localStorage.removeItem(TOKEN_KEY)
     throw redirect({
