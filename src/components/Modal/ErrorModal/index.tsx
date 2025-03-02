@@ -3,6 +3,8 @@ import { ReactNode } from 'react'
 import Modal from '..'
 import ModalResponseContent from '../components/ModalResponseContent'
 import RenderErrorList from '../components/ModalResponseContent/components/RenderErrorList'
+import { getErrorMessageByStatusCode } from '@/utils/errors'
+import { HttpStatusCodes } from '@/constants/http'
 
 type Error = {
   status?: number
@@ -26,13 +28,13 @@ const ErrorModal = ({ error, title, onClose, onRetry }: Props) => {
         type='error'
         content={
           <div className='flex flex-col gap-4 mt-4'>
-            {error.status ? (
+            {error.status === HttpStatusCodes.BAD_REQUEST ? (
               <>
                 <p className='text-[12px]'>Por favor revisá los siguientes errores:</p>
                 <RenderErrorList errors={error.message} />
               </>
             ) : (
-              <p className='text-[12px] text-center'>Falló la conexión con el servidor.</p>
+              <p className='text-[12px] text-center'>{getErrorMessageByStatusCode(error)}</p>
             )}
           </div>
         }

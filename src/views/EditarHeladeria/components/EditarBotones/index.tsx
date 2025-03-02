@@ -34,6 +34,7 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
       setIsSuccess(true)
       onAccept?.(heladeriaActualizada)
     } catch (error) {
+      console.info(error)
       setError(error as AppError)
     }
   }
