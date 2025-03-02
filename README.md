@@ -1,7 +1,7 @@
 
 ## Ejemplo Heladería para PHM
 
-![demo](./video/demo2025.gif)
+![demo](./video/demo2025-2.gif)
 
 En este ejemplo mostramos un frontend en React que maneja **autenticación** mediante JWT (JSON Web Token). Además utiliza
 
