@@ -6,5 +6,5 @@ export type CredencialesDTO = {
 }
 
 export async function loginUser(usuario: string, password: string): Promise<string> {
-  return customRequest<string>('/login', { usuario, password } as unknown as string)
+  return customRequest<string>('/login', { usuario, password })
 }
