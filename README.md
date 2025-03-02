@@ -1,30 +1,20 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Ejemplo Heladería para PHM
 
-Currently, two official plugins are available:
+![demo](./video/demo2025.gif)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+En este ejemplo mostramos un frontend en React que maneja **autenticación** mediante JWT (JSON Web Token). Además utiliza
 
-## Expanding the ESLint configuration
+- [Tailwind](https://tailwindcss.com/) como biblioteca de css
+- [TanStack](https://tanstack.com/router/latest) como biblioteca de routing en lugar de React Router
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Vistas
 
-- Configure the top-level `parserOptions` property like this:
+La aplicación es sencilla y consta de las siguientes vistas
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+- '/' o home: es la página principal donde se muestra la lista de heladerías
+- '/editarHeladeria/$id': donde podemos editar la información de una heladería (el nombre, el tipo de heladería, la persona responsable y gustos que fabrica)
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Además, dado que se espera que los endpoints de [nuestro backend](https://github.com/uqbar-project/eg-heladeria-springboot-kotlin) estén securizados, sumamos una pantalla de Login ('/login) que permite ingresar usuario y contraseña. Una vez obtenido el token, se almacena dentro del local storage del navegador:
+
+![JWT almacenado](./images/jwt_almacenado.png)
