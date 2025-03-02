@@ -1,5 +1,7 @@
 import { BACKEND_URL, TOKEN_KEY } from './constants'
 
+type RequestBody = string | number | boolean | null | { [key: string]: RequestBody } | RequestBody[]
+
 export async function httpRequest<T>(request: RequestInfo): Promise<T> {
   const okRequest = (typeof request === 'string') ? new Request(request) : request
   const token = localStorage.getItem(TOKEN_KEY) ?? ''
@@ -14,7 +16,7 @@ export async function httpRequest<T>(request: RequestInfo): Promise<T> {
   return finalResponse
 }
 
-export async function customRequest<T>(route: string, body: Partial<T>, method = 'POST') {
+export async function customRequest<T>(route: string, body: RequestBody, method = 'POST') {
   return httpRequest<T>(
     new Request(`${BACKEND_URL}${route}`, {
       method,
