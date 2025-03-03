@@ -6,17 +6,17 @@ import Icon from '@/components/Icon'
 import { TOKEN_KEY } from '@/service/constants'
 
 const Home = () => {
-  const heladerias = useLoaderData({ from: '/' })
-  const { busqueda } = useSearch({ from: '/' })
+  const heladerias = useLoaderData({ from: '/_authenticated/' })
+  const { busqueda } = useSearch({ from: '/_authenticated/' })
   const navigate = useNavigate()
 
   const onSearch = async (busqueda: string) => {
-    navigate({ search: busqueda ? { busqueda } : {} })
+    navigate({ to: '/', search: busqueda ? { busqueda } : {} })
   }
 
   const logout = () => {
     localStorage.removeItem(TOKEN_KEY)
-    navigate({ 
+    navigate({
       to: '/login',
       search: {
         redirect: '/',

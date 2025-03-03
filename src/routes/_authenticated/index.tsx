@@ -1,11 +1,10 @@
 import heladeriaService from '@/service/heladeria-service'
-import { onBeforeLoad, onErrorRoute } from '@/utils/routes'
+import { onErrorRoute } from '@/utils/routes'
 import Home from '@/views/Home'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/_authenticated/')({
   component: Home,
-  beforeLoad: onBeforeLoad,
   validateSearch: (search) => {
     return search as {
       busqueda?: string

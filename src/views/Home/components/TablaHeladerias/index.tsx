@@ -9,7 +9,7 @@ type Props = {
 }
 
 const TablaHeladerias = ({ heladerias }: Props) => {
-  const navigate = useNavigate({ from: '/home' })
+  const navigate = useNavigate({ from: '/' })
 
   const editarHeladeria = (heladeria: Heladeria) => {
     navigate({ to: '/editar-heladeria/$id', params: { id: heladeria.id.toString() } })
