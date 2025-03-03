@@ -5,6 +5,7 @@ import Input from '@/components/Input'
 import { TOKEN_KEY } from '@/service/constants'
 import { loginUser } from '@/service/usuario-service'
 import { AppError } from '@/types'
+import { getErrorMessageByStatusCode } from '@/utils/errors'
 import { useRouter, useSearch } from '@tanstack/react-router'
 import { useState } from 'react'
 
@@ -22,7 +23,8 @@ export const Login = () => {
       localStorage.setItem(TOKEN_KEY, token)
       router.history.push(search.redirect ?? '/')
     } catch (e: unknown) {
-      setErrorMessage((e as AppError).message)
+      const errorMessage = getErrorMessageByStatusCode(e as AppError)
+      setErrorMessage(errorMessage)
       console.info(e)
     }
   }
@@ -38,7 +40,7 @@ export const Login = () => {
             label='Usuario'
             value={usuario}
             onChange={(e) => setUsuario(e.target.value)}
-          ></Input>
+          />
           <Input 
             className="mt-2 mb-8"
             type='password'
@@ -46,12 +48,12 @@ export const Login = () => {
             label='Password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-          ></Input>
+          />
           <Button
             className='button-primary'
             title='Ingresar al sistema'
             label={<Icon className='fill-white' name={'User'} />}
-            onClick={(event) => login(event)}
+            onClick={login}
           />
         </form>
         {errorMessage && <div className="error">{errorMessage}</div>}

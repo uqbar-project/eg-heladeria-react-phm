@@ -3,11 +3,15 @@ import { AppError } from '@/types'
 
 export const getErrorMessageByStatusCode = (error: AppError): string => {
   if (!error.status) {
-    return 'Falló la conexión con el servidor.'
+    return 'Falló la conexión con el servidor'
+  }
+
+  if (error.status === HttpStatusCodes.BAD_REQUEST || error.status === HttpStatusCodes.UNAUTHORIZED) {
+    return error.message
   }
 
   if (error.status === HttpStatusCodes.FORBIDDEN) {
-    return 'Tu cuenta no tiene los permisos necesarios para realizar esta acción.'
+    return 'Tu cuenta no tiene los permisos necesarios para realizar esta acción'
   }
 
   return 'Ocurrió un error inesperado. Por favor, intenta nuevamente.'
