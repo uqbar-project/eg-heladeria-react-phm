@@ -5,7 +5,7 @@ import Input from '@/components/Input'
 import { TOKEN_KEY } from '@/service/constants'
 import { loginUser } from '@/service/usuario-service'
 import { AppError } from '@/types'
-import { getErrorMessageByStatusCode } from '@/utils/errors'
+import { getErrorMessage } from '@/utils/errors'
 import { useRouter, useSearch } from '@tanstack/react-router'
 import { useState } from 'react'
 
@@ -23,7 +23,7 @@ export const Login = () => {
       localStorage.setItem(TOKEN_KEY, token)
       router.history.push(search.redirect ?? '/')
     } catch (e: unknown) {
-      const errorMessage = getErrorMessageByStatusCode(e as AppError)
+      const errorMessage = getErrorMessage(e as AppError)
       setErrorMessage(errorMessage)
       console.info(e)
     }

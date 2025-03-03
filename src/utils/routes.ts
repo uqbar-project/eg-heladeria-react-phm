@@ -1,8 +1,10 @@
-import { TOKEN_KEY } from "@/service/constants"
-import { redirect } from "@tanstack/react-router"
+import { TOKEN_KEY } from '@/service/constants'
+import { redirect } from '@tanstack/react-router'
+
+export const SESSION_EXPIRED_ERROR = 'Sesión vencida'
 
 export const onErrorRoute = (error: Error) => {
-  if (error.message === 'Sesión vencida') {
+  if (error.message === SESSION_EXPIRED_ERROR) {
     localStorage.removeItem(TOKEN_KEY)
     throw redirect({
       to: '/login',
