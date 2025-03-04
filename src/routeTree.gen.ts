@@ -13,7 +13,8 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
-import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index'
+import { Route as IndexImport } from './routes/index'
+import { Route as AuthenticatedHomeImport } from './routes/_authenticated/home'
 import { Route as AuthenticatedEditarHeladeriaIdImport } from './routes/_authenticated/editar-heladeria.$id'
 
 // Create/Update Routes
@@ -29,9 +30,15 @@ const AuthenticatedRoute = AuthenticatedImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AuthenticatedIndexRoute = AuthenticatedIndexImport.update({
+const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedHomeRoute = AuthenticatedHomeImport.update({
+  id: '/home',
+  path: '/home',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
@@ -46,6 +53,13 @@ const AuthenticatedEditarHeladeriaIdRoute =
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
@@ -60,11 +74,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginImport
       parentRoute: typeof rootRoute
     }
-    '/_authenticated/': {
-      id: '/_authenticated/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedIndexImport
+    '/_authenticated/home': {
+      id: '/_authenticated/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof AuthenticatedHomeImport
       parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/editar-heladeria/$id': {
@@ -80,12 +94,12 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedHomeRoute: typeof AuthenticatedHomeRoute
   AuthenticatedEditarHeladeriaIdRoute: typeof AuthenticatedEditarHeladeriaIdRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedHomeRoute: AuthenticatedHomeRoute,
   AuthenticatedEditarHeladeriaIdRoute: AuthenticatedEditarHeladeriaIdRoute,
 }
 
@@ -94,46 +108,53 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
-  '/': typeof AuthenticatedIndexRoute
+  '/home': typeof AuthenticatedHomeRoute
   '/editar-heladeria/$id': typeof AuthenticatedEditarHeladeriaIdRoute
 }
 
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
-  '/': typeof AuthenticatedIndexRoute
+  '/home': typeof AuthenticatedHomeRoute
   '/editar-heladeria/$id': typeof AuthenticatedEditarHeladeriaIdRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
-  '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/home': typeof AuthenticatedHomeRoute
   '/_authenticated/editar-heladeria/$id': typeof AuthenticatedEditarHeladeriaIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/login' | '/' | '/editar-heladeria/$id'
+  fullPaths: '/' | '' | '/login' | '/home' | '/editar-heladeria/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/editar-heladeria/$id'
+  to: '/' | '' | '/login' | '/home' | '/editar-heladeria/$id'
   id:
     | '__root__'
+    | '/'
     | '/_authenticated'
     | '/login'
-    | '/_authenticated/'
+    | '/_authenticated/home'
     | '/_authenticated/editar-heladeria/$id'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
 }
@@ -148,22 +169,26 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/",
         "/_authenticated",
         "/login"
       ]
     },
+    "/": {
+      "filePath": "index.tsx"
+    },
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
-        "/_authenticated/",
+        "/_authenticated/home",
         "/_authenticated/editar-heladeria/$id"
       ]
     },
     "/login": {
       "filePath": "login.tsx"
     },
-    "/_authenticated/": {
-      "filePath": "_authenticated/index.tsx",
+    "/_authenticated/home": {
+      "filePath": "_authenticated/home.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/editar-heladeria/$id": {

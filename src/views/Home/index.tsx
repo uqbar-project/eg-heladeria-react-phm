@@ -6,12 +6,12 @@ import Icon from '@/components/Icon'
 import { TOKEN_KEY } from '@/service/constants'
 
 const Home = () => {
-  const heladerias = useLoaderData({ from: '/_authenticated/' })
-  const { busqueda } = useSearch({ from: '/_authenticated/' })
+  const heladerias = useLoaderData({ from: '/_authenticated/home' })
+  const { busqueda } = useSearch({ from: '/_authenticated/home' })
   const navigate = useNavigate()
 
   const onSearch = async (busqueda: string) => {
-    navigate({ to: '/', search: busqueda ? { busqueda } : {} })
+    navigate({ to: '/home', search: busqueda ? { busqueda } : {} })
   }
 
   const logout = () => {

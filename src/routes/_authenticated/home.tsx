@@ -3,7 +3,7 @@ import { onErrorRoute } from '@/utils/routes'
 import Home from '@/views/Home'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/_authenticated/')({
+export const Route = createFileRoute('/_authenticated/home')({
   component: Home,
   validateSearch: (search) => {
     return search as {

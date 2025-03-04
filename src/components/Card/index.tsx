@@ -10,7 +10,7 @@ type Props = {
 
 const Card = ({ children, showBack = false, className }: Props) => {
   const { navigate } = useRouter()
-  const onBack = () => navigate({ to: '/' })
+  const onBack = () => navigate({ to: '/home' })
 
   return (
     <div className={twMerge('card shadow-light', className)}>
