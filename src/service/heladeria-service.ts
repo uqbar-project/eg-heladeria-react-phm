@@ -1,27 +1,7 @@
 import { Duenio } from '@/model/duenio'
 import { Heladeria } from '@/model/heladeria'
 import { BACKEND_URL } from './constants'
-
-async function httpRequest<T>(request: RequestInfo): Promise<T> {
-  const response = await fetch(request)
-  const responseJson = await response.json()
-
-  if (!response.ok) {
-    throw responseJson
-  }
-
-  return responseJson
-}
-
-async function customRequest<T>(route: string, body: Partial<T>, method = 'POST') {
-  return httpRequest<T>(
-    new Request(`${BACKEND_URL}${route}`, {
-      method,
-      body: JSON.stringify(body),
-      headers: { 'Content-Type': 'application/json' },
-    })
-  )
-}
+import { customRequest, httpRequest } from './common'
 
 async function buscarHeladerias(nombre: string = ''): Promise<Heladeria[]> {
   const params = new URLSearchParams({

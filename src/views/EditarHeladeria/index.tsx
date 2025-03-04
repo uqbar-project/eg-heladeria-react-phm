@@ -10,7 +10,7 @@ import EditarGustos from './components/EditarGustos'
 
 const EditarHeladeria = () => {
   const { invalidate } = useRouter()
-  const heladeriaBackend = useLoaderData({ from: '/editar-heladeria/$id' })
+  const heladeriaBackend = useLoaderData({ from: '/_authenticated/editar-heladeria/$id' })
   const [heladeria, setHeladeria] = useState<Heladeria>(heladeriaBackend)
 
   const tipoHeladeriaOptions = tiposHeladeria.map((tipo) => ({ value: tipo, label: tipo }))

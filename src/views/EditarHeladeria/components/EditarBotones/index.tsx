@@ -19,7 +19,7 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
   const [error, setError] = useState<AppError>()
   const [isSuccess, setIsSuccess] = useState(false)
 
-  const onCancel = () => navigate({ to: '/' })
+  const onCancel = () => navigate({ to: '/home' })
 
   const onModalClose = () => {
     setError(undefined)
@@ -34,6 +34,7 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
       setIsSuccess(true)
       onAccept?.(heladeriaActualizada)
     } catch (error) {
+      console.info(error)
       setError(error as AppError)
     }
   }

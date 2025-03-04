@@ -9,6 +9,8 @@ import ErrorOutlineThin from '@/assets/icons/error-outlined-thin.svg?react'
 import CheckOutlineThin from '@/assets/icons/check-circle-thin.svg?react'
 import WarningOutlineThin from '@/assets/icons/warning-outlined-thin.svg?react'
 import InfoCircle from '@/assets/icons/info-circle.svg?react'
+import User from '@/assets/icons/user.svg?react'
+import Power from '@/assets/icons/power.svg?react'
 
 import { twMerge } from 'tailwind-merge'
 
@@ -24,6 +26,8 @@ const iconsMap = {
   CheckOutlineThin,
   WarningOutlineThin,
   InfoCircle,
+  User,
+  Power,
 } as const
 
 export type IconsMap = typeof iconsMap

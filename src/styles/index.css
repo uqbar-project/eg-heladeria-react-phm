@@ -76,3 +76,9 @@ input[type='radio'] {
     @apply mx-auto max-w-[90%] md:max-w-[680px];
   }
 }
+
+.error {
+  background-color: darkred;
+  color: white;
+  padding: 1rem;
+}
