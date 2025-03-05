@@ -1,17 +1,11 @@
 import { TOKEN_KEY } from '@/service/constants'
+import { AppError } from '@/types'
 import { redirect } from '@tanstack/react-router'
+import { isSessionExpired } from './errors'
 
-export const SESSION_EXPIRED_ERROR = 'Sesión vencida'
-
-export const onErrorRoute = (error: Error) => {
-  if (error.message === SESSION_EXPIRED_ERROR) {
+export const onErrorRoute = (error: AppError) => {
+  if (isSessionExpired(error)) {
     localStorage.removeItem(TOKEN_KEY)
-    throw redirect({
-      to: '/login',
-      search: {
-        redirect: location.pathname,
-      },
-    })
   }
 }
 

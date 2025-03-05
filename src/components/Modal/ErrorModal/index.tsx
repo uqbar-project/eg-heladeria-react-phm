@@ -3,9 +3,8 @@ import { ReactNode } from 'react'
 import Modal from '..'
 import ModalResponseContent from '../components/ModalResponseContent'
 import RenderErrorList from '../components/ModalResponseContent/components/RenderErrorList'
-import { getErrorMessage } from '@/utils/errors'
+import { getErrorMessage, isSessionExpired } from '@/utils/errors'
 import { HttpStatusCodes } from '@/constants/http'
-import { SESSION_EXPIRED_ERROR } from '@/utils/routes'
 import { TOKEN_KEY } from '@/service/constants'
 import { useRouter } from '@tanstack/react-router'
 
@@ -30,7 +29,11 @@ const ErrorModal = ({ error, title, onClose, onRetry }: Props) => {
     navigate({ to: '/login', search: { redirect: '/' } })
   }
 
-  const sessionExpired = error.message === SESSION_EXPIRED_ERROR
+  const sessionExpired = isSessionExpired(error)
+
+  const errorMessage = sessionExpired
+    ? 'La sesión ha expirado. Por favor, inicie sesión nuevamente.'
+    : getErrorMessage(error)
 
   return (
     <Modal className='h-fit p-6' isOpened={!!error} close={onClose}>
@@ -45,7 +48,7 @@ const ErrorModal = ({ error, title, onClose, onRetry }: Props) => {
                 <RenderErrorList errors={error.message} />
               </>
             ) : (
-              <p className='text-[12px] text-center'>{getErrorMessage(error)}</p>
+              <p className='text-[12px] text-center'>{errorMessage}</p>
             )}
           </div>
         }
