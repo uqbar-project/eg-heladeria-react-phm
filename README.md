@@ -147,11 +147,13 @@ El token JWT se guarda en el local storage. Esto supone varias ventajas: es fác
 - almacenarlo en el storage de la sesión: cuando la sesión se vence se elimina el token. Igualmente comparte la misma desventaja que el local storage.
 - guardar el token en una cookie con el flag httpOnly, para que no sea accesible por javascript. También podemos agregar la configuración SameSite="strict" o "lax" y agregar el flag secure.
 
-Hay una [larga discusión al respecto](https://stackoverflow.com/questions/44133536/is-it-safe-to-store-a-jwt-in-localstorage-with-reactjs), nosotros necesitamos una investigación más profunda antes de darte una opinión. Vamos a agregar un token extra para evitar el CSRF manteniendo el JWT intacto.
+Hay una [larga discusión al respecto](https://stackoverflow.com/questions/44133536/is-it-safe-to-store-a-jwt-in-localstorage-with-reactjs), pero hay una gran parte de la corriente pensadora reflejada en [este artículo](https://pragmaticwebsecurity.com/articles/oauthoidc/localstorage-xss.html) que dice: "si fuiste hackeado y tenés código malicioso ejecutándose en tu navegador, es tu problema más grande".
+
+ Vamos a agregar un token extra para evitar el CSRF manteniendo el JWT intacto.
 
 ## Envío del token para evitar CSRF
 
-Cada pedido que hacemos al server, nos contesta con un token en una cookie
+Al hacer pedidos al server recibimos un token XSRF en una cookie. Ese token no tiene que ver con las credenciales del usuario, sino con la comunicación entre el cliente y el servidor.
 
 ![xsrf](./images/xsrf-cookie.png)
 
@@ -177,3 +179,5 @@ export async function httpRequest<T>(request: RequestInfo): Promise<T> {
 ![CSRF en el envío](./images/xsrf-put-sent.png)
 
 De lo contrario, el server no recibe el token y rebota cualquier operación con efecto (POST, PUT, PATCH, DELETE). Esto no es necesario hacerlo en métodos GET, OPTIONS, etc. que se supone no deben generar efecto.
+
+Otra alternativa es guardar un input type="hidden" con el nombre `_csrf` y que contenga el valor del token xsrf que recibimos del server. TODO: ver si no podemos lograr que el server procese el token a partir de la cookie.
