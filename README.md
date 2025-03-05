@@ -12,7 +12,7 @@ En este ejemplo mostramos un frontend en React que maneja **autenticación** med
 
 La aplicación es sencilla y consta de las siguientes vistas
 
-- '/' o home: es la página principal donde se muestra la lista de heladerías
+- '/home': es la página principal donde se muestra la lista de heladerías
 - '/editarHeladeria/$id': donde podemos editar la información de una heladería (el nombre, el tipo de heladería, la persona responsable y gustos que fabrica)
 
 Además, dado que se espera que los endpoints de [nuestro backend](https://github.com/uqbar-project/eg-heladeria-springboot-kotlin) estén securizados, sumamos una pantalla de Login ('/login) que permite ingresar usuario y contraseña. 
@@ -73,7 +73,8 @@ const login = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => 
     localStorage.setItem(TOKEN_KEY, token)  // <== guardamos en el local storage el token
     router.history.push(search.redirect ?? '/')
   } catch (e: unknown) {
-    setErrorMessage((e as Error).message)   // <== acá manejamos cuando se ingresan credenciales inválidas
+    const errorMessage = getErrorMessage(e as AppError)
+    setErrorMessage(errorMessage)  // <== acá manejamos cuando se ingresan credenciales inválidas
     console.info(e)
   }
 }
@@ -93,11 +94,13 @@ El comportamiento común de un usuario es que comienza a utilizar una aplicació
 }
 ```
 
+(*) a futuro queremos cambiar el error 500 por un código más razonable, como 498 pero por el momento tenemos un tema con la implementación de Springboot.
+
 En el archivo de routing definimos un handler específico para estos casos:
 
 ```ts
 export const onErrorRoute = (error: Error) => {
-  if (error.message === 'Sesión vencida') {
+  if (error.message === SESSION_EXPIRED_ERROR) {
     localStorage.removeItem(TOKEN_KEY)        // eliminamos el token vencido
     throw redirect({
       to: '/login',
@@ -109,18 +112,22 @@ export const onErrorRoute = (error: Error) => {
 }
 ```
 
-## Envío del token en cada request
+## Envío del token de usuario (JWT) en cada request
 
 En el ejemplo tenemos una función para manejar cada request, aquí aprovechamos la oportunidad para enviar el **token**
 
 ```ts
 export async function httpRequest<T>(request: RequestInfo): Promise<T> {
+  // construimos un objeto request, aun cuando vengan strings
   const okRequest = (typeof request === 'string') ? new Request(request) : request
-  // busco el token en el local storage y lo agrego al header del request
-  const token = localStorage.getItem(TOKEN_KEY) ?? ''
-  okRequest.headers.append('Authorization', `Bearer ${token}`);
+  // busco el token en el local storage y lo agrego al header del request, salvo para el login
+  if (okRequest.url !== '/login') {
+    const token = localStorage.getItem(TOKEN_KEY) ?? ''
+    okRequest.headers.append('Authorization', `Bearer ${token}`);
+  }
+  // ... 
   const response = await fetch(okRequest)
-  //
+  // obtenemos el json la mayoría de los casos, pero el token viene en texto plano y eso daría error al parsear
   const finalResponse = response.headers.get("Content-Type") === 'application/json' ?  await response.json() : await response.text()
 
   if (!response.ok) {
@@ -133,3 +140,40 @@ export async function httpRequest<T>(request: RequestInfo): Promise<T> {
 
 ![Bearer token](./images/bearer_token_header.png)
 
+## Almacenamiento del JWT
+
+El token JWT se guarda en el local storage. Esto supone varias ventajas: es fácil de acceder, sobrevive a la sesión por lo que cuando el usuario cierra el navegador y lo vuelve a abrir podrá continuar con la operatoria si todavía no se venció el token. También tiene desventajas: es accesible desde javascript, incluso por código malicioso que bajamos a nuestro navegador. Otras alternativas son
+
+- almacenarlo en el storage de la sesión: cuando la sesión se vence se elimina el token. Igualmente comparte la misma desventaja que el local storage.
+- guardar el token en una cookie con el flag httpOnly, para que no sea accesible por javascript. También podemos agregar la configuración SameSite="strict" o "lax" y agregar el flag secure.
+
+Hay una [larga discusión al respecto](https://stackoverflow.com/questions/44133536/is-it-safe-to-store-a-jwt-in-localstorage-with-reactjs), nosotros necesitamos una investigación más profunda antes de darte una opinión. Vamos a agregar un token extra para evitar el CSRF manteniendo el JWT intacto.
+
+## Envío del token para evitar CSRF
+
+Cada pedido que hacemos al server, nos contesta con un token en una cookie
+
+![xsrf](./images/xsrf-cookie.png)
+
+Es importante que el atributo SameSite no está configurado, lo que por defecto en los navegadores lo toma como Lax: esto implica que código javascript de otro sitio no tiene acceso a la cookie que nos devuelve el server de la Heladería.
+
+Lo que hacemos a continuación es
+
+- obtener el token de la cookie para los métodos http que producen efecto (POST y PUT)
+- y agregar como header el token que previene el CSRF
+
+```ts
+export async function httpRequest<T>(request: RequestInfo): Promise<T> {
+  const okRequest = (typeof request === 'string') ? new Request(request) : request
+  ...
+  if (['POST', 'PUT'].includes(okRequest.method)) {
+    const csrfToken = getCookie('XSRF-TOKEN')
+    okRequest.headers.append('X-XSRF-TOKEN', csrfToken)
+  }
+  const response = await fetch(okRequest)
+  ...
+```
+
+![CSRF en el envío](./images/xsrf-put-sent.png)
+
+De lo contrario, el server no recibe el token y rebota cualquier operación con efecto (POST, PUT, PATCH, DELETE). Esto no es necesario hacerlo en métodos GET, OPTIONS, etc. que se supone no deben generar efecto.
