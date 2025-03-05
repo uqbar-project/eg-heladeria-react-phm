@@ -180,4 +180,10 @@ export async function httpRequest<T>(request: RequestInfo): Promise<T> {
 
 De lo contrario, el server no recibe el token y rebota cualquier operación con efecto (POST, PUT, PATCH, DELETE). Esto no es necesario hacerlo en métodos GET, OPTIONS, etc. que se supone no deben generar efecto.
 
-Otra alternativa es guardar un input type="hidden" con el nombre `_csrf` y que contenga el valor del token xsrf que recibimos del server. TODO: ver si no podemos lograr que el server procese el token a partir de la cookie.
+Otra alternativa es guardar un input type="hidden" con el nombre `_csrf` y que contenga el valor del token xsrf que recibimos del server. 
+
+TODO: usar axios en lugar de fetch que hace ésto automáticamente: https://stackoverflow.com/questions/69002516/axios-not-sending-xsrf-token-with-headers.
+
+```ts
+axios.defaults.withXSRFToken = true
+```
