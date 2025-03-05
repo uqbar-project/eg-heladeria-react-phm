@@ -41,7 +41,7 @@ export async function customRequest<T>(route: string, body: RequestBody, method 
       method,
       body: JSON.stringify(body),
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
+      credentials: 'same-origin',
     })
   )
 }
