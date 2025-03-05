@@ -6,7 +6,7 @@
 En este ejemplo mostramos un frontend en React que maneja **autenticación** mediante JWT (JSON Web Token). Además utiliza
 
 - [Tailwind](https://tailwindcss.com/) como biblioteca de css
-- [TanStack](https://tanstack.com/router/latest) como biblioteca de routing en lugar de React Router
+- [TanStack Router](https://tanstack.com/router/latest) como biblioteca de routing en lugar de React Router
 
 ## Vistas
 
@@ -73,7 +73,8 @@ const login = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => 
     localStorage.setItem(TOKEN_KEY, token)  // <== guardamos en el local storage el token
     router.history.push(search.redirect ?? '/')
   } catch (e: unknown) {
-    setErrorMessage((e as Error).message)   // <== acá manejamos cuando se ingresan credenciales inválidas
+    const errorMessage = getErrorMessage(e as AppError)
+    setErrorMessage(errorMessage)   // <== acá manejamos cuando se ingresan credenciales inválidas
     console.info(e)
   }
 }
@@ -81,13 +82,13 @@ const login = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => 
 
 ## Qué pasa cuando la sesión vence
 
-El comportamiento común de un usuario es que comienza a utilizar una aplicación y luego necesita hacer otras cosas. Cuando vuelve a querer utilizar el sistema, es probable que haya pasado un tiempo razonable y el token que tengamos almacenados ya no sea válido (**es una buena práctica que el token sirva por 10/20/30 minutos, no más**). En ese caso el servidor valida el request y al detectar que está vencido devuelva un error 500, con un mensaje similar a "Sesión vencida":
+El comportamiento común de un usuario es que comienza a utilizar una aplicación y luego necesita hacer otras cosas. Cuando vuelve a querer utilizar el sistema, es probable que haya pasado un tiempo razonable y el token que tengamos almacenados ya no sea válido (**es una buena práctica que el token sirva por 10/20/30 minutos, no más**). En ese caso el servidor valida el request y al detectar que está vencido devuelva un error 401, con un mensaje similar a "Sesión vencida":
 
 ```json
 {
     "timestamp": "2025-03-02T15:37:44.036+00:00",
-    "status": 500,
-    "error": "Internal Server Error",
+    "status": 401,
+    "error": "Unauthorized",
     "message": "Sesión vencida",
     "path": "/heladerias/3"
 }
@@ -99,12 +100,6 @@ En el archivo de routing definimos un handler específico para estos casos:
 export const onErrorRoute = (error: Error) => {
   if (error.message === 'Sesión vencida') {
     localStorage.removeItem(TOKEN_KEY)        // eliminamos el token vencido
-    throw redirect({
-      to: '/login',
-      search: {
-        redirect: location.pathname,          // al redirigir al login guardamos dónde volver
-      },
-    })
   }
 }
 ```
