@@ -26,14 +26,14 @@ async function fetchDuenios(): Promise<Duenio[]> {
 
 async function crearDuenio(nombreCompleto: string): Promise<Duenio> {
   return httpRequest<Duenio>({
-    url: '/duenios', 
+    url: `${BACKEND_URL}/duenios`, 
     data: { nombreCompleto },
   })
 }
 
 async function actualizar(heladeria: Heladeria): Promise<Heladeria> {
   return httpRequest<Heladeria>({
-    url: `/heladerias/${heladeria.id}`, 
+    url: `${BACKEND_URL}/heladerias/${heladeria.id}`, 
     data: heladeria, 
     method: 'PUT',
   })

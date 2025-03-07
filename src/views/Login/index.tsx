@@ -4,9 +4,9 @@ import Icon from '@/components/Icon'
 import Input from '@/components/Input'
 import { TOKEN_KEY } from '@/service/constants'
 import { loginUser } from '@/service/usuario-service'
-import { AppError } from '@/types'
 import { getErrorMessage } from '@/utils/errors'
 import { useRouter, useSearch } from '@tanstack/react-router'
+import { AxiosError } from 'axios'
 import { useState } from 'react'
 
 export const Login = () => {
@@ -23,7 +23,7 @@ export const Login = () => {
       localStorage.setItem(TOKEN_KEY, token)
       router.history.push(search.redirect ?? '/')
     } catch (e: unknown) {
-      const errorMessage = getErrorMessage(e as AppError)
+      const errorMessage = getErrorMessage(e as AxiosError)
       setErrorMessage(errorMessage)
       console.info(e)
     }
