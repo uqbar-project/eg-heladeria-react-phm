@@ -13,6 +13,7 @@
     "@tanstack/react-router": "^1.112.0",
     "@tanstack/router-devtools": "^1.112.6",
     "@tanstack/router-vite-plugin": "^1.112.3",
+    "axios": "^1.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwind-merge": "^2.2.2",

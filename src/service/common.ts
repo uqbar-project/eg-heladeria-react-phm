@@ -1,9 +1,9 @@
+import axios, { AxiosError, AxiosHeaders, AxiosRequestConfig } from 'axios'
 import { BACKEND_URL, TOKEN_KEY } from './constants'
-
-type RequestBody = string | number | boolean | null | { [key: string]: RequestBody } | RequestBody[]
 
 const getCookie = (name: string): string => {
   const nameLenPlus = (name.length + 1)
+  console.info('document.cookie', document.cookie)
   return document.cookie
     .split(';')
     .map(cookie => cookie.trim())
@@ -15,34 +15,18 @@ const getCookie = (name: string): string => {
     })[0] || ''
 }
 
-export async function httpRequest<T>(request: RequestInfo): Promise<T> {
-  const okRequest = (typeof request === 'string') ? new Request(request) : request
-  if (okRequest.url !== '/login') {
-    const token = localStorage.getItem(TOKEN_KEY) ?? ''
-    okRequest.headers.append('Authorization', `Bearer ${token}`);
+export async function httpRequest<T>(request: AxiosRequestConfig): Promise<T> {
+  const token = localStorage.getItem(TOKEN_KEY) ?? ''
+  const okRequest = {
+    ...request,
+    method: request.method ?? 'GET',
+    headers: request.headers ?? new AxiosHeaders().setAuthorization(`Bearer ${token}`),
   }
-  if (['POST', 'PUT'].includes(okRequest.method)) {
-    const csrfToken = getCookie('XSRF-TOKEN')
-    okRequest.headers.append('X-XSRF-TOKEN', csrfToken)
-  }
-  const response = await fetch(okRequest)
-  const finalResponse = response.headers.get("Content-Type") === 'application/json' ?  await response.json() : await response.text()
-
-  if (!response.ok) {
-    throw finalResponse
-  }
-
-  return finalResponse
+  okRequest.withCredentials = true
+  // if (['POST', 'PUT'].includes(request.method!)) {
+  //   const csrfToken = getCookie('XSRF-TOKEN')
+  //   okRequest.headers!.append('X-XSRF-TOKEN', csrfToken)
+  // }
+  const response = await axios(okRequest)
+  return response.data
 }
-
-export async function customRequest<T>(route: string, body: RequestBody, method = 'POST') {
-  return httpRequest<T>(
-    new Request(`${BACKEND_URL}${route}`, {
-      method,
-      body: JSON.stringify(body),
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-    })
-  )
-}
-

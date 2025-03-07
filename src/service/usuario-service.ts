@@ -1,4 +1,5 @@
-import { customRequest } from "./common"
+import { httpRequest } from "./common"
+import { BACKEND_URL } from "./constants"
 
 export type CredencialesDTO = {
   usuario: string,
@@ -6,5 +7,9 @@ export type CredencialesDTO = {
 }
 
 export async function loginUser(usuario: string, password: string): Promise<string> {
-  return customRequest<string>('/login', { usuario, password })
+  return httpRequest<string>({
+    method: 'POST',
+    url: `${BACKEND_URL}/login`, 
+    data: { usuario, password }
+  })
 }
