@@ -2,7 +2,6 @@ import { TOKEN_KEY } from '@/service/constants'
 import { redirect } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
 import { isSessionExpired } from './errors'
-import { AxiosError } from 'axios'
 
 export const onErrorRoute = (error: AxiosError) => {
   if (isSessionExpired(error)) {
