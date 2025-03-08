@@ -1,9 +1,9 @@
 import { TOKEN_KEY } from '@/service/constants'
-import { AppError } from '@/types'
 import { redirect } from '@tanstack/react-router'
+import { AxiosError } from 'axios'
 import { isSessionExpired } from './errors'
 
-export const onErrorRoute = (error: AppError) => {
+export const onErrorRoute = (error: AxiosError) => {
   if (isSessionExpired(error)) {
     localStorage.removeItem(TOKEN_KEY)
   }
