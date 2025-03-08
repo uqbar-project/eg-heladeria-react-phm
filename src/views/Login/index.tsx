@@ -2,7 +2,6 @@ import Button from '@/components/Button'
 import Card from '@/components/Card'
 import Icon from '@/components/Icon'
 import Input from '@/components/Input'
-import { TOKEN_KEY } from '@/service/constants'
 import { loginUser } from '@/service/usuario-service'
 import { getErrorMessage } from '@/utils/errors'
 import { useRouter, useSearch } from '@tanstack/react-router'
@@ -19,8 +18,7 @@ export const Login = () => {
   const login = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     try {
       event.preventDefault()
-      const token = await loginUser(usuario, password)
-      localStorage.setItem(TOKEN_KEY, token)
+      await loginUser(usuario, password)
       router.history.push(search.redirect ?? '/')
     } catch (e: unknown) {
       const errorMessage = getErrorMessage(e as AxiosError)
