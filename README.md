@@ -1,6 +1,8 @@
 
 ## Ejemplo Heladería para PHM
 
+[![Build React App](https://github.com/uqbar-project/eg-heladeria-react-phm/actions/workflows/build.yml/badge.svg)](https://github.com/uqbar-project/eg-heladeria-react-phm/actions/workflows/build.yml)
+
 ![demo](./video/demo2025-2.gif)
 
 En este ejemplo mostramos un frontend en React que maneja **autenticación** mediante JWT (JSON Web Token). Además utiliza
