@@ -3,10 +3,10 @@ import ErrorModal from '@/components/Modal/ErrorModal'
 import SuccessModal from '@/components/Modal/SuccessModal'
 import { Heladeria } from '@/model/heladeria'
 import heladeriaService from '@/service/heladeria-service'
-import { AppError } from '@/types'
 import { useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
 import { sonHeladeriasDistintas } from './utils'
+import { AxiosError } from 'axios'
 
 type Props = {
   heladeria: Heladeria
@@ -16,7 +16,7 @@ type Props = {
 
 const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
   const { navigate } = useRouter()
-  const [error, setError] = useState<AppError>()
+  const [error, setError] = useState<AxiosError>()
   const [isSuccess, setIsSuccess] = useState(false)
 
   const onCancel = () => navigate({ to: '/home' })
@@ -35,7 +35,7 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
       onAccept?.(heladeriaActualizada)
     } catch (error) {
       console.info(error)
-      setError(error as AppError)
+      setError(error as AxiosError)
     }
   }
 

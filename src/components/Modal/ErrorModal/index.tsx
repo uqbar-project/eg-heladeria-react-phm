@@ -7,14 +7,10 @@ import { getErrorMessage, isSessionExpired } from '@/utils/errors'
 import { HttpStatusCodes } from '@/constants/http'
 import { TOKEN_KEY } from '@/service/constants'
 import { useRouter } from '@tanstack/react-router'
-
-type Error = {
-  status?: number
-  message: string
-}
+import { AxiosError } from 'axios'
 
 type Props = {
-  error?: Error
+  error?: AxiosError
   onClose?: () => void
   onRetry?: () => void
   title?: ReactNode
@@ -45,7 +41,7 @@ const ErrorModal = ({ error, title, onClose, onRetry }: Props) => {
             {error.status === HttpStatusCodes.BAD_REQUEST ? (
               <>
                 <p className='text-[12px]'>Por favor revisá los siguientes errores:</p>
-                <RenderErrorList errors={error.message} />
+                <RenderErrorList errors={errorMessage} />
               </>
             ) : (
               <p className='text-[12px] text-center'>{errorMessage}</p>
