@@ -25,7 +25,7 @@ export const Login = () => {
     } catch (e: unknown) {
       const errorMessage = getErrorMessage(e as AxiosError)
       setErrorMessage(errorMessage)
-      console.info(e)
+      console.error(e)
     }
   }
 

@@ -73,9 +73,9 @@ const login = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => 
     localStorage.setItem(TOKEN_KEY, token)  // <== guardamos en el local storage el token
     router.history.push(search.redirect ?? '/')
   } catch (e: unknown) {
-    const errorMessage = getErrorMessage(e as AppError)
+    const errorMessage = getErrorMessage(e as AxiosError)
     setErrorMessage(errorMessage)   // <== acá manejamos cuando se ingresan credenciales inválidas
-    console.info(e)
+    console.error(e)
   }
 }
 ```
@@ -97,34 +97,53 @@ El comportamiento común de un usuario es que comienza a utilizar una aplicació
 En el archivo de routing definimos un handler específico para estos casos:
 
 ```ts
-export const onErrorRoute = (error: Error) => {
-  if (error.message === 'Sesión vencida') {
-    localStorage.removeItem(TOKEN_KEY)        // eliminamos el token vencido
+// errors.ts
+export const isSessionExpired = (error: AxiosError) => error.status === HttpStatusCodes.UNAUTHORIZED
+
+// routes.ts
+export const onErrorRoute = (error: AxiosError) => {
+  if (isSessionExpired(error)) {
+    // eliminamos el token vencido
+    localStorage.removeItem(TOKEN_KEY)
   }
 }
 ```
 
 ## Envío del token en cada request
 
-En el ejemplo tenemos una función para manejar cada request, aquí aprovechamos la oportunidad para enviar el **token**
+En el ejemplo tenemos una función para manejar cada request, aquí aprovechamos la oportunidad para enviar 
+
+1. el **token** con las credenciales (Bearer token), que tenemos en nuestro local storage
+
+
+![Bearer token](./images/bearer_token.png)
+
+2. pero también recibimos con cada **response** del server una cookie que trae otro token, el que evita que nos hagan CSRF. 
+
+![cookie response](./images/xsrf-cookie.png)
+
+Lo que nosotros hacemos es tomar esa entrada XSRF-TOKEN de la cookie e inyectarla en el header de la siguiente request. La clave es "X-XSRF-TOKEN", y para hacer eso necesitamos decirle a axios que traiga las credenciales (`withCredentials`). Si bien esta configuración va a deprecarse en favor de `withXSRFToken`, por el momento la necesitamos.
+
+![request xsrf token](./images/xsrf-token-header-request.png)
+
+El server recibe ese token para las operaciones con efecto como la actualización de la heladería y eso permite que todo funcione correctamente.
 
 ```ts
-export async function httpRequest<T>(request: RequestInfo): Promise<T> {
-  const okRequest = (typeof request === 'string') ? new Request(request) : request
-  // busco el token en el local storage y lo agrego al header del request
+// archivo common.ts
+export async function httpRequest<T>(request: AxiosRequestConfig): Promise<T> {
   const token = localStorage.getItem(TOKEN_KEY) ?? ''
-  okRequest.headers.append('Authorization', `Bearer ${token}`);
-  const response = await fetch(okRequest)
-  //
-  const finalResponse = response.headers.get("Content-Type") === 'application/json' ?  await response.json() : await response.text()
-
-  if (!response.ok) {
-    throw finalResponse
+  const headers = request.headers as AxiosHeaders ?? new AxiosHeaders()
+  headers.setAuthorization(`Bearer ${token}`)
+  const okRequest = {
+    ...request,
+    headers,
+    withXSRFToken: true,
+    withCredentials: true,
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    xsrfCookieName: 'XSRF-TOKEN',
   }
-
-  return finalResponse
+  const response = await axios(okRequest)
+  return response.data
 }
 ```
-
-![Bearer token](./images/bearer_token_header.png)
 
