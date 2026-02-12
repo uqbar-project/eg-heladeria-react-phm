@@ -20,6 +20,7 @@ const TablaHeladerias = ({ heladerias }: Props) => {
     {
       key: 'editar',
       headerName: 'Editar',
+      className: 'flex justify-center',
       render: (heladeria) => (
         <Icon name={'Edit'} className='flex w-full justify-center' onClick={() => editarHeladeria(heladeria)} />
       ),
