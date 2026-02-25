@@ -5,6 +5,28 @@
 
 ![demo](./video/demo2025-2.gif)
 
+## Instalación
+
+Este proyecto utiliza **pnpm** como gestor de paquetes. Para instalar las dependencias:
+
+```bash
+pnpm install
+```
+
+Si no tienes pnpm instalado, puedes instalarlo con:
+```bash
+npm install -g pnpm
+# o usando corepack (Node.js 16.10+)
+corepack enable
+```
+
+## Scripts disponibles
+
+- `pnpm dev` - Inicia el servidor de desarrollo
+- `pnpm build` - Compila la aplicación para producción
+- `pnpm lint` - Ejecuta el linter
+- `pnpm preview` - Previsualiza la aplicación compilada
+
 En este ejemplo mostramos un frontend en React que maneja **autenticación** mediante JWT (JSON Web Token). Además utiliza
 
 - [Tailwind](https://tailwindcss.com/) como biblioteca de css

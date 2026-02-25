@@ -12,7 +12,9 @@ const Modal = ({ isOpened, close, children, ...props }: Props) => {
   const ref = useRef<HTMLDialogElement>(null)
 
   const onCancel = (e: React.SyntheticEvent<HTMLDialogElement, Event>) => {
-    !close && e.preventDefault()
+    if (!close) {
+      e.preventDefault()
+    }
     close?.()
   }
 

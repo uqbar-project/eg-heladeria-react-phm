@@ -21,5 +21,6 @@ td {
 }
 
 th {
-  @apply bg-primary-200 font-normal;
+  background-color: #e2e8f0;
+  font-weight: 400;
 }

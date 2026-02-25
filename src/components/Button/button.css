@@ -1,20 +1,25 @@
 button.button {
-  @apply py-1 px-4 rounded h-10;
+  padding: 0.25rem 1rem;
+  border-radius: 0.25rem;
+  height: 2.5rem;
   transition: all 0.2s ease;
 }
 
 button.button-outlined {
-  @apply bg-white border-primary-800 border;
+  background-color: white;
+  border: 1px solid #1e293b;
 }
 
 button.button-primary {
-  @apply bg-primary-800 text-white;
+  background-color: #1e293b;
+  color: white;
 }
 
 button.button-primary:disabled {
-  @apply bg-primary-200 text-white;
+  background-color: #e2e8f0;
+  color: white;
 }
 
 button.button-primary:enabled:hover {
-  @apply bg-primary-700;
+  background-color: #334155;
 }
