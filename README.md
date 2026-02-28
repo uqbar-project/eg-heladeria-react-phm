@@ -171,3 +171,24 @@ export async function httpRequest<T>(request: AxiosRequestConfig): Promise<T> {
 }
 ```
 
+## Refresh Token
+
+Como paso adicional, implementamos un refresh token para evitar que el usuario tenga que volver a loguearse manualmente cuando el token de acceso expira. El backend devuelve dos tokens: uno de acceso (corto plazo, llamado `accessToken`) y uno de refresh (largo plazo). Cuando el token de acceso vence, usamos el refresh token para obtener uno nuevo automáticamente, mejorando la experiencia del usuario.
+
+### Flujo
+
+1. **Login** → el backend devuelve `{ accessToken, refreshToken }` → Se almacenan ambos en localStorage
+2. **Request API** → Se envía el `accessToken` en el header Authorization con cada pedido, por ejemplo para consultar heladerías o para actualizarlas.
+
+3. En algún momento, **el accessToken expira y el backend devuelve un error 401** → el interceptor axios detecta el error
+4. y llama al endpoint **`/refresh?refreshToken=...`** pasando el refresh token como query parameter
+5. Se obtiene entonces un **nuevo accessToken** que se actualiza en el localStorage
+6. **Retry** → se reintenta el request original con el nuevo token
+
+Si el refresh token también vence, se borran ambos tokens y la app nos redirige al login. 
+
+**Importante: Manejo de requests concurrentes**
+
+Si llegan múltiples requests que fallan con 401 mientras ya se está ejecutando un refresh, no queremos disparar varios refreshes simultáneos. En ese momento se activa `queueRequest`: los requests pendientes se encolan y esperan a que termine el refresh en curso. Cuando se obtiene el nuevo token, se procesa la cola (`processQueue`) y se reintentan todos los requests encolados con el token nuevo.
+
+
