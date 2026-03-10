@@ -1,0 +1,137 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+# =============================================================================
+# CodeRabbit - Configuración para eg-heladeria-react-phm
+# Proyecto educativo de uqbar-project (UNSAM)
+# =============================================================================
+
+language: 'es-AR'
+
+early_access: false
+
+tone_instructions: >
+  Repo educativo (UNSAM/Uqbar) preparado por docentes como referencia
+  para alumnos de React, TypeScript y autenticación frontend.
+  Feedback directo y técnico. Priorizá claridad pedagógica,
+  seguridad (JWT/CSRF) y buenas prácticas.
+
+reviews:
+  profile: 'assertive'
+
+  # No auto-aprobar PRs aunque los comentarios queden resueltos.
+  request_changes_workflow: false
+
+  high_level_summary: true
+  high_level_summary_in_walkthrough: true
+
+  poem: false
+
+  review_status: true
+  commit_status: true
+  fail_commit_status: false
+
+  collapse_walkthrough: true
+  changed_files_summary: true
+  estimate_code_review_effort: true
+  sequence_diagrams: false
+
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - main
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 3
+    ignore_title_keywords:
+      - 'WIP'
+      - 'Draft'
+
+  path_instructions:
+    - path: 'src/**/*.tsx'
+      instructions: >
+        Revisá los componentes React con foco en:
+        - Separación de responsabilidades (componente vs lógica vs servicio)
+        - Uso correcto de hooks (useEffect, useState, custom hooks)
+        - Manejo de loading states y errores en la UI
+        - Accesibilidad básica (labels, roles, alt en imágenes)
+        - Que el código sea claro como material de referencia para alumnos
+
+    - path: 'src/**/*.ts'
+      instructions: >
+        Revisá con foco en:
+        - Tipado estricto de TypeScript (evitar any, usar interfaces)
+        - Manejo de errores en llamadas HTTP (axios)
+        - Seguridad: manejo correcto de tokens JWT en localStorage,
+          envío de XSRF-TOKEN, configuración de withCredentials
+        - Funciones puras y reutilizables
+
+    - path: 'src/routes/**'
+      instructions: >
+        Este proyecto usa TanStack Router con file-based routing. Revisá:
+        - Guardas de autenticación (redirect al login si no hay token)
+        - Manejo de sesión vencida (error 401 → limpiar token)
+        - Tipado correcto de las rutas y search params
+
+    - path: 'src/**/*.css'
+      instructions: >
+        El proyecto usa Tailwind CSS. Revisá que:
+        - No haya CSS custom innecesario cuando Tailwind lo resuelve
+        - Las clases estén organizadas de forma legible
+        - No se dupliquen estilos
+
+    - path: '.github/workflows/**'
+      instructions: >
+        Revisá con foco en:
+        - Correctitud del workflow
+        - Riesgos de seguridad (secrets expuestos, actions no pinneadas)
+        - Uso de cachés y versiones de actions
+        - No sugieras cambios cosméticos
+
+    - path: 'package.json'
+      instructions: >
+        Revisá:
+        - Dependencias innecesarias o desactualizadas
+        - Scripts coherentes
+        - Que no haya dependencias de producción en devDependencies
+          o viceversa
+
+    - path: 'README.md'
+      instructions: >
+        Revisá solo exactitud técnica, pasos rotos y ambigüedades.
+        Evitá comentarios de estilo salvo que mejoren claramente la comprensión.
+
+    - path: 'vite.config.ts'
+      instructions: >
+        Revisá la configuración de Vite:
+        - Plugins correctamente configurados
+        - Proxy o configuraciones de desarrollo coherentes
+        - No exponer configuraciones sensibles
+
+    - path: 'eslint.config.js'
+      instructions: >
+        Revisá que las reglas de ESLint sean coherentes con el proyecto
+        y no contradigan la configuración de Prettier.
+
+  path_filters:
+    - '!**/node_modules/**'
+    - '!**/dist/**'
+    - '!**/pnpm-lock.yaml'
+    - '!**/images/**'
+    - '!**/video/**'
+    - '!**/public/**'
+    - '!**/*.png'
+    - '!**/*.jpg'
+    - '!**/*.jpeg'
+    - '!**/*.gif'
+    - '!**/*.svg'
+    - '!**/*.mp4'
+
+chat:
+  auto_reply: true
+
+# knowledge_base: desactivado por ahora para arrancar conservador.
+# Si los reviews mejorarían con contexto acumulado, descomentar:
+# knowledge_base:
+#   opt_out: false
+#   learnings:
+#     scope: "auto"
