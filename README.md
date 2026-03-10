@@ -185,7 +185,7 @@ Como paso adicional, implementamos un refresh token para evitar que el usuario t
 5. Se obtiene entonces un **nuevo accessToken** que se actualiza en el localStorage
 6. **Retry** → se reintenta el request original con el nuevo token
 
-Si el refresh token también vence, se borran ambos tokens y la app nos redirige al login. 
+Si el refresh token también vence, se borran ambos tokens y la app nos redirige al login.
 
 **Importante: Manejo de requests concurrentes**
 
