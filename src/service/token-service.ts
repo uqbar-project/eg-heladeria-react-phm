@@ -37,8 +37,8 @@ export async function refreshAccessToken(): Promise<string> {
 
   try {
     const response = await axios.post<RefreshTokenResponse>(
-      `${BACKEND_URL}/refresh?refreshToken=${encodeURIComponent(refreshToken)}`,
-      {},
+      `${BACKEND_URL}/refresh`,
+      { refreshToken },
       {
         withXSRFToken: true,
         withCredentials: true,

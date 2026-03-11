@@ -181,7 +181,7 @@ Como paso adicional, implementamos un refresh token para evitar que el usuario t
 2. **Request API** → Se envía el `accessToken` en el header Authorization con cada pedido, por ejemplo para consultar heladerías o para actualizarlas.
 
 3. En algún momento, **el accessToken expira y el backend devuelve un error 401** → el interceptor axios detecta el error
-4. y llama al endpoint **`/refresh?refreshToken=...`** pasando el refresh token como query parameter
+4. y llama al endpoint **`/refresh`** pasando el refresh token en el request body
 5. Se obtiene entonces un **nuevo accessToken** que se actualiza en el localStorage
 6. **Retry** → se reintenta el request original con el nuevo token
 

@@ -27,7 +27,6 @@ const queueRequest = (originalRequest: InternalAxiosRequestConfig) => {
     failedQueue.push({ resolve, reject })
   })
     .then((token) => retryRequest(originalRequest, token as string))
-    .catch((err) => Promise.reject(err))
 }
 
 const processQueue = (result: QueueResult) => {
