@@ -3,11 +3,7 @@ import { redirect } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
 
 export const onErrorRoute = (error: AxiosError) => {
-  // Don't clear tokens here - let the axios interceptor handle refresh
-  // Only clear if it's not a 401 (refresh failed)
-  if (error.response?.status !== 401) {
-    clearTokens()
-  }
+  console.error('Error en ruta:', error.response?.status, error.message)
 }
 
 export const onBeforeLoad = () => {
