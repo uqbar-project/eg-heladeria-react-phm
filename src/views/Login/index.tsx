@@ -54,7 +54,12 @@ export const Login = () => {
             onClick={login}
           />
         </form>
-        {errorMessage && <div className='error'>{errorMessage}</div>}
+        {errorMessage && (
+          <div className='error'>
+            <Icon name='ErrorOutlineThin' className='h-5 w-5 fill-error-600 flex-shrink-0' />
+            <span>{errorMessage}</span>
+          </div>
+        )}
       </Card>
     </section>
   )

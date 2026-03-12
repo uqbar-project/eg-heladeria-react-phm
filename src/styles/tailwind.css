@@ -13,6 +13,10 @@
   --color-primary-900: #0f172a;
   --color-primary-950: #020617;
   --color-error-default: #fa7f7b;
+  --color-error-50: #fef2f2;
+  --color-error-200: #fecaca;
+  --color-error-600: #dc2626;
+  --color-error-800: #991b1b;
   --color-success-default: #4aa17a;
   /* Color de acento para elementos interactivos */
   --color-accent-50: #eef2ff;
