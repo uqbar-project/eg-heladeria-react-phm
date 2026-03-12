@@ -16,7 +16,7 @@ const RadioGroup = ({ value, options, onChange, label }: Props) => {
   return (
     <div className='flex flex-col gap-4'>
       {label && <Label>{label}</Label>}
-      <div className='flex gap-4'>
+      <div className='flex gap-4 flex-wrap'>
         {options.map((option) => {
           const { value: optionValue, label } = option
 
