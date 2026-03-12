@@ -15,7 +15,7 @@ const Input = ({ label, ...props }: Props) => {
       {!!label && (isValidElement(label) ? label : <Label htmlFor={id}>{label}</Label>)}
       <input
         {...props}
-        className='border-gray-200 border rounded text-[1em] text-primary-600 p-2 outline-none'
+        className='border-gray-200 border rounded text-[1em] text-primary-600 p-2 outline-none transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500/20'
         type={type}
       ></input>
     </div>
