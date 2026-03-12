@@ -10,9 +10,7 @@ let failedQueue: Array<{
   reject: (error: unknown) => void
 }> = []
 
-type QueueResult = 
-  | { type: 'success'; token: string }
-  | { type: 'error'; error: unknown }
+type QueueResult = { type: 'success'; token: string } | { type: 'error'; error: unknown }
 
 const retryRequest = (originalRequest: InternalAxiosRequestConfig, token: string) => {
   if (originalRequest.headers) {
@@ -24,8 +22,7 @@ const retryRequest = (originalRequest: InternalAxiosRequestConfig, token: string
 const queueRequest = (originalRequest: InternalAxiosRequestConfig) => {
   return new Promise<string>((resolve, reject) => {
     failedQueue.push({ resolve, reject })
-  })
-    .then((token) => retryRequest(originalRequest, token))
+  }).then((token) => retryRequest(originalRequest, token))
 }
 
 const processQueue = (result: QueueResult) => {
@@ -65,7 +62,7 @@ axiosInstance.interceptors.response.use(
     // Check WWW-Authenticate header to determine if it's token expiration
     const wwwAuthenticate = error.response.headers['www-authenticate']
     const isTokenExpired = wwwAuthenticate?.includes('error="invalid_token"')
-    
+
     // Only attempt refresh if token is expired
     if (!isTokenExpired) {
       return Promise.reject(error)
@@ -98,8 +95,8 @@ axiosInstance.interceptors.response.use(
 export { axiosInstance }
 
 export async function httpRequest<T>(request: AxiosRequestConfig): Promise<T> {
-  const headers = request.headers as AxiosHeaders ?? new AxiosHeaders()
-  
+  const headers = (request.headers as AxiosHeaders) ?? new AxiosHeaders()
+
   const okRequest: AxiosRequestConfig = {
     ...request,
     headers,
@@ -108,7 +105,7 @@ export async function httpRequest<T>(request: AxiosRequestConfig): Promise<T> {
     xsrfHeaderName: 'X-XSRF-TOKEN',
     xsrfCookieName: 'XSRF-TOKEN',
   }
-  
+
   const response = await axiosInstance(okRequest)
   return response.data
 }

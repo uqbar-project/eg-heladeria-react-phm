@@ -7,7 +7,7 @@ export const onErrorRoute = (error: AxiosError) => {
   if (error.response?.status === 401) {
     const wwwAuthenticate = error.response.headers['www-authenticate']
     const isTokenExpired = wwwAuthenticate?.includes('error="invalid_token"')
-    
+
     // Only redirect if it's not a token expiration (those are handled by interceptor)
     if (!isTokenExpired) {
       clearTokens()

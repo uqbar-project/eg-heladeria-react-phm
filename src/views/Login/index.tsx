@@ -32,15 +32,15 @@ export const Login = () => {
       <Card title='Login'>
         <form className='mt-5 mb-5'>
           <Input
-            className="mt-2 mb-5"
+            className='mt-2 mb-5'
             type='text'
             autoComplete='off'
             label='Usuario'
             value={usuario}
             onChange={(e) => setUsuario(e.target.value)}
           />
-          <Input 
-            className="mt-2 mb-8"
+          <Input
+            className='mt-2 mb-8'
             type='password'
             autoComplete='off'
             label='Password'
@@ -54,7 +54,7 @@ export const Login = () => {
             onClick={login}
           />
         </form>
-        {errorMessage && <div className="error">{errorMessage}</div>}
+        {errorMessage && <div className='error'>{errorMessage}</div>}
       </Card>
     </section>
   )

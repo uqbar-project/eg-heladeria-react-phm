@@ -30,7 +30,7 @@ export function isAuthenticated(): boolean {
 
 export async function refreshAccessToken(): Promise<string> {
   const refreshToken = getRefreshToken()
-  
+
   if (!refreshToken) {
     throw new Error('No refresh token available')
   }
@@ -46,7 +46,7 @@ export async function refreshAccessToken(): Promise<string> {
         xsrfCookieName: 'XSRF-TOKEN',
       }
     )
-    
+
     const { accessToken, refreshToken: newRefreshToken } = response.data
     setTokens(accessToken, newRefreshToken)
     return accessToken
