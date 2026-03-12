@@ -36,7 +36,18 @@ const TablaGustos = ({ heladeria, setHeladeria }: Props) => {
     }))
     .sort((a, b) => a.nombre.localeCompare(b.nombre))
 
-  return <Table className='h-[220px]' data={data} columns={gustosColumns} />
+  return (
+    <Table
+      className='h-[220px]'
+      data={data}
+      columns={gustosColumns}
+      emptyState={{
+        icon: 'Icecream',
+        title: 'No hay gustos',
+        description: 'Agregá gustos con el botón +',
+      }}
+    />
+  )
 }
 
 export default TablaGustos

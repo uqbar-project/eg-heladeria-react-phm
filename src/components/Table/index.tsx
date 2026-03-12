@@ -1,7 +1,7 @@
 // table reusable component
 import { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
-import Icon from '../Icon'
+import Icon, { IconsNames } from '../Icon'
 import './styles.css'
 
 type Row = {
@@ -17,13 +17,27 @@ export type Column<T extends Row> = {
   render?: (row: T) => ReactNode
 }
 
+type EmptyState = {
+  icon?: IconsNames
+  title?: string
+  description?: string
+}
+
+const defaultEmptyState: EmptyState = {
+  icon: 'Search',
+  title: 'No se encontraron resultados',
+  description: 'Intentá con otros criterios de búsqueda',
+}
+
 type Props<T extends Row> = {
   data: T[]
   columns: Column<T>[]
   className?: string
+  emptyState?: EmptyState
 }
 
-const Table = <T extends Row>({ data, columns, className }: Props<T>) => {
+const Table = <T extends Row>({ data, columns, className, emptyState }: Props<T>) => {
+  const { icon, title, description } = { ...defaultEmptyState, ...emptyState }
   return (
     <section
       className={twMerge(
@@ -45,10 +59,10 @@ const Table = <T extends Row>({ data, columns, className }: Props<T>) => {
           {data.length === 0 && (
             <tr>
               <td colSpan={columns.length}>
-                <div className='flex flex-col items-center justify-center py-12 text-primary-400'>
-                  <Icon name='Search' className='h-12 w-12 fill-primary-300 mb-3' />
-                  <p className='text-base font-medium'>No se encontraron resultados</p>
-                  <p className='text-sm'>Intentá con otros criterios de búsqueda</p>
+                <div className='flex flex-col items-center justify-center py-6 text-primary-400'>
+                  <Icon name={icon!} className='h-8 w-8 fill-primary-300 mb-2' />
+                  <p className='text-base font-medium'>{title}</p>
+                  {description && <p className='text-xs text-primary-400'>{description}</p>}
                 </div>
               </td>
             </tr>
