@@ -26,10 +26,17 @@ const Home = () => {
 
   return (
     <>
-      <div className='flex flex-col items-center w-full' title='Salir de la aplicación'>
-        <Icon name={'Power'} onClick={logout} className='mt-5 flex w-full justify-right' />
+      <div className='container flex justify-end mt-4'>
+        <button
+          onClick={logout}
+          title='Salir de la aplicación'
+          className='flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-primary-600 bg-primary-100 transition-colors hover:bg-red-50 hover:text-red-600 group'
+        >
+          <Icon name={'Power'} className='h-4 group-hover:fill-red-500' />
+          <span>Cerrar sesión</span>
+        </button>
       </div>
-      <section className='flex items-center justify-center mt-6 container text-[14px]'>
+      <section className='flex items-center justify-center mt-2 container text-[14px]'>
         <Card>
           <div className='flex flex-col pt-4 gap-4'>
             <BuscarHeladerias valorInicial={busqueda} onSearch={onSearch} />
