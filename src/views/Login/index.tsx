@@ -29,7 +29,7 @@ export const Login = () => {
 
   return (
     <section className='flex items-center justify-center mt-6 container text-[14px]'>
-      <Card title='Login'>
+      <Card title='Login' className='max-w-sm'>
         <form className='mt-5 mb-5'>
           <Input
             className='mt-2 mb-5'
