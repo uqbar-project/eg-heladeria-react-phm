@@ -1,67 +1,74 @@
 @import './tailwind.css';
 @import './components/index.css';
 @import './typography.css';
-@import 'tailwindcss';
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-body {
-  font-family:
-    'Nunito',
-    sans-serif,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Ubuntu;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #1e293b;
-}
+  body {
+    font-family:
+      'Nunito',
+      sans-serif,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Ubuntu;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #1e293b;
+  }
 
-::-webkit-scrollbar {
-  height: 12px;
-  width: 12px;
-}
+  ::-webkit-scrollbar {
+    height: 12px;
+    width: 12px;
+  }
 
-::-webkit-scrollbar-thumb {
-  background-clip: content-box;
-  background-color: #9b9b9b;
-  border: 4px solid transparent;
-  height: 56px;
-  width: 56px;
-}
+  ::-webkit-scrollbar-thumb {
+    background-clip: content-box;
+    background-color: #9b9b9b;
+    border: 4px solid transparent;
+    height: 56px;
+    width: 56px;
+  }
 
-::-webkit-scrollbar-track {
-  background-clip: content-box;
-  border: 4px solid transparent;
-  border-radius: 6px;
-}
+  ::-webkit-scrollbar-track {
+    background-clip: content-box;
+    border: 4px solid transparent;
+    border-radius: 6px;
+  }
 
-select {
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  background: url('/src//assets/icons/select-arrow.svg');
-  background-repeat: no-repeat;
-  background-position: right 0.5rem top 50%;
-  background-size: 1.5rem;
-}
+  select {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    background: url('/src//assets/icons/select-arrow.svg');
+    background-repeat: no-repeat;
+    background-position: right 0.5rem top 50%;
+    background-size: 1.5rem;
+  }
 
-button {
-  cursor: pointer;
-  outline: none;
-}
+  button {
+    cursor: pointer;
+    outline: none;
+  }
 
-button:disabled {
-  cursor: not-allowed;
-}
+  button:disabled {
+    cursor: not-allowed;
+  }
 
-input[type='radio'] {
-  accent-color: #1e293b;
+  input[type='radio'] {
+    accent-color: #1e293b;
+  }
+
+  .error {
+    background-color: darkred;
+    color: white;
+    padding: 1rem;
+  }
 }
 
 @layer components {
@@ -84,10 +91,4 @@ input[type='radio'] {
       max-width: 680px;
     }
   }
-}
-
-.error {
-  background-color: darkred;
-  color: white;
-  padding: 1rem;
 }
