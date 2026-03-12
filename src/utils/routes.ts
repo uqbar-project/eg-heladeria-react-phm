@@ -1,16 +1,33 @@
-import { TOKEN_KEY } from '@/service/constants'
+import { isAuthenticated, clearTokens } from '@/service/token-service'
 import { redirect } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
-import { isSessionExpired } from './errors'
 
 export const onErrorRoute = (error: AxiosError) => {
-  if (isSessionExpired(error)) {
-    localStorage.removeItem(TOKEN_KEY)
+  // Handle 401 errors that are not token expiration
+  if (error.response?.status === 401) {
+    const wwwAuthenticate = error.response.headers['www-authenticate']
+    const isTokenExpired = wwwAuthenticate?.includes('error="invalid_token"')
+    
+    // Only redirect if it's not a token expiration (those are handled by interceptor)
+    if (!isTokenExpired) {
+      clearTokens()
+      throw redirect({
+        to: '/login',
+        search: {
+          redirect: location.pathname,
+        },
+      })
+    }
+  } else {
+    // Para otros errores (500, 404, red), no deslogueamos al usuario
+    // Solo propagamos el error para que se maneje en la UI
+    console.error('Error en la ruta:', error.response?.status, error.message)
+    throw error
   }
 }
 
 export const onBeforeLoad = () => {
-  const isLoggedIn = localStorage.getItem(TOKEN_KEY) !== null
+  const isLoggedIn = isAuthenticated()
   if (!isLoggedIn) {
     throw redirect({
       to: '/login',

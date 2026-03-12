@@ -74,7 +74,7 @@ nos lleve
 ```ts
 // archivo routes.ts
 export const onBeforeLoad = () => {
-  const isLoggedIn = localStorage.getItem(TOKEN_KEY) !== null
+  const isLoggedIn = isAuthenticated() // busca en el local storage
   if (!isLoggedIn) {
     throw redirect({
       to: '/login',
@@ -93,8 +93,7 @@ export const onBeforeLoad = () => {
 const login = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
   try {
     event.preventDefault()
-    const token = await loginUser(usuario, password)
-    localStorage.setItem(TOKEN_KEY, token)  // <== guardamos en el local storage el token
+    await loginUser(usuario, password)  // loginUser internamente llama a setTokens(accessToken, refreshToken)
     router.history.push(search.redirect ?? '/')
   } catch (e: unknown) {
     const errorMessage = getErrorMessage(e as AxiosError)
@@ -170,4 +169,34 @@ export async function httpRequest<T>(request: AxiosRequestConfig): Promise<T> {
   return response.data
 }
 ```
+
+## Refresh Token
+
+Como paso adicional, implementamos un refresh token para evitar que el usuario tenga que volver a loguearse manualmente cuando el token de acceso expira. El backend devuelve dos tokens: uno de acceso (corto plazo, llamado `accessToken`) y uno de refresh (largo plazo). Cuando el token de acceso vence, usamos el refresh token para obtener uno nuevo automáticamente, mejorando la experiencia del usuario.
+
+### Flujo
+
+1. **Login** → el backend devuelve `{ accessToken, refreshToken }` → Se almacenan ambos en localStorage
+2. **Request API** → Se envía el `accessToken` en el header Authorization con cada pedido, por ejemplo para consultar heladerías o para actualizarlas.
+
+3. En algún momento, **el accessToken expira y el backend devuelve un error 401** → el interceptor axios detecta el error
+4. y llama al endpoint **`/refresh`** pasando el refreshToken en el request body
+5. El backend devuelve `{ accessToken, refreshToken }` y la función refreshAccessToken() reemplaza ambos tokens en localStorage (no solo el accessToken)
+6. **Retry** → se reintenta el request original con el nuevo accessToken
+
+Si el refresh token también vence, se borran ambos tokens y la app nos redirige al login.
+
+**Importante: Diferenciación de errores 401**
+
+El sistema distingue entre dos tipos de errores 401:
+
+1. **Token expirado** (`WWW-Authenticate: Bearer error="invalid_token"`) → El interceptor detecta este header y automáticamente intenta refresh el token
+2. **Credenciales inválidas** (401 sin header `invalid_token`) → El interceptor no intenta refresh y `onErrorRoute` redirige directamente al login
+
+Esta distinción permite que el refresh token funcione automáticamente cuando la sesión expira, pero evita intentos innecesarios cuando las credenciales son incorrectas.
+
+**Importante: Manejo de requests concurrentes**
+
+Si llegan múltiples requests que fallan con 401 mientras ya se está ejecutando un refresh, no queremos disparar varios refreshes simultáneos. En ese momento se activa `queueRequest`: los requests pendientes se encolan y esperan a que termine el refresh en curso. Cuando se obtiene el nuevo token, se procesa la cola (`processQueue`) y se reintentan todos los requests encolados con el token nuevo.
+
 
