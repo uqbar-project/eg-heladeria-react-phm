@@ -1,6 +1,7 @@
 // table reusable component
 import { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
+import Icon from '../Icon'
 import './styles.css'
 
 type Row = {
@@ -43,8 +44,12 @@ const Table = <T extends Row>({ data, columns, className }: Props<T>) => {
         <tbody>
           {data.length === 0 && (
             <tr>
-              <td colSpan={columns.length} className='p-3 text-center'>
-                No hay datos
+              <td colSpan={columns.length}>
+                <div className='flex flex-col items-center justify-center py-12 text-primary-400'>
+                  <Icon name='Search' className='h-12 w-12 fill-primary-300 mb-3' />
+                  <p className='text-base font-medium'>No se encontraron resultados</p>
+                  <p className='text-sm'>Intentá con otros criterios de búsqueda</p>
+                </div>
               </td>
             </tr>
           )}
