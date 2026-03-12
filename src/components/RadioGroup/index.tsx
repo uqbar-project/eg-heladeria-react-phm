@@ -20,20 +20,28 @@ const RadioGroup = ({ value, options, onChange, label }: Props) => {
         {options.map((option) => {
           const { value: optionValue, label } = option
 
+          const isChecked = optionValue === value
+
           return (
-            <div key={optionValue} className='flex align-center justify-center items-center gap-2'>
-              <Label htmlFor={optionValue} className='text-[12px] text-primary-600 font-normal'>
-                {label}
-              </Label>
+            <label
+              key={optionValue}
+              htmlFor={optionValue}
+              className={`flex items-center gap-3 px-4 py-2.5 rounded-lg border cursor-pointer transition-all duration-200 ${
+                isChecked
+                  ? 'border-accent-500 bg-accent-500/10 text-accent-700'
+                  : 'border-gray-200 hover:border-accent-300 hover:bg-accent-50'
+              }`}
+            >
               <input
                 type='radio'
                 id={optionValue}
-                className=' border-gray-200 border rounded text-[1em] p-2 outline-none accent-primary-800'
-                checked={optionValue === value}
+                className='w-4 h-4 accent-accent-600'
+                checked={isChecked}
                 value={optionValue}
                 onChange={onChange}
               />
-            </div>
+              <span className='text-sm font-medium'>{label}</span>
+            </label>
           )
         })}
       </div>
