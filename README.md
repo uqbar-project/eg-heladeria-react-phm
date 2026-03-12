@@ -74,7 +74,7 @@ nos lleve
 ```ts
 // archivo routes.ts
 export const onBeforeLoad = () => {
-  const isLoggedIn = localStorage.getItem(TOKEN_KEY) !== null
+  const isLoggedIn = isAuthenticated() // busca en el local storage
   if (!isLoggedIn) {
     throw redirect({
       to: '/login',
@@ -93,8 +93,7 @@ export const onBeforeLoad = () => {
 const login = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
   try {
     event.preventDefault()
-    const token = await loginUser(usuario, password)
-    localStorage.setItem(TOKEN_KEY, token)  // <== guardamos en el local storage el token
+    await loginUser(usuario, password)  // loginUser internamente llama a setTokens(accessToken, refreshToken)
     router.history.push(search.redirect ?? '/')
   } catch (e: unknown) {
     const errorMessage = getErrorMessage(e as AxiosError)
