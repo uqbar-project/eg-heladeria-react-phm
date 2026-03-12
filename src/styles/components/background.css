@@ -1,12 +1,23 @@
 .background {
   position: fixed;
-  top: 0;
+  top: -10%;
+  left: -10%;
   z-index: -1;
-  height: 100%;
-  width: 100%;
-  opacity: 0.1;
+  height: 120%;
+  width: 120%;
+  opacity: 0.08;
   background-image: url('/src/assets/icons/background-pattern.svg');
   background-repeat: repeat;
   background-color: #f1f5f9;
-  background-size: 100px;
+  background-size: 120px;
+}
+
+.background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(241, 245, 249, 0.5) 100%);
 }
