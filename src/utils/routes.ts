@@ -19,14 +19,10 @@ export const onErrorRoute = (error: AxiosError) => {
       })
     }
   } else {
-    // Handle other errors
-    clearTokens()
-    throw redirect({
-      to: '/login',
-      search: {
-        redirect: location.pathname,
-      },
-    })
+    // Para otros errores (500, 404, red), no deslogueamos al usuario
+    // Solo propagamos el error para que se maneje en la UI
+    console.error('Error en la ruta:', error.response?.status, error.message)
+    throw error
   }
 }
 
