@@ -3,7 +3,31 @@ import { redirect } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
 
 export const onErrorRoute = (error: AxiosError) => {
-  console.error('Error en ruta:', error.response?.status, error.message)
+  // Handle 401 errors that are not token expiration
+  if (error.response?.status === 401) {
+    const wwwAuthenticate = error.response.headers['www-authenticate']
+    const isTokenExpired = wwwAuthenticate?.includes('error="invalid_token"')
+    
+    // Only redirect if it's not a token expiration (those are handled by interceptor)
+    if (!isTokenExpired) {
+      clearTokens()
+      throw redirect({
+        to: '/login',
+        search: {
+          redirect: location.pathname,
+        },
+      })
+    }
+  } else {
+    // Handle other errors
+    clearTokens()
+    throw redirect({
+      to: '/login',
+      search: {
+        redirect: location.pathname,
+      },
+    })
+  }
 }
 
 export const onBeforeLoad = () => {

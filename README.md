@@ -181,11 +181,20 @@ Como paso adicional, implementamos un refresh token para evitar que el usuario t
 2. **Request API** → Se envía el `accessToken` en el header Authorization con cada pedido, por ejemplo para consultar heladerías o para actualizarlas.
 
 3. En algún momento, **el accessToken expira y el backend devuelve un error 401** → el interceptor axios detecta el error
-4. y llama al endpoint **`/refresh`** pasando el refresh token en el request body
-5. Se obtiene entonces un **nuevo accessToken** que se actualiza en el localStorage
-6. **Retry** → se reintenta el request original con el nuevo token
+4. y llama al endpoint **`/refresh`** pasando el refreshToken en el request body
+5. El backend devuelve `{ accessToken, refreshToken }` y la función refreshAccessToken() reemplaza ambos tokens en localStorage (no solo el accessToken)
+6. **Retry** → se reintenta el request original con el nuevo accessToken
 
 Si el refresh token también vence, se borran ambos tokens y la app nos redirige al login.
+
+**Importante: Diferenciación de errores 401**
+
+El sistema distingue entre dos tipos de errores 401:
+
+1. **Token expirado** (`WWW-Authenticate: Bearer error="invalid_token"`) → El interceptor detecta este header y automáticamente intenta refresh el token
+2. **Credenciales inválidas** (401 sin header `invalid_token`) → El interceptor no intenta refresh y `onErrorRoute` redirige directamente al login
+
+Esta distinción permite que el refresh token funcione automáticamente cuando la sesión expira, pero evita intentos innecesarios cuando las credenciales son incorrectas.
 
 **Importante: Manejo de requests concurrentes**
 

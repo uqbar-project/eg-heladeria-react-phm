@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosHeaders, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
-import { TOKEN_KEY } from './constants'
-import { refreshAccessToken, clearTokens } from './token-service'
+import { clearTokens, getAccessToken, refreshAccessToken } from './token-service'
 
 // Create axios instance with interceptors
 const axiosInstance = axios.create()
@@ -23,18 +22,18 @@ const retryRequest = (originalRequest: InternalAxiosRequestConfig, token: string
 }
 
 const queueRequest = (originalRequest: InternalAxiosRequestConfig) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<string>((resolve, reject) => {
     failedQueue.push({ resolve, reject })
   })
-    .then((token) => retryRequest(originalRequest, token as string))
+    .then((token) => retryRequest(originalRequest, token))
 }
 
 const processQueue = (result: QueueResult) => {
-  failedQueue.forEach((prom) => {
+  failedQueue.forEach((promise) => {
     if (result.type === 'error') {
-      prom.reject(result.error)
+      promise.reject(result.error)
     } else {
-      prom.resolve(result.token)
+      promise.resolve(result.token)
     }
   })
   failedQueue = []
@@ -43,13 +42,13 @@ const processQueue = (result: QueueResult) => {
 // Request interceptor to add auth header
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem(TOKEN_KEY)
-    if (token && token !== 'undefined' && config.headers) {
+    const token = getAccessToken()
+    if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
   },
-  (error) => Promise.reject(error)
+  (error: AxiosError) => Promise.reject(error)
 )
 
 // Response interceptor to handle 401 and refresh token
@@ -60,6 +59,15 @@ axiosInstance.interceptors.response.use(
 
     // If error is not 401 or request has already been retried, reject
     if (error.response?.status !== 401 || originalRequest._retry) {
+      return Promise.reject(error)
+    }
+
+    // Check WWW-Authenticate header to determine if it's token expiration
+    const wwwAuthenticate = error.response.headers['www-authenticate']
+    const isTokenExpired = wwwAuthenticate?.includes('error="invalid_token"')
+    
+    // Only attempt refresh if token is expired
+    if (!isTokenExpired) {
       return Promise.reject(error)
     }
 
@@ -78,6 +86,8 @@ axiosInstance.interceptors.response.use(
     } catch (refreshError) {
       processQueue({ type: 'error', error: refreshError })
       clearTokens()
+      // Force full page reload to login
+      window.location.href = '/login'
       return Promise.reject(refreshError)
     } finally {
       isRefreshing = false

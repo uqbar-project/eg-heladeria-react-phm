@@ -1,5 +1,6 @@
 import { httpRequest } from "./common"
-import { BACKEND_URL, TOKEN_KEY, REFRESH_TOKEN_KEY } from "./constants"
+import { BACKEND_URL } from "./constants"
+import { setTokens } from "./token-service"
 
 export type CredencialesDTO = {
   usuario: string,
@@ -11,13 +12,12 @@ export type LoginResponse = {
   refreshToken: string,
 }
 
-export async function loginUser(usuario: string, password: string) {
+export async function loginUser(usuario: string, password: string): Promise<void> {
   const response = await httpRequest<LoginResponse>({
     method: 'POST',
     url: `${BACKEND_URL}/login`, 
     data: { usuario, password }
   })
   const { accessToken, refreshToken } = response
-  localStorage.setItem(TOKEN_KEY, accessToken)
-  localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+  setTokens(accessToken, refreshToken)
 }
