@@ -1,3 +1,4 @@
+import { twMerge } from 'tailwind-merge'
 import Label from '../Label'
 
 type RadioGroupOption = {
@@ -10,11 +11,12 @@ type Props = {
   options: RadioGroupOption[]
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   label?: string
+  className?: string
 }
 
-const RadioGroup = ({ value, options, onChange, label }: Props) => {
+const RadioGroup = ({ value, options, onChange, label, className }: Props) => {
   return (
-    <div className='flex flex-col gap-4'>
+    <div className={twMerge('flex flex-col gap-4', className)}>
       {label && <Label>{label}</Label>}
       <div className='flex gap-4 flex-wrap'>
         {options.map((option) => {
@@ -29,7 +31,7 @@ const RadioGroup = ({ value, options, onChange, label }: Props) => {
               className={`flex items-center gap-3 px-4 py-2.5 rounded-lg border cursor-pointer transition-all duration-200 ${
                 isChecked
                   ? 'border-accent-500 bg-accent-500/10 text-accent-700'
-                  : 'border-gray-200 hover:border-accent-300 hover:bg-accent-50'
+                  : 'border-primary-200 hover:border-accent-300 hover:bg-accent-50'
               }`}
             >
               <input

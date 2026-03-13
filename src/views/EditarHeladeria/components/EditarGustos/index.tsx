@@ -3,34 +3,34 @@ import Icon from '@/components/Icon'
 import Label from '@/components/Label'
 import { useModal } from '@/hooks/useModal'
 import { Heladeria } from '@/model/heladeria'
+import { twMerge } from 'tailwind-merge'
 import AgregarGustoModal from './components/AgregarGustosModal'
 import TablaGustos from './components/TablaGustos'
 
 type Props = {
+  className?: string
   heladeria: Heladeria
   setHeladeria: React.Dispatch<React.SetStateAction<Heladeria>>
 }
 
-const EditarGustos = ({ heladeria, setHeladeria }: Props) => {
+const EditarGustos = ({ className, heladeria, setHeladeria }: Props) => {
   const { isOpened, open, close } = useModal()
 
   return (
-    <div className='flex flex-col gap-2'>
-      <div className='flex justify-between items-center w-full'>
+    <div className={twMerge('flex flex-col gap-3.5', className)}>
+      <div className='flex w-full items-center justify-between'>
         <Label>Gustos</Label>
-        <div className='flex items-center gap-2'>
-          <Button
-            type='button'
-            className='button-primary text-xs max-h-8'
-            onClick={open}
-            label={
-              <div className='flex items-center gap-2'>
-                <span>Agregar Gusto</span>
-                <Icon name='PlusCircle' className='fill-white' />
-              </div>
-            }
-          />
-        </div>
+        <Button
+          type='button'
+          className='button-primary min-h-0 px-3 py-1.5 text-xs'
+          onClick={open}
+          label={
+            <div className='flex items-center gap-1.5'>
+              <span>Agregar Gusto</span>
+              <Icon name='PlusCircle' className='h-4 fill-white' />
+            </div>
+          }
+        />
       </div>
       <TablaGustos heladeria={heladeria} setHeladeria={setHeladeria} />
       <AgregarGustoModal isOpened={isOpened} heladeria={heladeria} setHeladeria={setHeladeria} close={close} />

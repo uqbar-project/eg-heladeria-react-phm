@@ -18,7 +18,7 @@ const Select = ({ label, options, ...props }: Props) => {
       {label && <Label htmlFor={id}>{label}</Label>}
       <select
         {...props}
-        className='border-gray-200 border rounded text-[1em] text-primary-600 p-2 outline-none select transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500/20'
+        className='select rounded-lg border border-primary-200 bg-white px-3 py-2.5 text-[1em] text-primary-700 outline-none transition-all focus:border-accent-500 focus:ring-2 focus:ring-accent-500/15'
       >
         {options.map((option) => {
           return (

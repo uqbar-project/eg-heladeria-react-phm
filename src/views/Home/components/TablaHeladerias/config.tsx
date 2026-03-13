@@ -6,7 +6,7 @@ export const tablaHeladeriasColumnsBase: Column<Heladeria>[] = [
     key: 'nombre',
     headerName: 'Nombre',
     className: 'w-[30%]',
-    render: (heladeria) => <span className='line-clamp-1'>{heladeria.nombre}</span>,
+    render: (heladeria) => <span className='line-clamp-1 font-semibold text-primary-900'>{heladeria.nombre}</span>,
   },
   {
     key: 'dueño',

@@ -23,7 +23,16 @@ const TablaGustos = ({ heladeria, setHeladeria }: Props) => {
       headerName: 'Eliminar',
       className: 'text-center',
       render: (gusto) => (
-        <Icon name='Trash' onClick={() => eliminarGusto(gusto.nombre)} className='flex w-full justify-center' />
+        <div className='flex justify-center'>
+          <button
+            type='button'
+            onClick={() => eliminarGusto(gusto.nombre)}
+            aria-label={`Eliminar ${gusto.nombre}`}
+            className='group inline-flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-accent-50'
+          >
+            <Icon name='Trash' className='h-4 fill-primary-500 transition-colors group-hover:fill-error-600' />
+          </button>
+        </div>
       ),
     },
   ]
@@ -38,7 +47,7 @@ const TablaGustos = ({ heladeria, setHeladeria }: Props) => {
 
   return (
     <Table
-      className='h-[220px]'
+      className='min-h-[11rem]'
       data={data}
       columns={gustosColumns}
       emptyState={{

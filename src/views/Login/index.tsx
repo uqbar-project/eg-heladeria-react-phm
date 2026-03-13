@@ -28,11 +28,20 @@ export const Login = () => {
   }
 
   return (
-    <section className='flex items-center justify-center mt-6 container text-[14px]'>
-      <Card title='Login' className='max-w-sm'>
-        <form className='mt-5 mb-5'>
+    <section className='flex min-h-screen items-center justify-center px-4 py-8 text-[14px] min-w-[350px]'>
+      <Card className='mt-0 max-w-md'>
+        <div className='flex items-center gap-3'>
+          <div className='flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-50'>
+            <Icon name='Icecream' className='h-8 fill-accent-600' />
+          </div>
+          <div>
+            <p className='text-xs font-semibold uppercase tracking-widest text-primary-400'>Demo JWT</p>
+            <h1 className='text-2xl font-bold text-primary-950'>Iniciar sesión</h1>
+          </div>
+        </div>
+
+        <form className='mt-6 flex flex-col gap-4'>
           <Input
-            className='mt-2 mb-5'
             type='text'
             autoComplete='off'
             label='Usuario'
@@ -40,7 +49,6 @@ export const Login = () => {
             onChange={(e) => setUsuario(e.target.value)}
           />
           <Input
-            className='mt-2 mb-8'
             type='password'
             autoComplete='off'
             label='Password'
@@ -48,15 +56,17 @@ export const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button
-            className='button-primary'
+            className='button-primary mt-2 w-full'
             title='Ingresar al sistema'
-            label={<Icon className='fill-white' name={'User'} />}
+            label='Ingresar'
             onClick={login}
+            disabled={!usuario || !password}
           />
         </form>
+
         {errorMessage && (
-          <div className='error'>
-            <Icon name='ErrorOutlineThin' className='h-5 w-5 fill-error-600 flex-shrink-0' />
+          <div className='error mt-6'>
+            <Icon name='ErrorOutlineThin' className='h-5 w-5  fill-error-600' />
             <span>{errorMessage}</span>
           </div>
         )}

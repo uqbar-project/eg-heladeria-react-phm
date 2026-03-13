@@ -1,7 +1,7 @@
 import Icon from '@/components/Icon'
 import Table, { Column } from '@/components/Table'
 import { Heladeria } from '@/model/heladeria'
-import { useNavigate } from '@tanstack/react-router'
+import { Link } from '@tanstack/react-router'
 import { tablaHeladeriasColumnsBase } from './config'
 
 type Props = {
@@ -9,12 +9,6 @@ type Props = {
 }
 
 const TablaHeladerias = ({ heladerias }: Props) => {
-  const navigate = useNavigate({ from: '/' })
-
-  const editarHeladeria = (heladeria: Heladeria) => {
-    navigate({ to: '/editar-heladeria/$id', params: { id: heladeria.id.toString() } })
-  }
-
   const columns: Column<Heladeria>[] = [
     ...tablaHeladeriasColumnsBase,
     {
@@ -22,7 +16,16 @@ const TablaHeladerias = ({ heladerias }: Props) => {
       headerName: 'Editar',
       className: 'flex justify-center',
       render: (heladeria) => (
-        <Icon name={'Edit'} className='flex w-full justify-center' onClick={() => editarHeladeria(heladeria)} />
+        <div className='flex justify-center'>
+          <Link
+            to='/editar-heladeria/$id'
+            params={{ id: heladeria.id.toString() }}
+            aria-label={`Editar ${heladeria.nombre}`}
+            className='inline-flex h-10 w-10 items-center justify-center rounded-full transition-all hover:bg-accent-50'
+          >
+            <Icon name='Edit' className='h-5 fill-accent-700' />
+          </Link>
+        </div>
       ),
     },
   ]

@@ -4,11 +4,13 @@ import BuscarHeladerias from './components/BuscarHeladerias'
 import TablaHeladerias from './components/TablaHeladerias'
 import Icon from '@/components/Icon'
 import { TOKEN_KEY } from '@/service/constants'
+import { getPrimaryRole } from '@/service/token-service'
 
 const Home = () => {
   const heladerias = useLoaderData({ from: '/_authenticated/home' })
   const { busqueda } = useSearch({ from: '/_authenticated/home' })
   const navigate = useNavigate()
+  const primaryRole = getPrimaryRole()
 
   const onSearch = async (busqueda: string) => {
     navigate({ to: '/home', search: busqueda ? { busqueda } : {} })
@@ -25,26 +27,36 @@ const Home = () => {
   }
 
   return (
-    <>
-      <div className='container flex justify-end mt-4'>
+    <section className='page-container'>
+      <div className='mb-6 flex items-start justify-between gap-5 flex-wrap'>
+        <div>
+          <div className='flex items-center gap-3'>
+            <div className='flex h-11 w-11 items-center justify-center rounded-2xl bg-accent-50 ring-1 ring-accent-100'>
+              <Icon name='Icecream' className='h-7 fill-accent-600' />
+            </div>
+            <h1 className='text-3xl font-bold text-primary-950'>Heladerías</h1>
+          </div>
+          {primaryRole && (
+            <span className='mt-3 inline-flex rounded-full border border-accent-100 bg-accent-50/80 px-3 py-1 text-xs font-semibold text-accent-700'>
+              Rol: {primaryRole}
+            </span>
+          )}
+        </div>
         <button
           onClick={logout}
           title='Salir de la aplicación'
-          className='flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-primary-600 bg-primary-100 transition-colors hover:bg-red-50 hover:text-red-600 group'
+          className='group inline-flex items-center gap-2 self-start rounded-lg border border-primary-200 bg-white/85 px-3 py-2 text-sm text-primary-600 transition-colors hover:border-error-200 hover:bg-error-50 hover:text-error-600'
         >
-          <Icon name={'Power'} className='h-4 group-hover:fill-red-500' />
+          <Icon name='Power' className='h-4 fill-primary-500 group-hover:fill-error-600' />
           <span>Cerrar sesión</span>
         </button>
       </div>
-      <section className='flex items-center justify-center mt-2 container text-[14px]'>
-        <Card>
-          <div className='flex flex-col pt-4 gap-4'>
-            <BuscarHeladerias valorInicial={busqueda} onSearch={onSearch} />
-            <TablaHeladerias heladerias={heladerias} />
-          </div>
-        </Card>
-      </section>
-    </>
+
+      <Card className='flex flex-col gap-6'>
+        <BuscarHeladerias valorInicial={busqueda} onSearch={onSearch} />
+        <TablaHeladerias heladerias={heladerias} />
+      </Card>
+    </section>
   )
 }
 

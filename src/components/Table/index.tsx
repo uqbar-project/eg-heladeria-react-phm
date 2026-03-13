@@ -59,10 +59,14 @@ const Table = <T extends Row>({ data, columns, className, emptyState }: Props<T>
           {data.length === 0 && (
             <tr>
               <td colSpan={columns.length}>
-                <div className='flex flex-col items-center justify-center py-6 text-primary-400'>
-                  <Icon name={icon!} className='h-8 w-8 fill-primary-300 mb-2' />
-                  <p className='text-base font-medium'>{title}</p>
-                  {description && <p className='text-xs text-primary-400'>{description}</p>}
+                <div className='flex flex-col items-center justify-center py-8 text-primary-500'>
+                  {icon && (
+                    <div className='mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-cream-100'>
+                      <Icon name={icon} className='h-7 w-7 fill-accent-300' />
+                    </div>
+                  )}
+                  <p className='text-base font-semibold'>{title}</p>
+                  {description && <p className='text-sm text-primary-400'>{description}</p>}
                 </div>
               </td>
             </tr>

@@ -45,12 +45,12 @@ const EditarBotones = ({ heladeria, heladeriaOriginal, onAccept }: Props) => {
   })
 
   return (
-    <section className='w-full flex gap-4 justify-center mt-8'>
-      <Button type='button' className='button-outlined' label='Cancelar' onClick={onCancel} />
+    <section className='mt-2 flex w-full justify-end gap-3 border-t border-cream-200 pt-5'>
+      <Button type='button' className='button-outlined min-w-[8rem]' label='Cancelar' onClick={onCancel} />
       <Button
         type='button'
         label='Actualizar'
-        className='button-primary'
+        className='button-primary min-w-[8rem]'
         onClick={actualizarHeladeria}
         disabled={!hayCambiosPendientes || !heladeria.id}
       />

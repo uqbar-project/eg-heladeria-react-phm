@@ -7,17 +7,17 @@ type Props = {
   type?: 'text' | 'number' | 'password' | 'search'
 } & React.InputHTMLAttributes<HTMLInputElement>
 
-const Input = ({ label, ...props }: Props) => {
-  const { id, type = 'text', className } = props
+const Input = ({ label, type = 'text', className, ...props }: Props) => {
+  const { id } = props
 
   return (
     <div className={twMerge('flex flex-col gap-2', className)}>
       {!!label && (isValidElement(label) ? label : <Label htmlFor={id}>{label}</Label>)}
       <input
         {...props}
-        className='border-gray-200 border rounded text-[1em] text-primary-600 p-2 outline-none transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500/20'
+        className='rounded-lg border border-primary-200 bg-white px-3 py-2.5 text-[1em] text-primary-700 outline-none transition-all placeholder:text-primary-400 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/15'
         type={type}
-      ></input>
+      />
     </div>
   )
 }
