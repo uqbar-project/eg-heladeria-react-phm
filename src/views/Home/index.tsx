@@ -31,10 +31,10 @@ const Home = () => {
       <div className='mb-6 flex items-start justify-between gap-5 flex-wrap'>
         <div>
           <div className='flex items-center gap-3'>
-            <div className='flex h-11 w-11 items-center justify-center rounded-2xl bg-accent-50 ring-1 ring-accent-100'>
-              <Icon name='Icecream' className='h-7 fill-accent-600' />
+            <div className='flex h-9 w-9 items-center justify-center rounded-xl bg-accent-50 ring-1 ring-accent-100'>
+              <Icon name='Icecream' className='h-5 fill-accent-600' />
             </div>
-            <h1 className='text-3xl font-bold text-primary-950'>Heladerías</h1>
+            <h1 className='text-2xl font-bold text-primary-950'>Heladerías</h1>
           </div>
           {primaryRole && (
             <span className='mt-3 inline-flex rounded-full border border-accent-100 bg-accent-50/80 px-3 py-1 text-xs font-semibold text-accent-700'>

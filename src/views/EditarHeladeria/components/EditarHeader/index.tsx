@@ -11,13 +11,13 @@ const EditarHeader = () => {
       >
         <Icon name='ArrowBack' className='h-5' />
       </Link>
-      <div className='flex items-center gap-4'>
-        <div className='flex h-11 w-11 items-center justify-center rounded-2xl bg-accent-50'>
-          <Icon name='Icecream' className='h-7 fill-accent-600' />
+      <div className='flex items-center gap-3'>
+        <div className='flex h-9 w-9 items-center justify-center rounded-xl bg-accent-50'>
+          <Icon name='Icecream' className='h-5 fill-accent-600' />
         </div>
         <div>
-          <p className='text-xs uppercase tracking-widest text-primary-400'>Edición</p>
-          <h1 className='text-2xl font-bold text-primary-950'>Editar heladería</h1>
+          <p className='text-[10px] uppercase tracking-widest text-primary-400'>Edición</p>
+          <h1 className='text-xl font-bold text-primary-950'>Editar heladería</h1>
         </div>
       </div>
     </div>

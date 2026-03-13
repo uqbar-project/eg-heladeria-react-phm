@@ -22,7 +22,7 @@ const EditarGustos = ({ className, heladeria, setHeladeria }: Props) => {
         <Label>Gustos</Label>
         <Button
           type='button'
-          className='button-primary min-h-0 px-3 py-1.5 text-xs'
+          className='button-primary button-sm'
           onClick={open}
           label={
             <div className='flex items-center gap-1.5'>

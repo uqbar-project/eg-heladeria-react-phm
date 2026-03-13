@@ -20,14 +20,14 @@ table {
 
 th,
 td {
-  font-size: 0.95em;
-  padding: 14px 16px;
+  font-size: 0.875rem;
+  padding: 12px 14px;
 }
 
 th {
   background:
     linear-gradient(180deg, rgba(244, 241, 236, 0.98) 0%, rgba(240, 234, 226, 0.98) 100%);
-  font-weight: 700;
+  font-weight: 600;
   color: #475569;
 }
 

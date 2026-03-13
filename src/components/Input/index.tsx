@@ -15,7 +15,7 @@ const Input = ({ label, type = 'text', className, ...props }: Props) => {
       {!!label && (isValidElement(label) ? label : <Label htmlFor={id}>{label}</Label>)}
       <input
         {...props}
-        className='rounded-lg border border-primary-200 bg-white px-3 py-2.5 text-[1em] text-primary-700 outline-none transition-all placeholder:text-primary-400 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/15'
+        className='rounded-lg border border-primary-200 bg-white px-3 py-2 text-sm text-primary-700 outline-none transition-all placeholder:text-primary-400 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/15'
         type={type}
       />
     </div>

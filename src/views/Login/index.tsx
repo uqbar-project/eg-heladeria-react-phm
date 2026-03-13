@@ -31,11 +31,11 @@ export const Login = () => {
     <section className='flex min-h-screen items-center justify-center px-4 py-8 text-[14px] min-w-[350px]'>
       <Card className='mt-0 max-w-md'>
         <div className='flex items-center gap-3'>
-          <div className='flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-50'>
-            <Icon name='Icecream' className='h-8 fill-accent-600' />
+          <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-accent-50'>
+            <Icon name='Icecream' className='h-6 fill-accent-600' />
           </div>
           <div>
-            <p className='text-xs font-semibold uppercase tracking-widest text-primary-400'>Demo JWT</p>
+            <p className='text-[10px] uppercase tracking-widest text-primary-400'>Demo JWT</p>
             <h1 className='text-2xl font-bold text-primary-950'>Iniciar sesión</h1>
           </div>
         </div>

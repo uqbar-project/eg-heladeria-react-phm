@@ -28,7 +28,7 @@ const RadioGroup = ({ value, options, onChange, label, className }: Props) => {
             <label
               key={optionValue}
               htmlFor={optionValue}
-              className={`flex items-center gap-3 px-4 py-2.5 rounded-lg border cursor-pointer transition-all duration-200 ${
+              className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border cursor-pointer transition-all duration-200 ${
                 isChecked
                   ? 'border-accent-500 bg-accent-500/10 text-accent-700'
                   : 'border-primary-200 hover:border-accent-300 hover:bg-accent-50'
@@ -42,7 +42,7 @@ const RadioGroup = ({ value, options, onChange, label, className }: Props) => {
                 value={optionValue}
                 onChange={onChange}
               />
-              <span className='text-sm font-medium'>{label}</span>
+              <span className='text-sm'>{label}</span>
             </label>
           )
         })}
