@@ -24,17 +24,24 @@ const AgregarGustoModal = ({ isOpened, heladeria, setHeladeria, close }: Props) 
     close()
   }
 
-  const agregarGusto = async () => {
+  const agregarGusto = () => {
     if (!nuevoGusto.nombre || nuevoGusto.dificultad == undefined) return
     setHeladeria({ ...heladeria, gustos: { ...heladeria.gustos, [nuevoGusto.nombre]: nuevoGusto.dificultad } })
     onClose()
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !error) {
+      e.preventDefault()
+      agregarGusto()
+    }
   }
 
   const error = getGustoError(nuevoGusto, heladeria)
 
   return (
     <Modal id='agregar-gustos' className='h-fit w-[340px]' isOpened={isOpened} close={onClose}>
-      <div className='flex flex-col gap-5 p-6'>
+      <div className='flex flex-col gap-5 p-6' onKeyDown={handleKeyDown}>
         <ModalTitle title='Agregar Gusto' close={onClose} />
         <div className='flex flex-col gap-4'>
           <Input
@@ -65,14 +72,7 @@ const AgregarGustoModal = ({ isOpened, heladeria, setHeladeria, close }: Props) 
 
         <section className='mt-1 flex w-full gap-3'>
           <Button type='button' className='button-outlined flex-1' label='Cancelar' onClick={onClose} />
-          <Button
-            type='button'
-            label='Agregar'
-            title={error}
-            className='button-primary flex-1'
-            onClick={agregarGusto}
-            disabled={!!error}
-          />
+          <Button type='button' label='Agregar' title={error} className='button-primary flex-1' disabled={!!error} onClick={agregarGusto} />
         </section>
       </div>
     </Modal>
