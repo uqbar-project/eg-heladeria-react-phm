@@ -49,8 +49,12 @@ export function getPrimaryRole(): string | null {
   if (!token) return null
 
   const payload = parseJwtPayload(token)
-  const roles = payload?.roles as string[] | undefined
-  return roles?.[0] ?? null
+  const rawRoles = payload?.roles
+  if (Array.isArray(rawRoles)) {
+    const first = rawRoles.find((role): role is string => typeof role === 'string')
+    return first ?? null
+  }
+  return null
 }
 
 export async function refreshAccessToken(): Promise<string> {

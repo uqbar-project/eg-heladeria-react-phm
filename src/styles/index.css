@@ -51,7 +51,7 @@
     appearance: none;
     -moz-appearance: none;
     -webkit-appearance: none;
-    background: url('/src/assets/icons/select-arrow.svg');
+    background: url('../assets/icons/select-arrow.svg');
     background-repeat: no-repeat;
     background-position: right 0.5rem top 50%;
     background-size: 1.5rem;

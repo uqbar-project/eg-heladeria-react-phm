@@ -28,7 +28,7 @@ const TablaGustos = ({ heladeria, setHeladeria }: Props) => {
             type='button'
             onClick={() => eliminarGusto(gusto.nombre)}
             aria-label={`Eliminar ${gusto.nombre}`}
-            className='group inline-flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-accent-50'
+            className='group inline-flex h-9 w-9 items-center justify-center rounded-full transition-colors hover:bg-accent-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-500'
           >
             <Icon name='Trash' className='h-4 fill-primary-500 transition-colors group-hover:fill-error-600' />
           </button>
