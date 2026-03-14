@@ -29,7 +29,7 @@ export const Login = () => {
   }
 
   return (
-    <section className='flex min-h-screen items-center justify-center px-4 py-8 text-[14px] min-w-[350px]'>
+    <section className='flex min-h-screen items-center justify-center px-4 py-8 text-[14px]'>
       <div className='flex w-full max-w-md flex-col gap-4'>
         <Card>
           <div className='flex items-center gap-3'>
