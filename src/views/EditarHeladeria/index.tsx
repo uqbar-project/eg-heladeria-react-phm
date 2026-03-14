@@ -25,7 +25,7 @@ const EditarHeladeria = () => {
     <section className='page-container'>
       <Card className='mx-auto max-w-6xl'>
         <EditarHeader />
-        <form className='space-y-6'>
+        <form className='space-y-6' onSubmit={(e) => e.preventDefault()}>
           <div className='grid gap-x-6 gap-y-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]'>
             <Input
               id='nombreHeladeria'

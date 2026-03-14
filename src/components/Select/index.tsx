@@ -1,3 +1,4 @@
+import { twMerge } from 'tailwind-merge'
 import Label from '../Label'
 
 export type SelectOption = {
@@ -10,7 +11,7 @@ type Props = {
   label?: string
 } & React.SelectHTMLAttributes<HTMLSelectElement>
 
-const Select = ({ label, options, ...props }: Props) => {
+const Select = ({ label, options, className, ...props }: Props) => {
   const { id } = props
 
   return (
@@ -18,7 +19,10 @@ const Select = ({ label, options, ...props }: Props) => {
       {label && <Label htmlFor={id}>{label}</Label>}
       <select
         {...props}
-        className='select rounded-lg border border-primary-200 bg-white px-3 py-2 text-sm text-primary-700 outline-none transition-all focus:border-accent-500 focus:ring-2 focus:ring-accent-500/15'
+        className={twMerge(
+          'select rounded-lg border border-primary-200 bg-white px-3 py-2 text-sm text-primary-700 outline-none transition-all focus:border-accent-500 focus:ring-2 focus:ring-accent-500/15',
+          className
+        )}
       >
         {options.map((option) => {
           return (

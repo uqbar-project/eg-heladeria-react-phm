@@ -15,9 +15,9 @@ export const Login = () => {
   const search = useSearch({ from: '/login' })
   const [errorMessage, setErrorMessage] = useState('')
 
-  const login = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const login = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     try {
-      event.preventDefault()
       await loginUser(usuario, password)
       router.history.push(search.redirect ?? '/')
     } catch (e: unknown) {
@@ -40,7 +40,7 @@ export const Login = () => {
           </div>
         </div>
 
-        <form className='mt-6 flex flex-col gap-4'>
+        <form className='mt-6 flex flex-col gap-4' onSubmit={login}>
           <Input
             type='text'
             autoComplete='off'
@@ -56,17 +56,17 @@ export const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <Button
+            type='submit'
             className='button-primary mt-2 w-full'
             title='Ingresar al sistema'
             label='Ingresar'
-            onClick={login}
             disabled={!usuario || !password}
           />
         </form>
 
         {errorMessage && (
           <div className='error mt-6'>
-            <Icon name='ErrorOutlineThin' className='h-5 w-5  fill-error-600' />
+            <Icon name='ErrorOutlineThin' className='h-5 w-5 fill-error-600' />
             <span>{errorMessage}</span>
           </div>
         )}
