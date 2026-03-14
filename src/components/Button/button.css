@@ -1,25 +1,48 @@
 button.button {
-  padding: 0.25rem 1rem;
-  border-radius: 0.25rem;
-  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
   transition: all 0.2s ease;
 }
 
+button.button:focus-visible {
+  outline: 2px solid var(--color-accent-500);
+  outline-offset: 2px;
+}
+
+button.button-sm {
+  font-size: 0.75rem;
+  padding: 0.375rem 0.75rem;
+}
+
 button.button-outlined {
-  background-color: white;
-  border: 1px solid #1e293b;
+  background-color: rgba(255, 255, 255, 0.88);
+  color: var(--color-primary-700);
+  border: 1px solid var(--color-primary-200);
+}
+
+button.button-outlined:hover {
+  background-color: var(--color-accent-50);
+  border-color: var(--color-accent-300);
+  color: var(--color-accent-700);
 }
 
 button.button-primary {
-  background-color: #1e293b;
+  background-color: var(--color-accent-600);
   color: white;
+  box-shadow: 0 12px 24px rgba(88, 104, 191, 0.18);
 }
 
 button.button-primary:disabled {
-  background-color: #e2e8f0;
-  color: white;
+  background-color: var(--color-primary-200);
+  color: var(--color-primary-400);
+  box-shadow: none;
 }
 
 button.button-primary:enabled:hover {
-  background-color: #334155;
+  background-color: var(--color-accent-700);
 }

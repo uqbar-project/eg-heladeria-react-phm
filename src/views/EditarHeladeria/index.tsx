@@ -7,6 +7,7 @@ import { useState } from 'react'
 import EditarBotones from './components/EditarBotones'
 import EditarDuenio from './components/EditarDuenio'
 import EditarGustos from './components/EditarGustos'
+import EditarHeader from './components/EditarHeader'
 
 const EditarHeladeria = () => {
   const { invalidate } = useRouter()
@@ -21,10 +22,11 @@ const EditarHeladeria = () => {
   }
 
   return (
-    <section className='flex items-center justify-center mt-6 mb-6 container text-[14px]'>
-      <Card showBack>
-        <form className='mt-4'>
-          <div className='flex flex-col gap-y-6'>
+    <section className='page-container'>
+      <Card className='mx-auto max-w-6xl'>
+        <EditarHeader />
+        <form className='space-y-6' onSubmit={(e) => e.preventDefault()}>
+          <div className='grid gap-x-6 gap-y-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]'>
             <Input
               id='nombreHeladeria'
               autoComplete='off'
@@ -32,14 +34,15 @@ const EditarHeladeria = () => {
               value={heladeria.nombre}
               onChange={(e) => setHeladeria({ ...heladeria, nombre: e.target.value })}
             />
+            <EditarDuenio heladeria={heladeria} setHeladeria={setHeladeria} />
             <RadioGroup
+              className='lg:col-span-2'
               label='Tipo de heladería'
               value={heladeria.id ? heladeria.tipoHeladeria : ''}
               options={tipoHeladeriaOptions}
               onChange={(e) => setHeladeria({ ...heladeria, tipoHeladeria: e.target.value as TipoHeladeria })}
             />
-            <EditarDuenio heladeria={heladeria} setHeladeria={setHeladeria} />
-            <EditarGustos heladeria={heladeria} setHeladeria={setHeladeria} />
+            <EditarGustos className='lg:col-span-2' heladeria={heladeria} setHeladeria={setHeladeria} />
           </div>
           <EditarBotones heladeria={heladeria} heladeriaOriginal={heladeriaBackend} onAccept={onAccept} />
         </form>

@@ -24,7 +24,7 @@ const BuscarHeladerias = ({ valorInicial = '', onSearch }: Props) => {
   }
 
   return (
-    <section className='flex flex-row items-center gap-4'>
+    <section className='flex flex-col gap-4 sm:flex-row sm:items-center'>
       <Input
         id='input-buscar'
         value={busqueda}
@@ -37,9 +37,14 @@ const BuscarHeladerias = ({ valorInicial = '', onSearch }: Props) => {
         onKeyUp={handleKeyUp}
       />
       <Button
-        className='button-primary'
+        className='button-primary min-w-[10rem]'
         title='Buscar heladerías'
-        label={<Icon className='fill-white' name={'Search'} />}
+        label={
+          <>
+            <Icon className='h-5 fill-white' name={'Search'} />
+            <span>Buscar</span>
+          </>
+        }
         onClick={handleSearch}
         disabled={busqueda === busquedaPrevia}
       />

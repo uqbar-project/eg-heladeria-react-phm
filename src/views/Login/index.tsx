@@ -15,9 +15,10 @@ export const Login = () => {
   const search = useSearch({ from: '/login' })
   const [errorMessage, setErrorMessage] = useState('')
 
-  const login = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const login = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setErrorMessage('')
     try {
-      event.preventDefault()
       await loginUser(usuario, password)
       router.history.push(search.redirect ?? '/')
     } catch (e: unknown) {
@@ -28,34 +29,49 @@ export const Login = () => {
   }
 
   return (
-    <section className='flex items-center justify-center mt-6 container text-[14px]'>
-      <Card title='Login'>
-        <form className='mt-5 mb-5'>
-          <Input
-            className='mt-2 mb-5'
-            type='text'
-            autoComplete='off'
-            label='Usuario'
-            value={usuario}
-            onChange={(e) => setUsuario(e.target.value)}
-          />
-          <Input
-            className='mt-2 mb-8'
-            type='password'
-            autoComplete='off'
-            label='Password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button
-            className='button-primary'
-            title='Ingresar al sistema'
-            label={<Icon className='fill-white' name={'User'} />}
-            onClick={login}
-          />
-        </form>
-        {errorMessage && <div className='error'>{errorMessage}</div>}
-      </Card>
+    <section className='flex min-h-screen items-center justify-center px-4 py-8 text-[14px]'>
+      <div className='flex w-full max-w-md flex-col gap-4'>
+        <Card>
+          <div className='flex items-center gap-3'>
+            <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-accent-50'>
+              <Icon name='Icecream' className='h-6 fill-accent-600' />
+            </div>
+            <div>
+              <p className='text-[10px] uppercase tracking-widest text-primary-400'>Demo JWT</p>
+              <h1 className='text-2xl font-bold text-primary-950'>Iniciar sesión</h1>
+            </div>
+          </div>
+
+          <form className='mt-6 flex flex-col gap-4' onSubmit={login}>
+            <Input
+              type='text'
+              autoComplete='off'
+              label='Usuario'
+              value={usuario}
+              onChange={(e) => setUsuario(e.target.value)}
+            />
+            <Input
+              type='password'
+              autoComplete='off'
+              label='Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button
+              type='submit'
+              className='button-primary mt-2 w-full'
+              title='Ingresar al sistema'
+              label='Ingresar'
+              disabled={!usuario || !password}
+            />
+          </form>
+        </Card>
+
+        <div className={`error min-h-[44px] transition-opacity ${errorMessage ? 'opacity-100' : 'opacity-0'}`}>
+          <Icon name='ErrorOutlineThin' className='h-5 w-5 fill-error-600' />
+          <span>{errorMessage}</span>
+        </div>
+      </div>
     </section>
   )
 }

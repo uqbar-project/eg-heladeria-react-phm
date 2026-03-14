@@ -32,7 +32,7 @@ const Modal = ({ isOpened, close, children, ...props }: Props) => {
       onCancel={onCancel}
       {...props}
       className={twMerge(
-        'm-auto w-[600px] h-[600px] rounded-2xl outline-none backdrop:bg-gray-600 backdrop:bg-opacity-70 open:animate-fade-in open:backdrop:animate-fade-in',
+        'm-auto w-auto h-auto max-w-[600px] rounded-2xl outline-none backdrop:bg-gray-900/60 backdrop:backdrop-blur-sm open:animate-fade-in open:backdrop:animate-fade-in',
         className
       )}
     >

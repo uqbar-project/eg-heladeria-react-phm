@@ -4,11 +4,11 @@ const RenderErrorList = ({ errors }: Props) => {
   const errorMessages = Array.isArray(errors) ? errors : [errors]
 
   return (
-    <div className='flex flex-col gap-2 bg-gray-200 px-6 py-4 border-r-8 border-error-default'>
+    <div role='alert' aria-live='assertive' className='flex flex-col gap-2 bg-gray-200 px-6 py-4'>
       <ul>
-        {errorMessages.map((err) => {
+        {errorMessages.map((err, index) => {
           return (
-            <li key={err} className='text-[12px]'>
+            <li key={`${err}-${index}`} className='text-[12px]'>
               {err}
             </li>
           )

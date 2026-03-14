@@ -1,6 +1,10 @@
 .table-container {
   overflow: auto;
   max-height: 700px;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 12px rgba(31, 41, 55, 0.06);
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(220, 203, 177, 0.5);
 }
 
 .table-container thead th {
@@ -16,11 +20,30 @@ table {
 
 th,
 td {
-  font-size: 1em;
-  padding: 12px;
+  font-size: 0.875rem;
+  padding: 12px 14px;
 }
 
 th {
-  background-color: #e2e8f0;
-  font-weight: 400;
+  background:
+    linear-gradient(180deg, rgba(244, 241, 236, 0.98) 0%, rgba(240, 234, 226, 0.98) 100%);
+  font-weight: 600;
+  color: #475569;
+}
+
+tbody tr {
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #f3ede6;
+}
+
+tbody tr:hover {
+  background: linear-gradient(90deg, rgba(79, 70, 229, 0.05) 0%, rgba(245, 158, 11, 0.045) 100%);
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+tbody td {
+  color: #334155;
 }
