@@ -16,3 +16,11 @@ export const formatDate = (timestamp?: number | null): string => {
   if (timestamp == null) return 'N/A'
   return new Date(timestamp * 1000).toLocaleString()
 }
+
+export type ProgressStatus = 'ok' | 'warning' | 'danger'
+
+export const getProgressStatus = (progress: number): ProgressStatus => {
+  if (progress > 50) return 'ok'
+  if (progress > 20) return 'warning'
+  return 'danger'
+}
