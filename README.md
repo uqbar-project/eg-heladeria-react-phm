@@ -128,18 +128,24 @@ export function isTokenExpiredError(headers?: Record<string, string>): boolean {
 
 // routes.ts
 export const onErrorRoute = (error: AxiosError) => {
-  if (error.response?.status === 401) {
-    // Solo redirigimos si NO es expiración de token (esas las maneja el interceptor)
-    if (!isTokenExpiredError(error.response.headers as Record<string, string>)) {
-      clearTokens()
-      throw redirect({ to: '/login', search: { redirect: location.pathname } })
-    }
-    // Token expirado: el interceptor de axios detecta el 401,
-    // hace refresh del token y reintenta el request original automáticamente
-    return
+  // Para errores que no son 401, propagamos el error para que se maneje en la UI
+  if (error.response?.status !== 401) {
+    console.error('Error en la ruta:', error.response?.status, error.message)
+    throw error
   }
-  // Para otros errores (500, 404, red), propagamos el error para que se maneje en la UI
-  throw error
+
+  // 401 sin token expirado - credenciales inválidas
+  if (!isTokenExpiredError(error.response.headers as Record<string, string>)) {
+    clearTokens()
+    throw redirect({
+      to: '/login',
+      search: {
+        redirect: location.pathname,
+      },
+    })
+  }
+
+  // Token expirado: el interceptor de axios maneja el refresh automáticamente (acá no hacemos nada)
 }
 ```
 
