@@ -64,7 +64,7 @@ export function isAuthenticated(): boolean {
 }
 
 export function isTokenExpiredError(headers?: Record<string, string>): boolean {
-  const wwwAuthenticate = headers?.['www-authenticate']
+  const wwwAuthenticate = headers?.['www-authenticate'] ?? headers?.['WWW-Authenticate']
   return !!wwwAuthenticate?.includes('error="invalid_token"')
 }
 
