@@ -1,5 +1,5 @@
 export const formatTimeRemaining = (secondsRemaining: number | null): string => {
-  if (secondsRemaining == null || isNaN(secondsRemaining)) return 'N/A'
+  if (secondsRemaining == null || !Number.isFinite(secondsRemaining)) return 'N/A'
   if (secondsRemaining <= 0) return 'Expirado'
 
   const hours = Math.floor(secondsRemaining / 3600)
