@@ -62,6 +62,7 @@ const TokenDebugPanel = () => {
               onClick={() => setIsOpen(false)}
               className='flex h-5 w-5 items-center justify-center text-xl font-bold leading-none text-white/80 hover:text-white'
               title='Minimizar'
+              aria-label='Minimizar panel de debug'
             >
               −
             </button>

@@ -14,6 +14,7 @@ const JwtLink = ({ token }: Props) => {
       rel='noopener noreferrer'
       className='rounded p-1 hover:bg-gray-200'
       title='Ver en jwt.io'
+      aria-label='Ver en jwt.io'
     >
       <Icon name='Jwt' className='h-4 w-4' />
     </a>
