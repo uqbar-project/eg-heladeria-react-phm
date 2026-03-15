@@ -4,7 +4,7 @@ export const formatTimeRemaining = (secondsRemaining: number | null): string => 
 
   const hours = Math.floor(secondsRemaining / 3600)
   const mins = Math.floor((secondsRemaining % 3600) / 60)
-  const secs = secondsRemaining % 60
+  const secs = Math.floor(secondsRemaining % 60)
 
   if (hours > 0) {
     return `${hours}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
