@@ -1,15 +1,12 @@
-import { isAuthenticated, clearTokens } from '@/service/token-service'
+import { isAuthenticated, clearTokens, isTokenExpiredError } from '@/service/token-service'
 import { redirect } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
 
 export const onErrorRoute = (error: AxiosError) => {
   // Handle 401 errors that are not token expiration
   if (error.response?.status === 401) {
-    const wwwAuthenticate = error.response.headers['www-authenticate']
-    const isTokenExpired = wwwAuthenticate?.includes('error="invalid_token"')
-
     // Only redirect if it's not a token expiration (those are handled by interceptor)
-    if (!isTokenExpired) {
+    if (!isTokenExpiredError(error.response.headers as Record<string, string>)) {
       clearTokens()
       throw redirect({
         to: '/login',

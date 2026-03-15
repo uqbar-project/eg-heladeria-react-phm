@@ -1,25 +1,40 @@
-import { TOKEN_KEY, REFRESH_TOKEN_KEY, BACKEND_URL } from './constants'
+import { getTokenPayload } from '@/utils/jwt'
 import axios from 'axios'
+import { BACKEND_URL, REFRESH_TOKEN_KEY, TOKEN_KEY } from './constants'
 
 export type RefreshTokenResponse = {
   accessToken: string
   refreshToken: string
 }
 
-const decodeBase64Url = (value: string): string => {
-  const normalized = value.replace(/-/g, '+').replace(/_/g, '/')
-  const padding = (4 - (normalized.length % 4)) % 4
-  return atob(normalized.padEnd(normalized.length + padding, '='))
+const listeners = new Set<() => void>()
+let tokensSnapshot = {
+  accessToken: localStorage.getItem(TOKEN_KEY),
+  refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY),
+  isRefreshing: false,
 }
 
-const parseJwtPayload = (token: string): Record<string, unknown> | null => {
-  try {
-    const [, payload] = token.split('.')
-    if (!payload) return null
-    return JSON.parse(decodeBase64Url(payload)) as Record<string, unknown>
-  } catch {
-    return null
-  }
+function updateSnapshot() {
+  tokensSnapshot = { ...tokensSnapshot, accessToken: getAccessToken(), refreshToken: getRefreshToken() }
+}
+
+function notifyListeners() {
+  updateSnapshot()
+  listeners.forEach((callback) => callback())
+}
+
+function setRefreshing(value: boolean) {
+  tokensSnapshot = { ...tokensSnapshot, isRefreshing: value }
+  notifyListeners()
+}
+
+export function subscribeToTokens(callback: () => void) {
+  listeners.add(callback)
+  return () => listeners.delete(callback)
+}
+
+export function getTokens() {
+  return tokensSnapshot
 }
 
 export function getAccessToken(): string | null {
@@ -33,22 +48,26 @@ export function getRefreshToken(): string | null {
 export function setTokens(accessToken: string, refreshToken: string): void {
   localStorage.setItem(TOKEN_KEY, accessToken)
   localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+  notifyListeners()
 }
 
 export function clearTokens(): void {
   localStorage.removeItem(TOKEN_KEY)
   localStorage.removeItem(REFRESH_TOKEN_KEY)
+  notifyListeners()
 }
 
 export function isAuthenticated(): boolean {
   return getAccessToken() !== null
 }
 
-export function getPrimaryRole(): string | null {
-  const token = getAccessToken()
-  if (!token) return null
+export function isTokenExpiredError(headers?: Record<string, string>): boolean {
+  const wwwAuthenticate = headers?.['www-authenticate']
+  return !!wwwAuthenticate?.includes('error="invalid_token"')
+}
 
-  const payload = parseJwtPayload(token)
+export function getPrimaryRole(): string | null {
+  const payload = getTokenPayload(getAccessToken())
   const rawRoles = payload?.roles
   if (Array.isArray(rawRoles)) {
     const first = rawRoles.find((role): role is string => typeof role === 'string')
@@ -57,12 +76,14 @@ export function getPrimaryRole(): string | null {
   return null
 }
 
-export async function refreshAccessToken(): Promise<string> {
+export async function refreshAccessToken(): Promise<RefreshTokenResponse> {
   const refreshToken = getRefreshToken()
 
   if (!refreshToken) {
     throw new Error('No refresh token available')
   }
+
+  setRefreshing(true)
 
   try {
     const response = await axios.post<RefreshTokenResponse>(
@@ -77,9 +98,11 @@ export async function refreshAccessToken(): Promise<string> {
     )
 
     const { accessToken, refreshToken: newRefreshToken } = response.data
+    setRefreshing(false)
     setTokens(accessToken, newRefreshToken)
-    return accessToken
+    return { accessToken, refreshToken: newRefreshToken }
   } catch (error) {
+    setRefreshing(false)
     clearTokens()
     throw error
   }

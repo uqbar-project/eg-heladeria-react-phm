@@ -1,0 +1,63 @@
+import { getTokenPayload } from '@/utils/jwt'
+import { useEffect, useRef, useState } from 'react'
+import { useTokenExpiration } from '../hooks/useTokenExpiration'
+import { formatDate } from '../utils'
+import Claim from './Claim'
+import ProgressBar from './ProgressBar'
+
+type Props = {
+  label: string
+  token: string | null
+  defaultExpanded?: boolean
+}
+
+const TokenInfo = ({ label, token, defaultExpanded = true }: Props) => {
+  const [expanded, setExpanded] = useState(defaultExpanded)
+  const [highlight, setHighlight] = useState(false)
+  const prevTokenRef = useRef<string | null>(null)
+  const payload = getTokenPayload(token)
+
+  const { timeRemaining, progress, expired } = useTokenExpiration(payload)
+
+  useEffect(() => {
+    if (prevTokenRef.current !== null && token !== prevTokenRef.current) {
+      const startTimeout = setTimeout(() => setHighlight(true), 0)
+      const endTimeout = setTimeout(() => setHighlight(false), 1500)
+      prevTokenRef.current = token
+      return () => {
+        clearTimeout(startTimeout)
+        clearTimeout(endTimeout)
+      }
+    }
+    prevTokenRef.current = token
+  }, [token])
+
+  return (
+    <div className='border-b border-gray-200 last:border-b-0'>
+      <button
+        type='button'
+        onClick={() => setExpanded(!expanded)}
+        className='flex w-full items-center justify-between px-4 py-3 text-left hover:bg-gray-50'
+      >
+        <span className='text-sm font-medium text-primary-700'>{label}</span>
+        <span
+          className={`rounded px-1 font-mono text-sm transition-colors duration-1000 ${highlight ? 'bg-green-100 text-green-700' : expired ? 'text-red-600' : 'text-primary-700'}`}
+        >
+          {timeRemaining}
+        </span>
+      </button>
+      <ProgressBar progress={progress} />
+      {expanded && payload && (
+        <div className='bg-gray-50 px-4 py-2 text-xs'>
+          <Claim label='sub' value={payload.sub ?? ''} />
+          <Claim label='roles' value={payload.roles?.join(', ') ?? ''} />
+          <Claim label='iat' value={formatDate(payload.iat)} highlight={highlight} />
+          <Claim label='exp' value={formatDate(payload.exp)} highlight={highlight} />
+        </div>
+      )}
+      {expanded && !payload && <div className='bg-gray-50 px-4 py-2 text-xs text-primary-400'>Token no disponible</div>}
+    </div>
+  )
+}
+
+export default TokenInfo
