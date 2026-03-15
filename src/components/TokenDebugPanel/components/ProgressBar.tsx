@@ -5,10 +5,11 @@ type Props = {
 }
 
 const ProgressBar = ({ progress }: Props) => {
-  const color = statusBgColor[getProgressStatus(progress)]
+  const clampedProgress = Math.max(0, Math.min(100, progress))
+  const color = statusBgColor[getProgressStatus(clampedProgress)]
   return (
     <div className='h-1 w-full bg-gray-200'>
-      <div className={`h-full transition-all duration-1000 ${color}`} style={{ width: `${progress}%` }} />
+      <div className={`h-full transition-all duration-1000 ${color}`} style={{ width: `${clampedProgress}%` }} />
     </div>
   )
 }
