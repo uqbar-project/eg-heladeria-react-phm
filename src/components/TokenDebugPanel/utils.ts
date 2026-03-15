@@ -13,7 +13,7 @@ export const formatTimeRemaining = (secondsRemaining: number | null): string => 
 }
 
 export const formatDate = (timestamp?: number | null): string => {
-  if (timestamp == null) return 'N/A'
+  if (timestamp == null || !Number.isFinite(timestamp)) return 'N/A'
   return new Date(timestamp * 1000).toLocaleString()
 }
 
