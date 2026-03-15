@@ -17,7 +17,9 @@ export const useTokenExpiration = (payload: JwtPayload | null) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSecondsRemaining(calcSecondsRemaining(expiration))
+      const remaining = calcSecondsRemaining(expiration)
+      setSecondsRemaining(remaining)
+      if (remaining <= 0) clearInterval(interval)
     }, 1000)
     return () => clearInterval(interval)
   }, [expiration])
