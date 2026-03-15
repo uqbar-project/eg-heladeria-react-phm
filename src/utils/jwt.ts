@@ -20,13 +20,13 @@ const decodeBase64Url = (value: string): string => {
   return textDecoder.decode(bytes)
 }
 
-const parseJwtPayload = (token: string): JwtPayload | null => {
+const parseJwtPart = <T>(token: string, index: 0 | 1): T | null => {
   try {
-    const [, payload] = token.split('.')
-    if (!payload) return null
-    const parsed: unknown = JSON.parse(decodeBase64Url(payload))
+    const part = token.split('.')[index]
+    if (!part) return null
+    const parsed: unknown = JSON.parse(decodeBase64Url(part))
     if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null
-    return parsed as JwtPayload
+    return parsed as T
   } catch {
     return null
   }
@@ -34,18 +34,10 @@ const parseJwtPayload = (token: string): JwtPayload | null => {
 
 export const getTokenPayload = (token: string | null): JwtPayload | null => {
   if (!token) return null
-  return parseJwtPayload(token)
+  return parseJwtPart<JwtPayload>(token, 1)
 }
 
 export const getTokenHeader = (token: string | null): JwtHeader | null => {
   if (!token) return null
-  try {
-    const [header] = token.split('.')
-    if (!header) return null
-    const parsed: unknown = JSON.parse(decodeBase64Url(header))
-    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null
-    return parsed as JwtHeader
-  } catch {
-    return null
-  }
+  return parseJwtPart<JwtHeader>(token, 0)
 }
