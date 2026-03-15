@@ -5,6 +5,7 @@ import { getTokenPayload } from '@/utils/jwt'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import TokenInfo from './components/TokenInfo'
 import { useTokenExpiration } from './hooks/useTokenExpiration'
+import { getProgressStatus, statusButtonColor } from './utils'
 import tokenExpiredSound from '@/assets/sounds/token-expired.mp3'
 
 const playExpirationSound = () => {
@@ -15,7 +16,7 @@ const TokenDebugPanel = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const { accessToken, refreshToken, isRefreshing, refreshCount } = useSyncExternalStore(subscribeToTokens, getTokens)
-  const { expired, timeRemaining } = useTokenExpiration(getTokenPayload(accessToken))
+  const { expired, timeRemaining, progress } = useTokenExpiration(getTokenPayload(accessToken))
   const prevExpiredRef = useRef(expired)
 
   useEffect(() => {
@@ -40,9 +41,7 @@ const TokenDebugPanel = () => {
       <button
         type='button'
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex h-12 cursor-pointer items-center justify-center gap-2 rounded-full px-4 text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105 ${
-          expired ? 'bg-red-500 hover:bg-red-600' : 'bg-accent-500 hover:bg-accent-600'
-        }`}
+        className={`flex h-12 cursor-pointer items-center justify-center gap-2 rounded-full px-4 text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105 ${statusButtonColor[getProgressStatus(progress)]}`}
         style={expired ? { animation: 'soft-pulse 1.8s ease-out infinite' } : undefined}
         title='Token Debug Panel'
       >

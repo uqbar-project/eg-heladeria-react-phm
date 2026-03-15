@@ -1,17 +1,11 @@
 import { getTokenHeader, getTokenPayload } from '@/utils/jwt'
 import { useEffect, useRef, useState } from 'react'
 import { useTokenExpiration } from '../hooks/useTokenExpiration'
-import { formatDate, getProgressStatus, ProgressStatus } from '../utils'
+import { formatDate, getProgressStatus, statusTextColor } from '../utils'
 import Claim from './Claim'
 import CopyButton from './CopyButton'
 import JwtLink from './JwtLink'
 import ProgressBar from './ProgressBar'
-
-const textColorMap: Record<ProgressStatus, string> = {
-  ok: 'text-green-600',
-  warning: 'text-yellow-600',
-  danger: 'text-red-600',
-}
 
 type Props = {
   label: string
@@ -52,7 +46,7 @@ const TokenInfo = ({ label, token, defaultExpanded = true }: Props) => {
           {token && <JwtLink token={token} />}
         </div>
         <span
-          className={`rounded px-1 font-mono text-sm transition-colors duration-1000 ${highlight ? 'bg-green-100 text-green-700' : textColorMap[getProgressStatus(progress)]}`}
+          className={`rounded px-1 font-mono text-sm transition-colors duration-1000 ${highlight ? 'bg-green-100 text-green-700' : statusTextColor[getProgressStatus(progress)]}`}
         >
           {timeRemaining}
         </span>

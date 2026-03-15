@@ -19,6 +19,24 @@ export const formatDate = (timestamp?: number | null): string => {
 
 export type ProgressStatus = 'ok' | 'warning' | 'danger'
 
+export const statusBgColor: Record<ProgressStatus, string> = {
+  ok: 'bg-green-500',
+  warning: 'bg-yellow-500',
+  danger: 'bg-red-500',
+}
+
+export const statusTextColor: Record<ProgressStatus, string> = {
+  ok: 'text-green-600',
+  warning: 'text-yellow-600',
+  danger: 'text-red-600',
+}
+
+export const statusButtonColor: Record<ProgressStatus, string> = {
+  ok: `${statusBgColor.ok} hover:bg-green-600`,
+  warning: `${statusBgColor.warning} hover:bg-yellow-600`,
+  danger: `${statusBgColor.danger} hover:bg-red-600`,
+}
+
 export const getProgressStatus = (progress: number): ProgressStatus => {
   if (progress > 50) return 'ok'
   if (progress > 20) return 'warning'
