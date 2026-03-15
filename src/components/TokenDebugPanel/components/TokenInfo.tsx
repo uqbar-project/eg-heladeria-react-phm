@@ -34,8 +34,6 @@ const TokenInfo = ({ label, token, defaultExpanded = true }: Props) => {
     prevTokenRef.current = token
   }, [token])
 
-  console.log('header', header)
-
   return (
     <div className='border-b border-gray-200 last:border-b-0'>
       <div className='flex w-full items-center justify-between px-4 py-3 hover:bg-gray-50'>
