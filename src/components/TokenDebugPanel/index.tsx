@@ -29,6 +29,7 @@ const TokenDebugPanel = () => {
   }, [expired])
 
   const handleRefresh = async () => {
+    if (getTokens().isRefreshing) return
     setError(null)
     try {
       await refreshAccessToken()
