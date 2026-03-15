@@ -1,3 +1,8 @@
+export type JwtHeader = {
+  alg?: string
+  typ?: string
+}
+
 export type JwtPayload = {
   sub?: string
   roles?: string[]
@@ -24,4 +29,15 @@ const parseJwtPayload = (token: string): JwtPayload | null => {
 export const getTokenPayload = (token: string | null): JwtPayload | null => {
   if (!token) return null
   return parseJwtPayload(token)
+}
+
+export const getTokenHeader = (token: string | null): JwtHeader | null => {
+  if (!token) return null
+  try {
+    const [header] = token.split('.')
+    if (!header) return null
+    return JSON.parse(decodeBase64Url(header))
+  } catch {
+    return null
+  }
 }

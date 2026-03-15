@@ -1,4 +1,4 @@
-import { getTokenPayload } from '@/utils/jwt'
+import { getTokenHeader, getTokenPayload } from '@/utils/jwt'
 import { useEffect, useRef, useState } from 'react'
 import { useTokenExpiration } from '../hooks/useTokenExpiration'
 import { formatDate } from '../utils'
@@ -16,6 +16,7 @@ const TokenInfo = ({ label, token, defaultExpanded = true }: Props) => {
   const [expanded, setExpanded] = useState(defaultExpanded)
   const [highlight, setHighlight] = useState(false)
   const prevTokenRef = useRef<string | null>(null)
+  const header = getTokenHeader(token)
   const payload = getTokenPayload(token)
 
   const { timeRemaining, progress, expired } = useTokenExpiration(payload)
@@ -32,6 +33,8 @@ const TokenInfo = ({ label, token, defaultExpanded = true }: Props) => {
     }
     prevTokenRef.current = token
   }, [token])
+
+  console.log('header', header)
 
   return (
     <div className='border-b border-gray-200 last:border-b-0'>
@@ -51,7 +54,8 @@ const TokenInfo = ({ label, token, defaultExpanded = true }: Props) => {
       <ProgressBar progress={progress} />
       {expanded && payload && (
         <div className='bg-gray-50 px-4 py-2 text-xs'>
-          <Claim label='sub' value={payload.sub ?? ''} />
+          <Claim label='alg' value={header?.alg ?? 'N/A'} />
+          <Claim label='sub' value={payload.sub ?? 'N/A'} />
           <Claim label='roles' value={payload.roles?.join(', ') ?? ''} />
           <Claim label='iat' value={formatDate(payload.iat)} highlight={highlight} />
           <Claim label='exp' value={formatDate(payload.exp)} highlight={highlight} />
