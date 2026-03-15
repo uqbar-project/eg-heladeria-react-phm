@@ -21,7 +21,7 @@ function updateSnapshot() {
 
 function notifyListeners() {
   updateSnapshot()
-  listeners.forEach((callback) => callback())
+  listeners.forEach((callback) => { callback() })
 }
 
 function setRefreshing(value: boolean) {
