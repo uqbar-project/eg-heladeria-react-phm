@@ -5,7 +5,7 @@ type Props = {
 }
 
 const JwtLink = ({ token }: Props) => {
-  const jwtDebuggerUrl = `https://jwt.io/#debugger-io?token=${token}`
+  const jwtDebuggerUrl = `https://jwt.io/#debugger-io?token=${encodeURIComponent(token)}`
 
   return (
     <a
