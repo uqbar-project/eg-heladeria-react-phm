@@ -9,7 +9,9 @@ import { getProgressStatus, statusButtonColor } from './utils'
 import tokenExpiredSound from '@/assets/sounds/token-expired.mp3'
 
 const playExpirationSound = () => {
-  new Audio(tokenExpiredSound).play()
+  new Audio(tokenExpiredSound).play().catch(() => {
+    // Browser may block autoplay - ignore silently
+  })
 }
 
 const TokenDebugPanel = () => {
