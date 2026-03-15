@@ -24,7 +24,9 @@ const parseJwtPayload = (token: string): JwtPayload | null => {
   try {
     const [, payload] = token.split('.')
     if (!payload) return null
-    return JSON.parse(decodeBase64Url(payload))
+    const parsed: unknown = JSON.parse(decodeBase64Url(payload))
+    if (typeof parsed !== 'object' || parsed === null) return null
+    return parsed as JwtPayload
   } catch {
     return null
   }
@@ -40,7 +42,9 @@ export const getTokenHeader = (token: string | null): JwtHeader | null => {
   try {
     const [header] = token.split('.')
     if (!header) return null
-    return JSON.parse(decodeBase64Url(header))
+    const parsed: unknown = JSON.parse(decodeBase64Url(header))
+    if (typeof parsed !== 'object' || parsed === null) return null
+    return parsed as JwtHeader
   } catch {
     return null
   }
