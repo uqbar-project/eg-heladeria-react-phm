@@ -4,6 +4,7 @@ import { useTokenExpiration } from '../hooks/useTokenExpiration'
 import { formatDate } from '../utils'
 import Claim from './Claim'
 import CopyButton from './CopyButton'
+import JwtLink from './JwtLink'
 import ProgressBar from './ProgressBar'
 
 type Props = {
@@ -42,6 +43,7 @@ const TokenInfo = ({ label, token, defaultExpanded = true }: Props) => {
             <span className='text-sm font-medium text-primary-700'>{label}</span>
           </button>
           {token && <CopyButton text={token} />}
+          {token && <JwtLink token={token} />}
         </div>
         <span
           className={`rounded px-1 font-mono text-sm transition-colors duration-1000 ${highlight ? 'bg-green-100 text-green-700' : expired ? 'text-red-600' : 'text-primary-700'}`}
@@ -54,9 +56,9 @@ const TokenInfo = ({ label, token, defaultExpanded = true }: Props) => {
         <div className='bg-gray-50 px-4 py-2 text-xs'>
           <Claim label='alg' value={header?.alg ?? 'N/A'} />
           <Claim label='sub' value={payload.sub ?? 'N/A'} />
-          <Claim label='roles' value={payload.roles?.join(', ') ?? ''} />
           <Claim label='iat' value={formatDate(payload.iat)} highlight={highlight} />
           <Claim label='exp' value={formatDate(payload.exp)} highlight={highlight} />
+          <Claim label='roles' value={payload.roles?.join(', ') ?? ''} />
         </div>
       )}
       {expanded && !payload && <div className='bg-gray-50 px-4 py-2 text-xs text-primary-400'>Token no disponible</div>}
