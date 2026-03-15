@@ -15,6 +15,8 @@ export const onErrorRoute = (error: AxiosError) => {
         },
       })
     }
+    // Token expirado: el interceptor de axios maneja el refresh automático
+    return
   } else {
     // Para otros errores (500, 404, red), no deslogueamos al usuario
     // Solo propagamos el error para que se maneje en la UI
