@@ -10,10 +10,14 @@ export type JwtPayload = {
   iat?: number
 } & Record<string, unknown>
 
+const textDecoder = new TextDecoder()
+
 const decodeBase64Url = (value: string): string => {
   const normalized = value.replace(/-/g, '+').replace(/_/g, '/')
   const padding = (4 - (normalized.length % 4)) % 4
-  return atob(normalized.padEnd(normalized.length + padding, '='))
+  const binary = atob(normalized.padEnd(normalized.length + padding, '='))
+  const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0))
+  return textDecoder.decode(bytes)
 }
 
 const parseJwtPayload = (token: string): JwtPayload | null => {
