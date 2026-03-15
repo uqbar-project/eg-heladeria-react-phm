@@ -87,8 +87,8 @@ const TokenDebugPanel = () => {
               onClick={handleRefresh}
               disabled={isRefreshing || !refreshToken}
             />
-            {error && <p className='mt-2 text-center text-xs text-error-600'>{error}</p>}
           </div>
+          {error && <p className='px-3 pb-3 text-center text-xs text-error-600'>{error}</p>}
         </div>
       )}
     </div>

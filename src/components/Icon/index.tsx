@@ -11,6 +11,7 @@ import WarningOutlineThin from '@/assets/icons/warning-outlined-thin.svg?react'
 import InfoCircle from '@/assets/icons/info-circle.svg?react'
 import User from '@/assets/icons/user.svg?react'
 import Power from '@/assets/icons/power.svg?react'
+import Copy from '@/assets/icons/copy.svg?react'
 
 import { twMerge } from 'tailwind-merge'
 
@@ -28,6 +29,7 @@ const iconsMap = {
   InfoCircle,
   User,
   Power,
+  Copy,
 } as const
 
 export type IconsMap = typeof iconsMap

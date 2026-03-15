@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTokenExpiration } from '../hooks/useTokenExpiration'
 import { formatDate } from '../utils'
 import Claim from './Claim'
+import CopyButton from './CopyButton'
 import ProgressBar from './ProgressBar'
 
 type Props = {
@@ -34,18 +35,19 @@ const TokenInfo = ({ label, token, defaultExpanded = true }: Props) => {
 
   return (
     <div className='border-b border-gray-200 last:border-b-0'>
-      <button
-        type='button'
-        onClick={() => setExpanded(!expanded)}
-        className='flex w-full items-center justify-between px-4 py-3 text-left hover:bg-gray-50'
-      >
-        <span className='text-sm font-medium text-primary-700'>{label}</span>
+      <div className='flex w-full items-center justify-between px-4 py-3 hover:bg-gray-50'>
+        <div className='flex items-center gap-1'>
+          <button type='button' onClick={() => setExpanded(!expanded)} className='text-left'>
+            <span className='text-sm font-medium text-primary-700'>{label}</span>
+          </button>
+          {token && <CopyButton text={token} />}
+        </div>
         <span
           className={`rounded px-1 font-mono text-sm transition-colors duration-1000 ${highlight ? 'bg-green-100 text-green-700' : expired ? 'text-red-600' : 'text-primary-700'}`}
         >
           {timeRemaining}
         </span>
-      </button>
+      </div>
       <ProgressBar progress={progress} />
       {expanded && payload && (
         <div className='bg-gray-50 px-4 py-2 text-xs'>
