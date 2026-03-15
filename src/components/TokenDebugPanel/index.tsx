@@ -14,7 +14,7 @@ const playExpirationSound = () => {
 const TokenDebugPanel = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const { accessToken, refreshToken, isRefreshing } = useSyncExternalStore(subscribeToTokens, getTokens)
+  const { accessToken, refreshToken, isRefreshing, refreshCount } = useSyncExternalStore(subscribeToTokens, getTokens)
   const { expired, timeRemaining } = useTokenExpiration(getTokenPayload(accessToken))
   const prevExpiredRef = useRef(expired)
 
@@ -72,7 +72,17 @@ const TokenDebugPanel = () => {
             {refreshToken && (
               <div className='flex items-center justify-between border-b border-gray-200 px-4 py-3'>
                 <span className='text-sm font-medium text-primary-700'>Refresh Token</span>
-                <Icon name='CheckOutlineThin' className='h-5 w-5 fill-green-500' />
+                <div className='flex items-center gap-2'>
+                  {refreshCount > 0 && (
+                    <span
+                      className='rounded-full bg-accent-100 px-2 py-0.5 text-xs text-accent-700'
+                      title={`Token refrescado ${refreshCount} ${refreshCount === 1 ? 'vez' : 'veces'} en esta sesión`}
+                    >
+                      {refreshCount}x
+                    </span>
+                  )}
+                  <Icon name='CheckOutlineThin' className='h-5 w-5 fill-green-500' />
+                </div>
               </div>
             )}
             <TokenInfo label='Access Token' token={accessToken} />

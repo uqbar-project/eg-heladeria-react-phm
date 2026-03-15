@@ -12,6 +12,7 @@ let tokensSnapshot = {
   accessToken: localStorage.getItem(TOKEN_KEY),
   refreshToken: localStorage.getItem(REFRESH_TOKEN_KEY),
   isRefreshing: false,
+  refreshCount: 0,
 }
 
 function updateSnapshot() {
@@ -54,6 +55,7 @@ export function setTokens(accessToken: string, refreshToken: string): void {
 export function clearTokens(): void {
   localStorage.removeItem(TOKEN_KEY)
   localStorage.removeItem(REFRESH_TOKEN_KEY)
+  tokensSnapshot = { ...tokensSnapshot, refreshCount: 0 }
   notifyListeners()
 }
 
@@ -98,6 +100,7 @@ export async function refreshAccessToken(): Promise<RefreshTokenResponse> {
     )
 
     const { accessToken, refreshToken: newRefreshToken } = response.data
+    tokensSnapshot = { ...tokensSnapshot, refreshCount: tokensSnapshot.refreshCount + 1 }
     setRefreshing(false)
     setTokens(accessToken, newRefreshToken)
     return { accessToken, refreshToken: newRefreshToken }
