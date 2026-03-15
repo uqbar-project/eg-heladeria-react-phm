@@ -6,7 +6,7 @@ const AuthenticatedLayout = () => {
   return (
     <>
       <Outlet />
-      <TokenDebugPanel />
+      {import.meta.env.DEV && <TokenDebugPanel />}
     </>
   )
 }
