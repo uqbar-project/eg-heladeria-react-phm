@@ -145,7 +145,7 @@ export const onErrorRoute = (error: AxiosError) => {
     })
   }
 
-  // Token expirado: el interceptor de axios maneja el refresh automáticamente (acá no hacemos nada)
+  // Token expirado: el interceptor de axios maneja el refresh (acá no hacemos nada)
 }
 ```
 
