@@ -3,14 +3,17 @@ import { redirect } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
 
 export const onErrorRoute = (error: AxiosError) => {
+  const { response, message } = error
+  const { status, headers } = response || {}
+
   // Para errores que no son 401, propagamos el error para que se maneje en la UI
-  if (error.response?.status !== 401) {
-    console.error('Error en la ruta:', error.response?.status, error.message)
+  if (status !== 401) {
+    console.error('Error en la ruta:', status, message)
     throw error
   }
 
   // 401 sin token expirado - credenciales inválidas
-  if (!isTokenExpiredError(error.response.headers as Record<string, string>)) {
+  if (!isTokenExpiredError(headers as Record<string, string>)) {
     clearTokens()
     throw redirect({
       to: '/login',
