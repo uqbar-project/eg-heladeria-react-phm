@@ -1,29 +1,29 @@
-import { isAuthenticated, clearTokens } from '@/service/token-service'
+import { isAuthenticated, clearTokens, isTokenExpiredError } from '@/service/token-service'
 import { redirect } from '@tanstack/react-router'
 import { AxiosError } from 'axios'
 
 export const onErrorRoute = (error: AxiosError) => {
-  // Handle 401 errors that are not token expiration
-  if (error.response?.status === 401) {
-    const wwwAuthenticate = error.response.headers['www-authenticate']
-    const isTokenExpired = wwwAuthenticate?.includes('error="invalid_token"')
+  const { response, message } = error
+  const { status, headers } = response || {}
 
-    // Only redirect if it's not a token expiration (those are handled by interceptor)
-    if (!isTokenExpired) {
-      clearTokens()
-      throw redirect({
-        to: '/login',
-        search: {
-          redirect: location.pathname,
-        },
-      })
-    }
-  } else {
-    // Para otros errores (500, 404, red), no deslogueamos al usuario
-    // Solo propagamos el error para que se maneje en la UI
-    console.error('Error en la ruta:', error.response?.status, error.message)
+  // Para errores que no son 401, propagamos el error para que se maneje en la UI
+  if (status !== 401) {
+    console.error('Error en la ruta:', status, message)
     throw error
   }
+
+  // 401 sin token expirado - credenciales inválidas
+  if (!isTokenExpiredError(headers as Record<string, string>)) {
+    clearTokens()
+    throw redirect({
+      to: '/login',
+      search: {
+        redirect: location.pathname,
+      },
+    })
+  }
+
+  // Token expirado: el interceptor de axios maneja el refresh (acá no hacemos nada)
 }
 
 export const onBeforeLoad = () => {
