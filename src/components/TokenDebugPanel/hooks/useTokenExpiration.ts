@@ -7,7 +7,11 @@ const calcSecondsRemaining = (exp?: number): number => {
   return exp - Math.floor(Date.now() / 1000)
 }
 
-export const useTokenExpiration = (payload: JwtPayload | null) => {
+type Options = {
+  onExpire?: () => void
+}
+
+export const useTokenExpiration = (payload: JwtPayload | null, options?: Options) => {
   const expiration = payload?.exp ?? NaN
   const issuedAt = payload?.iat ?? NaN
   const totalDuration = expiration - issuedAt
@@ -18,9 +22,13 @@ export const useTokenExpiration = (payload: JwtPayload | null) => {
   const expired = secondsRemaining <= 0
 
   useEffect(() => {
-    if (expired) return
+    if (expired) {
+      options?.onExpire?.()
+      return
+    }
     const interval = setInterval(tick, 1000)
     return () => clearInterval(interval)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [expired])
 
   return {

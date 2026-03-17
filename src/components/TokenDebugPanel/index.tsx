@@ -2,7 +2,7 @@ import Button from '@/components/Button'
 import Icon from '@/components/Icon'
 import { getTokens, subscribeToTokens, refreshAccessToken } from '@/service/token-service'
 import { getTokenPayload } from '@/utils/jwt'
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useState, useSyncExternalStore } from 'react'
 import TokenInfo from './components/TokenInfo'
 import { useTokenExpiration } from './hooks/useTokenExpiration'
 import { getProgressStatus, statusButtonColor } from './utils'
@@ -18,15 +18,9 @@ const TokenDebugPanel = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const { accessToken, refreshToken, isRefreshing, refreshCount } = useSyncExternalStore(subscribeToTokens, getTokens)
-  const { expired, timeRemaining, progress } = useTokenExpiration(getTokenPayload(accessToken))
-  const prevExpiredRef = useRef(expired)
-
-  useEffect(() => {
-    if (expired && !prevExpiredRef.current) {
-      playExpirationSound()
-    }
-    prevExpiredRef.current = expired
-  }, [expired])
+  const { expired, timeRemaining, progress } = useTokenExpiration(getTokenPayload(accessToken), {
+    onExpire: playExpirationSound,
+  })
 
   const handleRefresh = async () => {
     if (getTokens().isRefreshing) return
