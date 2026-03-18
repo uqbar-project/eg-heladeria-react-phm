@@ -1,28 +1,25 @@
 import axios, { AxiosError, AxiosHeaders, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios'
-import { clearTokens, getAccessToken, refreshAccessToken } from './token-service'
+import { clearTokens, getAccessToken, isTokenExpiredError, refreshAccessToken } from './token-service'
 
 // Create axios instance with interceptors
 const axiosInstance = axios.create()
 
 let isRefreshing = false
 let failedQueue: Array<{
-  resolve: (token: string) => void
+  resolve: () => void
   reject: (error: unknown) => void
 }> = []
 
-type QueueResult = { type: 'success'; token: string } | { type: 'error'; error: unknown }
+type QueueResult = { type: 'success' } | { type: 'error'; error: unknown }
 
-const retryRequest = (originalRequest: InternalAxiosRequestConfig, token: string) => {
-  if (originalRequest.headers) {
-    originalRequest.headers.Authorization = `Bearer ${token}`
-  }
+const retryRequest = (originalRequest: InternalAxiosRequestConfig) => {
   return axiosInstance(originalRequest)
 }
 
 const queueRequest = (originalRequest: InternalAxiosRequestConfig) => {
-  return new Promise<string>((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     failedQueue.push({ resolve, reject })
-  }).then((token) => retryRequest(originalRequest, token))
+  }).then(() => retryRequest(originalRequest))
 }
 
 const processQueue = (result: QueueResult) => {
@@ -30,7 +27,7 @@ const processQueue = (result: QueueResult) => {
     if (result.type === 'error') {
       promise.reject(result.error)
     } else {
-      promise.resolve(result.token)
+      promise.resolve()
     }
   })
   failedQueue = []
@@ -59,12 +56,8 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error)
     }
 
-    // Check WWW-Authenticate header to determine if it's token expiration
-    const wwwAuthenticate = error.response.headers['www-authenticate']
-    const isTokenExpired = wwwAuthenticate?.includes('error="invalid_token"')
-
     // Only attempt refresh if token is expired
-    if (!isTokenExpired) {
+    if (!isTokenExpiredError(error.response.headers as Record<string, string>)) {
       return Promise.reject(error)
     }
 
@@ -77,9 +70,9 @@ axiosInstance.interceptors.response.use(
     isRefreshing = true
 
     try {
-      const newToken = await refreshAccessToken()
-      processQueue({ type: 'success', token: newToken })
-      return retryRequest(originalRequest, newToken)
+      await refreshAccessToken()
+      processQueue({ type: 'success' })
+      return retryRequest(originalRequest)
     } catch (refreshError) {
       processQueue({ type: 'error', error: refreshError })
       clearTokens()

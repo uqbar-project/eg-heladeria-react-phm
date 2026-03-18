@@ -120,15 +120,35 @@ El comportamiento común de un usuario es que comienza a utilizar una aplicació
 En el archivo de routing definimos un handler específico para estos casos:
 
 ```ts
-// errors.ts
-export const isSessionExpired = (error: AxiosError) => error.status === HttpStatusCodes.UNAUTHORIZED
+// token-service.ts
+export function isTokenExpiredError(headers?: Record<string, string>): boolean {
+  const wwwAuthenticate = headers?.['www-authenticate'] ?? headers?.['WWW-Authenticate']
+  return !!wwwAuthenticate?.includes('error="invalid_token"')
+}
 
 // routes.ts
 export const onErrorRoute = (error: AxiosError) => {
-  if (isSessionExpired(error)) {
-    // eliminamos el token vencido
-    localStorage.removeItem(TOKEN_KEY)
+  const { response, message } = error
+  const { status, headers } = response || {}
+
+  // Para errores que no son 401, propagamos el error para que se maneje en la UI
+  if (status !== 401) {
+    console.error('Error en la ruta:', status, message)
+    throw error
   }
+
+  // 401 sin token expirado - credenciales inválidas
+  if (!isTokenExpiredError(headers as Record<string, string>)) {
+    clearTokens()
+    throw redirect({
+      to: '/login',
+      search: {
+        redirect: location.pathname,
+      },
+    })
+  }
+
+  // Token expirado: el interceptor de axios maneja el refresh (acá no hacemos nada)
 }
 ```
 
@@ -153,11 +173,19 @@ El server recibe ese token para las operaciones con efecto como la actualizació
 
 ```ts
 // archivo common.ts
+
+// Interceptor que agrega el token automáticamente a cada request
+axiosInstance.interceptors.request.use((config) => {
+  const token = getAccessToken()
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
+  return config
+})
+
 export async function httpRequest<T>(request: AxiosRequestConfig): Promise<T> {
-  const token = localStorage.getItem(TOKEN_KEY) ?? ''
-  const headers = request.headers as AxiosHeaders ?? new AxiosHeaders()
-  headers.setAuthorization(`Bearer ${token}`)
-  const okRequest = {
+  const headers = (request.headers as AxiosHeaders) ?? new AxiosHeaders()
+  const okRequest: AxiosRequestConfig = {
     ...request,
     headers,
     withXSRFToken: true,
@@ -165,7 +193,7 @@ export async function httpRequest<T>(request: AxiosRequestConfig): Promise<T> {
     xsrfHeaderName: 'X-XSRF-TOKEN',
     xsrfCookieName: 'XSRF-TOKEN',
   }
-  const response = await axios(okRequest)
+  const response = await axiosInstance(okRequest)
   return response.data
 }
 ```
