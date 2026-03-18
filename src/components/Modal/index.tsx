@@ -36,7 +36,7 @@ const Modal = ({ isOpened, close, children, ...props }: Props) => {
         className
       )}
     >
-      {children}
+      {isOpened && children}
     </dialog>
   )
 }

@@ -60,7 +60,6 @@ export const Login = () => {
             <Button
               type='submit'
               className='button-primary mt-2 w-full'
-              title='Ingresar al sistema'
               label='Ingresar'
               disabled={!usuario || !password}
             />

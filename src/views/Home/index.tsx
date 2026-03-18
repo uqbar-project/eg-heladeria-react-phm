@@ -1,8 +1,8 @@
 import Card from '@/components/Card'
+import Icon from '@/components/Icon'
 import { useLoaderData, useNavigate, useSearch } from '@tanstack/react-router'
 import BuscarHeladerias from './components/BuscarHeladerias'
 import TablaHeladerias from './components/TablaHeladerias'
-import Icon from '@/components/Icon'
 import { clearTokens, getPrimaryRole } from '@/service/token-service'
 
 const Home = () => {
@@ -44,7 +44,6 @@ const Home = () => {
         <button
           type='button'
           onClick={logout}
-          title='Salir de la aplicación'
           className='group inline-flex items-center gap-2 self-start rounded-lg border border-primary-200 bg-white/85 px-3 py-2 text-sm text-primary-600 transition-colors hover:border-error-200 hover:bg-error-50 hover:text-error-600'
         >
           <Icon name='Power' className='h-4 fill-primary-500 group-hover:fill-error-600' />

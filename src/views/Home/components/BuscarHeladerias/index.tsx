@@ -38,7 +38,6 @@ const BuscarHeladerias = ({ valorInicial = '', onSearch }: Props) => {
       />
       <Button
         className='button-primary min-w-[10rem]'
-        title='Buscar heladerías'
         label={
           <>
             <Icon className='h-5 fill-white' name={'Search'} />

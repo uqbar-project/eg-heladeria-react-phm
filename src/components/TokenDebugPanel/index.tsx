@@ -1,5 +1,6 @@
 import Button from '@/components/Button'
 import Icon from '@/components/Icon'
+import Tooltip from '@/components/Tooltip'
 import { getTokens, subscribeToTokens, refreshAccessToken } from '@/service/token-service'
 import { getTokenPayload } from '@/utils/jwt'
 import { useState, useSyncExternalStore } from 'react'
@@ -35,16 +36,17 @@ const TokenDebugPanel = () => {
   return (
     <div className='fixed bottom-4 left-4 z-50'>
       {/* FAB Button */}
-      <button
-        type='button'
-        onClick={() => setIsOpen(!isOpen)}
-        className={`flex h-12 cursor-pointer items-center justify-center gap-2 rounded-full px-4 text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105 ${statusButtonColor[getProgressStatus(progress)]}`}
-        style={expired ? { animation: 'soft-pulse 1.8s ease-out infinite' } : undefined}
-        title='Token Debug Panel'
-      >
-        <Icon name='InfoCircle' className='h-6 w-6 fill-white' />
-        <span className='whitespace-nowrap font-mono text-sm font-medium'>{expired ? '0:00' : timeRemaining}</span>
-      </button>
+      <Tooltip content='Token Debug Panel' position='right'>
+        <button
+          type='button'
+          onClick={() => setIsOpen(!isOpen)}
+          className={`flex h-12 cursor-pointer items-center justify-center gap-2 rounded-full px-4 text-white shadow-lg transition-all duration-300 ease-in-out hover:scale-105 ${statusButtonColor[getProgressStatus(progress)]}`}
+          style={expired ? { animation: 'soft-pulse 1.8s ease-out infinite' } : undefined}
+        >
+          <Icon name='InfoCircle' className='h-6 w-6 fill-white' />
+          <span className='whitespace-nowrap font-mono text-sm font-medium'>{expired ? '0:00' : timeRemaining}</span>
+        </button>
+      </Tooltip>
 
       {/* Panel */}
       {isOpen && (
@@ -52,15 +54,16 @@ const TokenDebugPanel = () => {
           {/* Header */}
           <div className='flex items-center justify-between bg-primary-700 px-4 py-3'>
             <span className='text-sm font-semibold text-white'>Token Debug</span>
-            <button
-              type='button'
-              onClick={() => setIsOpen(false)}
-              className='flex h-5 w-5 items-center justify-center text-xl font-bold leading-none text-white/80 hover:text-white'
-              title='Minimizar'
-              aria-label='Minimizar panel de debug'
-            >
-              −
-            </button>
+            <Tooltip content='Minimizar' position='left'>
+              <button
+                type='button'
+                onClick={() => setIsOpen(false)}
+                className='flex h-5 w-5 items-center justify-center text-xl font-bold leading-none text-white/80 hover:text-white'
+                aria-label='Minimizar panel de debug'
+              >
+                −
+              </button>
+            </Tooltip>
           </div>
 
           {/* Content */}
@@ -71,12 +74,14 @@ const TokenDebugPanel = () => {
                 <span className='text-sm font-medium text-primary-700'>Refresh Token</span>
                 <div className='flex items-center gap-2'>
                   {refreshCount > 0 && (
-                    <span
-                      className='rounded-full bg-accent-100 px-2 py-0.5 text-xs text-accent-700'
-                      title={`Token refrescado ${refreshCount} ${refreshCount === 1 ? 'vez' : 'veces'} en esta sesión`}
+                    <Tooltip
+                      content={`Token refrescado ${refreshCount} ${refreshCount === 1 ? 'vez' : 'veces'} en esta sesión`}
+                      position='left'
                     >
-                      {refreshCount}x
-                    </span>
+                      <span className='rounded-full bg-accent-100 px-2 py-0.5 text-xs text-accent-700'>
+                        {refreshCount}x
+                      </span>
+                    </Tooltip>
                   )}
                   <Icon name='CheckOutlineThin' className='h-5 w-5 fill-green-500' />
                 </div>
