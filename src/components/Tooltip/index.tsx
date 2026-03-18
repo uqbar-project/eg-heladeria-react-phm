@@ -1,4 +1,4 @@
-import { cloneElement, CSSProperties, isValidElement, useId } from 'react'
+import { cloneElement, isValidElement, useId } from 'react'
 import { twMerge } from 'tailwind-merge'
 import './tooltip.css'
 
@@ -49,9 +49,10 @@ const Tooltip = ({ content, position = 'top', tooltipClassName, children }: Prop
     )
   }
 
-  const childrenWithAnchorName = isValidElement<{ style?: CSSProperties }>(children)
+  const childrenWithAnchorName = isValidElement<React.HTMLAttributes<HTMLElement>>(children)
     ? cloneElement(children, {
         style: { ...children.props.style, anchorName },
+        'aria-describedby': anchorName,
       })
     : children
 
@@ -59,6 +60,7 @@ const Tooltip = ({ content, position = 'top', tooltipClassName, children }: Prop
     <>
       <span className='tooltip-trigger'>{childrenWithAnchorName}</span>
       <span
+        id={anchorName}
         role='tooltip'
         className={twMerge('tooltip-content', `tooltip-${position}`, tooltipClassName)}
         style={{ positionAnchor: anchorName }}
