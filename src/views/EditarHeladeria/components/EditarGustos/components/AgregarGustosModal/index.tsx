@@ -2,6 +2,7 @@ import Button from '@/components/Button'
 import Input from '@/components/Input'
 import Label from '@/components/Label'
 import Modal from '@/components/Modal'
+import Tooltip from '@/components/Tooltip'
 import ModalTitle from '@/components/Modal/components/ModalTitle'
 import { Heladeria } from '@/model/heladeria'
 import { useState } from 'react'
@@ -57,9 +58,11 @@ const AgregarGustoModal = ({ isOpened, heladeria, setHeladeria, close }: Props) 
             max={10}
             step={1}
             label={
-              <Label title='Un número entre 1 y 10' className='flex items-center gap-1' htmlFor='dificultadGusto'>
-                Dificultad
-              </Label>
+              <Tooltip content='Un número entre 1 y 10' position='right'>
+                <Label className='flex w-fit items-center gap-1' htmlFor='dificultadGusto'>
+                  Dificultad
+                </Label>
+              </Tooltip>
             }
             value={nuevoGusto.dificultad || ''}
             onChange={(e) =>
@@ -72,7 +75,15 @@ const AgregarGustoModal = ({ isOpened, heladeria, setHeladeria, close }: Props) 
 
         <section className='mt-1 flex w-full gap-3'>
           <Button type='button' className='button-outlined flex-1' label='Cancelar' onClick={onClose} />
-          <Button type='button' label='Agregar' title={error} className='button-primary flex-1' disabled={!!error} onClick={agregarGusto} />
+          <Tooltip content={error} position='right'>
+            <Button
+              type='button'
+              label='Agregar'
+              className='button-primary flex-1'
+              disabled={!!error}
+              onClick={agregarGusto}
+            />
+          </Tooltip>
         </section>
       </div>
     </Modal>

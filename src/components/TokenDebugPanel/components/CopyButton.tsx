@@ -1,4 +1,5 @@
 import Icon, { IconsNames } from '@/components/Icon'
+import Tooltip from '@/components/Tooltip'
 import { useState } from 'react'
 
 type Props = {
@@ -30,9 +31,11 @@ const CopyButton = ({ text }: Props) => {
   const { icon, color, title } = statusStyles[status]
 
   return (
-    <button type='button' onClick={handleCopy} className='rounded p-1 hover:bg-gray-200' title={title} aria-label={title}>
-      <Icon name={icon} className={`h-4 w-4 ${color}`} />
-    </button>
+    <Tooltip content={title}>
+      <button type='button' onClick={handleCopy} className='rounded p-1 hover:bg-gray-200' aria-label={title}>
+        <Icon name={icon} className={`h-4 w-4 ${color}`} />
+      </button>
+    </Tooltip>
   )
 }
 
